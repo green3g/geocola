@@ -1,0 +1,18 @@
+
+  <i class="fa {{#if collapsed}}fa-plus-square-o{{else}}fa-minus-square-o{{/if}}" ($click)="toggleCollapsed(.)"></i>
+  <i class="fa {{#if visible}}fa-check-square-o{{else}}fa-square-o{{/if}}" ($click)="toggleVisible()"></i> {{title}} {{^collapsed}}
+  <ul class="list-group">
+    {{#each sublayers}}
+      <li class="tilewms-sublayer">
+        <i class="fa {{#if collapsed}}fa-plus-square-o{{else}}fa-minus-square-o{{/if}}" ($click)="toggleCollapsed(.)"></i>
+        <i class="fa {{#if visible}}fa-check-square-o{{else}}fa-square-o{{/if}}" ($click)="setSublayerVisibility(.)"></i> {{title}} {{^collapsed}}
+        <div class="legend-wrapper">
+          <p class="legend">
+            <img src="{{getLegendGraphicURL}}" alt="legend" />
+          </p>
+        </div>
+        {{/collapsed}}
+      </li>
+    {{/each}}
+  </ul>
+  {{/collapsed}}

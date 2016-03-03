@@ -1,0 +1,2 @@
+
+  <i class="fa {{#if visible}}fa-check-square-o{{else}}fa-square-o{{/if}}" ($click)="toggleVisible()"></i> {{title}}

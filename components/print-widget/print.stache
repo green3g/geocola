@@ -1,0 +1,61 @@
+<div class="print-widget">
+  <tab-container>
+    <panel-container title="Print" open="true">
+      <form>
+        <div class="form-group">
+          <label for="mapTitle">Map Title</label>
+          <input type="text" class="form-control" name="mapTitle" can-value="mapTitle" placeholder="" />
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-sm btn-default" can-click="printButtonClick">
+            <i class="fa fa-print"></i> Create Print</button>
+          <button type="button" class="btn btn-sm btn-default" can-click="clearButtonClick" {{^printResults}} disabled {{/printResults}}>
+            <i class="fa fa-trash"></i> Clear Prints</button>
+        </div>
+      </form>
+      <div class="print-results list-group">
+        {{#each printResults}}
+          {{#if error}}
+            <a class="list-group-item list-group-item-danger" title="{{error}}">
+              <i class="fa fa-exclamation-triangle"></i> {{title}}</a>
+          {{else}}
+            <a href="{{url}}" class="list-group-item" target="_blank">
+              <i class="fa fa-paperclip"></i> {{title}}
+            </a>
+          {{/if}}
+        {{/each}}
+        {{#if printing}}
+          <div class="progress">
+            <div class="active progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+              <span>Printing...</span>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </panel-container>
+    <panel-container title="Settings">
+      {{#if provider.layouts.length}}
+        <form class="print-settings">
+          <div class="form-group">
+            <label for="printLayout">Print Layout</label>
+            <select class="form-control" can-value="selectedLayout" name="printLayout">
+              {{#each provider.layouts}}
+                <option value="{{name}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dpi">Print Resolution (DPI)</label>
+            <select class="form-control" can-value="selectedDpi" name="dpi">
+              {{#each provider.dpis}}
+                <option value="{{name}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </form>
+      {{else}}
+        <p>Loading...</p>
+      {{/if}}
+    </panel-container>
+  </tab-container>
+</div>

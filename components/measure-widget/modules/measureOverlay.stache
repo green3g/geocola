@@ -1,0 +1,11 @@
+<div class="measure-tooltip measure{{#if cssClass}}{{cssClass}}{{/if}}">
+  {{#if measureValue}}
+    {{! handle points differently since there's two values}}
+    {{#if measureValue.lat}}
+      {{measureValue.lat.value}} &deg; {{measureValue.lat.direction}}
+      <br /> {{measureValue.lon.value}} &deg; {{measureValue.lon.direction}}
+    {{else}}
+      {{{measureValue}}} {{activeUnits.label}}
+    {{/if}}
+  {{/if}}
+</div>

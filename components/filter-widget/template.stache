@@ -1,0 +1,7 @@
+<div class="filter-widget">
+  <p><a ($click)="toggleVisible" class="btn btn-default">Filter</a></p>
+  {{#if visible}}
+    <form-widget inline="true" {fields}="fields" {form-object}="formObject" (submit)="addFilter" />
+    <list-table {objects}="filters" (delete)="removeFilter" />
+  {{/if}}
+</div>

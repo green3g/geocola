@@ -1,0 +1,24 @@
+<div class="ol-popup">
+  <a href="#" class="ol-popup-closer" ($click)="hidePopup"><i class="fa fa-times-circle"></i></a>
+  <div class="ol-popup-content">
+    {{#unless modal}}
+      <content></content>
+    {{/unless}}
+    </ol-popup-content>
+  </div>
+</div>
+<div class="modal fade" id="modal-{{instanceId}}" tabindex="-1" role="dialog" data-backdrop="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" ($click)="hidePopup" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{#if modal}}
+          <content></content>
+        {{/if}}
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

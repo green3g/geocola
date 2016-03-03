@@ -1,0 +1,9 @@
+{
+  "sites": {
+    "docs": {
+      "glob": "{guides,components,providers}/**/*.{js,md}",
+      "parent": "Home",
+      "dest": "./site"
+    }
+  }
+}

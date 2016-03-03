@@ -1,0 +1,16 @@
+
+<i class="fa {{#if collapsed}}fa-plus-square-o{{else}}fa-minus-square-o{{/if}}" ($click)="toggleCollapsed(.)"></i>
+<i class="fa {{#if visible}}fa-check-square-o{{else}}fa-square-o{{/if}}" ($click)="toggleVisible()"></i> {{title}}
+{{^collapsed}}
+<ul class="list-group layer-control">
+  {{#each layers}}
+    <li class="list-group-item">
+      {{#if radioGroup}}
+        <i class="fa {{#if visible}}fa-check-circle-o{{else}}fa-circle-o{{/if}}" ($click)="setRadioVisible(.)"></i> {{title}}</a></li>
+        {{else}}
+      {{{template}}}
+      {{/if}}
+    </li>
+  {{/each}}
+</ul>
+{{/collapsed}}

@@ -1,0 +1,9 @@
+<ol-map id="main-map" projection="EPSG:900913" default-click="popup">
+  <ol-layer-tilewms title="Massachussets" url="http://giswebservices.massgis.state.ma.us/geoserver/wms" layers="massgis:GISDATA.TOWNS_POLYM,massgis:GISDATA.NAVTEQRDS_ARC">
+  </ol-layer-tilewms>
+  <ol-layer-tilewms title="USA States" url="http://demo.opengeo.org/geoserver/topp/wms" layers="topp:states"></ol-layer-tilewms>
+  <ol-layer-tilewms title="Tasmania" url="http://demo.opengeo.org/geoserver/topp/wms" layers="topp:tasmania_roads,topp:tasmania_cities,topp:tasmania_state_boundaries,topp:tasmania_water_bodies"></ol-layer-tilewms>
+  <ol-popup id="identify-popup">
+    <identify-widget map-node="#main-map" popup-node="#identify-popup" {layer-properties}="identifyConfig" />
+  </ol-popup>
+</ol-map>

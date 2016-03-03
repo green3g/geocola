@@ -1,0 +1,24 @@
+<div class="measure-widget">
+  <div class="btn-group" role="group" aria-label="Measure Tools">
+    {{#each measurements}}
+      <button type="button" title="{{label}}" data-toggle="tooltip" data-placement="bottom" can-click="activateMeasureTool" class="measure btn btn-default{{#if active}} btn-success{{/if}}">
+        <i class="{{iconClass}}" />
+      </button>
+    {{/each}}
+    <button type="button" title="Clear Measurements" data-toggle="tooltip" data-placement="bottom" can-click="clearMeasurements" class="measure btn btn-default">
+      <i class="fa fa-eraser" />
+    </button>
+    {{#each measurements}}
+      {{#if active}}
+        <div class="btn-group" role="group">
+          <select class="unitsDropdown form-control" {($value)}="unitsDropdown" ($change)="changeUnits">
+            {{#each units}}
+              <option value="{{value}}" {{#if selected}} selected="selected" {{/if}}>{{label}}</option>
+            {{/each}}
+          </select>
+      {{/if}}
+    {{/each}}
+    </div>
+    <br />
+    <p class="toggle-labels" ($click)="toggleLabels()"><i class="fa {{#if overlayManager.addLabels}}fa-check-square-o{{else}}fa-square-o{{/if}}"></i>Add measurement labels</p>
+  </div>

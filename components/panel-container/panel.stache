@@ -1,0 +1,9 @@
+<div class="panel panel-default {{^visible}}hidden{{/visible}}{{#if heading}} heading{{/if}}">
+  {{#if collapsible}}
+    <div ($click)="toggle" class="panel-heading"><a href="#">{{{heading}}}</a></div>
+  {{/if}}
+
+  <div class="panel-body collapse{{#unless collapsible}} in{{/collapsible}}{{#if open}} in{{/if}}">
+    <content />
+  </div>
+</div>

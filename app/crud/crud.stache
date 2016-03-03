@@ -1,0 +1,14 @@
+{{#if tabbed}}
+  <tab-container>
+    {{#each connections}}
+      <panel-container title="{{title}}">
+        <crud-manager {connection}="connection" editable="true" {fields}="fields" {parameters}="parameters" />
+      </panel-container>
+    {{/each}}
+  </tab-container>
+{{else}}
+  {{#each connections}}
+    <h2>{{title}}</h2>
+    <crud-manager {connection}="connection" editable="true" {fields}="fields" {parameters}="parameters" />
+  {{/each}}
+{{/if}}
