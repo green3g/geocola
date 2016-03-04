@@ -3,7 +3,7 @@
     <thead>
       <tr>
         <th class="tool-buttons">
-          <i ($click)="toggleSelectAll" class="fa fa-{{#allSelected}}check-{{/allSelected}}square-o"></i> Tools
+          <i ($click)="toggleSelectAll" class="fa fa-{{#allSelected}}check-{{/allSelected}}square-o"></i>
         </th>
         {{#each objects.0}}
           {{#if renderField(%key)}}

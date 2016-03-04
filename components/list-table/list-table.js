@@ -58,13 +58,16 @@ export const ViewModel = viewModel.extend({
     return this.attr('selectedObjects').indexOf(obj) > -1;
   },
   renderField: function(fieldName) {
-    return !this.attr('fields') ? fieldName : this.attr('fields').indexOf(fieldName) > -1;
+    return !this.attr('fields') || this.attr('fields').indexOf(fieldName) > -1;
   },
   formatField: function(fieldName) {
-    fieldName = String(fieldName);
     return [fieldName.substring(0, 1).toUpperCase(), fieldName.substring(1, fieldName.length).replace(/_/g, " ")].join('');
   },
   formatValue: function(value) {
+    var f = this.attr('formatters');
+    if (f && f[fieldName]) {
+      return f[fieldName](value);
+    }
     return value;
   }
 });

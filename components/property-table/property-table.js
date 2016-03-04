@@ -34,6 +34,9 @@ export const ViewModel = viewModel.extend({
     },
     fields: {
       value: null
+    },
+    formatters: {
+      value: null
     }
   },
   fetchObject: function(con, id){
@@ -55,6 +58,10 @@ export const ViewModel = viewModel.extend({
     return [fieldName.substring(0, 1).toUpperCase(), fieldName.substring(1, fieldName.length).replace(/_/g, " ")].join('');
   },
   formatValue: function(value) {
+    var f = this.attr('formatters');
+    if(f && f[fieldName]){
+      return f[fieldName](value);
+    }
     return value;
   }
 });
