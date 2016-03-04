@@ -10,7 +10,7 @@ let Filter = Map.extend({
   name: null,
   op: 'like',
   val: null,
-  save: function(){/* noop to simulate a supermodel */}
+  save: function() { /* noop to simulate a supermodel */ }
 });
 
 export let viewModel = Map.extend({
@@ -33,9 +33,16 @@ export let viewModel = Map.extend({
       }]
     },
     fields: {
-      value: {
-        op: {
-          type: 'select',
+      value: [{
+        name: 'name',
+        alias: 'Field name',
+        placeholder: 'Enter a field name'
+      }, {
+        name: 'op',
+        alias: 'is',
+        placeholder: 'Choose a operator',
+        type: 'select',
+        properties: {
           options: [{
             label: 'Equal to',
             value: '=='
@@ -50,23 +57,27 @@ export let viewModel = Map.extend({
             value: 'not_in'
           }]
         }
-      }
+      }, {
+        name: 'val',
+        alias: 'Value',
+        placeholder: 'Enter the filter value'
+      }]
     }
   },
-  removeFilter: function(scope, dom, event, obj){
+  removeFilter: function(scope, dom, event, obj) {
     let index = this.attr('filters').indexOf(obj);
     this.attr('filters').splice(index, 1);
     this.filtersChanged();
   },
-  toggleVisible: function(){
+  toggleVisible: function() {
     this.attr('visible', !this.attr('visible'));
   },
-  addFilter: function(scope, dom, event, obj){
+  addFilter: function(scope, dom, event, obj) {
     this.attr('filters').push(obj);
     this.attr('formObject', new Filter());
     this.filtersChanged();
   },
-  filtersChanged: function(){
+  filtersChanged: function() {
     this.dispatch('filtersChanged', [this.attr('filters')])
   }
 });

@@ -1,7 +1,8 @@
 <div class="filter-widget">
-  <p><a ($click)="toggleVisible" class="btn btn-default">Filter</a></p>
-  {{#if visible}}
+  <panel-container collapsible="true" heading="Filter" open="false">
+    <h4>Add Filter</h4>
     <form-widget inline="true" {fields}="fields" {form-object}="formObject" (submit)="addFilter" />
+    <h4>Current Filters</h4>
     <list-table {objects}="filters" (delete)="removeFilter" />
-  {{/if}}
+  </panel-container>
 </div>
