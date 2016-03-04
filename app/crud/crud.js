@@ -9,6 +9,9 @@ export let AppViewModel = can.Map.extend({
     connections: {
       Type: can.List
     },
+    parameters: {
+      Type: can.Map
+    },
     tabbed: {
       get: function(){
         return this.attr('connections').length > 1;

@@ -38,6 +38,12 @@ var Card = FlaskConnectFactory({
 });
 
 export let config = {
+  parameters: {
+    'page[size]': 1000
+  },
+  tableFields: ['name', 'description'],
+  editFields: ['name', 'description'],
+  detailFields: ['name', 'description', 'date_created', 'date_modified', 'id'],
   connections: [
   //   {
   //   title: 'Tap Card',

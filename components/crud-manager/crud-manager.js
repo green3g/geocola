@@ -48,6 +48,15 @@ export let viewModel = Map.extend({
         iconClass: 'fa fa-list-ul',
         eventName: 'view'
       }]
+    },
+    editFields: {
+      Type: List
+    },
+    tableFields: {
+      Type: List
+    },
+    detailFields: {
+      Type: List
     }
   },
   editObject: function(scope, dom, event, object) {
@@ -83,11 +92,9 @@ export let viewModel = Map.extend({
   updateFilterParam: function(scope, dom, event, filters) {
     if (filters.length) {
       this.removeAttr('parameters.page');
-      this.attr('parameters.q', JSON.stringify({
-        filters: filters.attr()
-      }));
+      this.attr('parameters.filter[objects]', JSON.stringify(filters.attr()));
     } else {
-      this.removeAttr('parameters.q');
+      this.removeAttr('parameters.filter[objects]');
     }
     console.log(this.attr('parameters'));
   }
