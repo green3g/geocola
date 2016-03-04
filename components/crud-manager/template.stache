@@ -18,6 +18,8 @@
           {{/if}}
         </div>
       {{/if}}
+      <paginate-widget {(activePageIndex)}="activePageIndex" pages="50" />
+      page: {{activePageIndex}}
     {{/case}}
     {{#case 'details'}}
       <property-table {object-id}="viewId" {connection}="connection.connection" {fields}="detailFields" {formatters}="detailFormatters" />

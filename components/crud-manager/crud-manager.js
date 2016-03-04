@@ -13,6 +13,7 @@ import 'components/list-table/';
 import 'components/property-table/';
 import 'components/form-widget/';
 import 'components/filter-widget/';
+import 'components/paginate-widget/';
 
 export let viewModel = Map.extend({
   define: {
