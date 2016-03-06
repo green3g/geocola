@@ -3,7 +3,7 @@
     "docs": {
       "glob": "{guides,components,providers}/**/*.{js,md}",
       "parent": "Home",
-      "dest": "./site"
+      "dest": "../cola-docs"
     }
   }
 }

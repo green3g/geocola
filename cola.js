@@ -1,5 +1,7 @@
-const DEFAULT_APP = 'app/locator/';
-const DEFAULT_CONFIG = null;
+/*jshint esnext:true */
+
+const DEFAULT_APP = 'app/viewer/';
+const DEFAULT_CONFIG = 'default';
 
 /**
  * A query string parameter parser
@@ -8,7 +10,7 @@ const DEFAULT_CONFIG = null;
  */
 function getQueryParameters(str) {
   return (str || document.location.search).replace(/(^\?)/, '').split("&").map(function(n) {
-    return n = n.split("="), this[n[0]] = n[1], this
+    return n = n.split("="), this[n[0]] = n[1], this;
   }.bind({}))[0];
 }
 
@@ -21,7 +23,7 @@ function getQueryParameters(str) {
  */
 function multiImport(modules) {
   return Promise.all(modules.map(function(m) {
-    return System.import(m)
+    return System.import(m);
   }));
 }
 
