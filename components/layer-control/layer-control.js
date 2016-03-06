@@ -13,6 +13,7 @@ const controlTemplates = {
  * @module layer-control
  * @parent components
  * @body
+
 ## Description
 
 A layer controller to handle layer visibility and perform additional layer functions.
@@ -22,6 +23,8 @@ A layer controller to handle layer visibility and perform additional layer funct
 ```html
 <layer-control map-node="#map" />
 ```
+
+<img src="images/layer-control.png" />
 
  */
 export const ViewModel = can.Map.extend({

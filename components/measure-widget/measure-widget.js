@@ -10,7 +10,6 @@ import overlayManager from './modules/overlayManager';
  * @module measure-widget
  * @parent components
  * @body
- # measure-widget
 
  ## Description:
 
@@ -21,6 +20,9 @@ import overlayManager from './modules/overlayManager';
  ```html
  <measurement-widget map-node="#ol-map-id" />
  ```
+
+ <img src="images/measure-widget.png" />
+
  */
 export const ViewModel = can.Map.extend({
   define: {
