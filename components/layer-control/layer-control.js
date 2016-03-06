@@ -1,5 +1,4 @@
 /* jshint esnext: true */
-'use strict';
 import can from 'can';
 import template from './layercontrol.stache!';
 import './layercontrol.css!';
@@ -29,14 +28,14 @@ export const ViewModel = can.Map.extend({
   define: {
     /**
      * [layers description]
-     * @type {Object}
+     * @property {Object}
      */
     layers: {
       Value: can.List
     },
     /**
      * [mapNode description]
-     * @type {Object}
+     * @property {Object}
      */
     mapNode: {
       type: 'string'

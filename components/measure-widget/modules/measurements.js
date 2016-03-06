@@ -1,6 +1,6 @@
 /*jshint esnext: true */
 export default [{
-  type: 'Point', //@type {ol.geom.GeometryType}
+  type: 'Point', //@property {ol.geom.GeometryType}
   label: 'Measure Point',
   iconClass: 'fa fa-crosshairs',
   helpMessage: 'Click to draw a point',

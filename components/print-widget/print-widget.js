@@ -1,5 +1,4 @@
 /*jslint esnext: true */
-'use strict';
 import can from 'can';
 import template from './print.stache!';
 import widgetModel from 'components/widget-model';

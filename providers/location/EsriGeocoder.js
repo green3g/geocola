@@ -1,6 +1,5 @@
 /* jshint esnext:true */
 import can from 'can';
-
 /**
  * @module EsriGeocoder
  * @parent location-providers
@@ -36,10 +35,11 @@ export default can.Map.extend({
    */
   /**
    * query the url for suggestions
+   * @link suggestionsObject suggestionsObject
    * @signature
    * @param  {string} searchText text to search for suggestions
    * @param  {float[]} point      x,y pair in latitude and longitude coordinates
-   * @return {promise}            a promise resolved once the query completes. resolved with string[] suggestions
+   * @return {promise}            a promise resolved once the query completes. resolved with {suggestionsObject} suggestions
    */
   getSuggestions: function(searchText, point) {
     this.attr('deferred', can.Deferred());
@@ -58,13 +58,11 @@ export default can.Map.extend({
     return this.attr('deferred').promise();
   },
   /**
-   * Retrieves the coordinates for a known location. This location
-   * is a fully qualified address or place name returned from
-   * the `getSuggestions` query.
+   * Retrieves the coordinates for a known location. This location is a fully qualified address or place name returned from the `getSuggestions` query.
+   * @link locationObject locationObject
    * @signature
    * @param  {String} knownLocation The location name
-   * @return {Promise} A promise that is resolved to the location
-   * object
+   * @return {Promise} A promise that is resolved to the locationObject
    */
   getLocation: function(knownLocation) {
     this.attr('deferred', can.Deferred());
@@ -95,9 +93,9 @@ export default can.Map.extend({
   /**
    * A helper function which resolves the suggestions promise
    * to a object containing suggestions.
+   * @link suggestionsObject suggestionsObject
    * @signature
-   * @param  {Object} results The raw Esri suggestions response
-   * @return {Object} An object containing both an array of suggestions and the raw Esri response.
+   * @param  {object} results The raw Esri suggestions response
    */
   _resolveSuggestions: function(results) {
     var suggestions = results.suggestions.map(function(sug) {
@@ -110,9 +108,9 @@ export default can.Map.extend({
   },
   /**
    * A helper function which resolves the location promise to a geographic location object.
+   * @link locationObject locationObject
    * @signature
-   * @param  {Object} results The raw geocode response from Esri
-   * @return {Object} A location object with the name, x, y, and raw response.
+   * @param  {object} results The raw geocode response from Esri
    */
   _resolveLocation: function(results) {
     var location = results.locations[0];

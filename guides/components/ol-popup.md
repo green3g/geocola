@@ -1,5 +1,8 @@
 # ol-popup
 
+## Description
+A basic openlayers popup to use for displaying content.
+
 ## Usage
 Place inside an `ol-map` component object
 
@@ -12,8 +15,6 @@ Place inside an `ol-map` component object
 </ol-map>
 ```
 
-## Description
-A basic openlayers popup to use for displaying content.
 
 ## View Model Properties
 

@@ -7,8 +7,33 @@ import widgetModel from 'components/widget-model';
 import icon from './icon';
 
 /**
+ * @typedef {locationObject} locationObject LocationObject
+ * @parent location-providers
+ * @option {Number} x The x coordinate of the location
+ * @option {Number} y The y coordinate of the location
+ * @option {String} location The qualified name of the location
+ */
+
+/**
+ * @typedef {suggestionsObject} suggestionsObject SuggestionsObject
+ * @parent location-providers
+ * @option {Array.<String>} suggestions The array of suggestions
+ * @option {Object} The raw response from the geocode server
+ */
+
+/**
  * @module locator-widget
  * @parent components
+ * @body
+ *
+ ## Description
+ A widget for getting and displaying suggestions and address locations from a geocoder provider. Optionally navigates and displays locations to an `ol-map` component.
+
+ ## Usage
+
+ ```html
+ <locator-widget {provider}="providerKeyName" map-node="#map" />
+ ```
  */
 export const ViewModel = widgetModel.extend({
   define: {
@@ -63,15 +88,32 @@ export const ViewModel = widgetModel.extend({
     location: {
       Value: can.Map
     },
+    /**
+     * A deferred representing the current loading state
+     * @property {can.Deferred}
+     */
     loading: {
       value: function(){
         return can.Deferred().resolve();
       }
     }
   },
+  /**
+   * @prototype
+   */
+  /**
+   * Initilizes this widget when the item is inserted. Locates the ol-map component and binds to its ready event.
+   * @signature
+   * @param  {can.Map} mapViewModel The map viewModel
+   */
   initMap: function(mapViewModel) {
     mapViewModel.ready().then(this.onMapReady.bind(this));
   },
+  /**
+   * When the map is ready, this is called internally to add a new vector layer to it and stores a reference to the map.
+   * @signature
+   * @param  {can.Map} map The map viewModel
+   */
   onMapReady: function(map) {
     this.attr('map', map);
     this.attr('vectorLayer', new ol.layer.Vector({
@@ -79,7 +121,7 @@ export const ViewModel = widgetModel.extend({
       id: 'location' + this.attr('instanceId'),
       source: new ol.source.Vector(),
       style: new ol.style.Style({
-        image: new ol.style.Icon( /* @type {olx.style.IconOptions} */ ({
+        image: new ol.style.Icon( /* @property {olx.style.IconOptions} */ ({
           anchor: [0.5, 46],
           anchorXUnits: 'fraction',
           anchorYUnits: 'pixels',
@@ -89,6 +131,10 @@ export const ViewModel = widgetModel.extend({
       })
     }));
   },
+  /**
+   * Called when the search text changes to retrieve suggestions
+   * @param  {String} address The text string to search for suggestions
+   */
   searchAddressValue: function(address) {
     this.clearSuggestions();
     this.clearGraphics();
@@ -106,33 +152,60 @@ export const ViewModel = widgetModel.extend({
       this.attr('loading').then(this.updateSuggestions.bind(this));
     }
   },
+  /**
+   * Called when one of the suggestions is clicked. This function kicks off the geocode by querying the provider with the qualified address or location name.
+   * @signature
+   * @param  {String} address The fully qualified address or string name
+   */
   selectAddress: function(address) {
     this.attr('addressValue', address);
     this.attr('loading', this.attr('provider').getLocation(address));
     this.attr('loading').then(this.handleAddressLocated.bind(this));
   },
+  /**
+   * Clears the suggestions, address value, and any graphics on the layer if it exists. Dispatches event `address-cleared`
+   * @signature
+   */
   clearAddress: function() {
     this.attr('addressValue', null);
     this.clearSuggestions();
     this.clearGraphics();
     this.dispatch('address-cleared');
   },
+  /**
+   * Called internally to update the suggestions list when suggestions are found by the provider. Dispatches event `suggestions-found` with the array of suggestions
+   * @signature
+   * @param  {suggestionsObject} results An array of string results
+   */
   updateSuggestions: function(results) {
     if (results.suggestions != this.attr('suggestions')) {
       this.attr('suggestions').replace(results.suggestions);
       this.dispatch('suggestions-found', [results.suggestions]);
     }
   },
+  /**
+   * Empties the list of suggestions-cleared
+   * @signature
+   */
   clearSuggestions: function() {
     this.attr('suggestions').replace([]);
     this.dispatch('suggestions-cleared');
   },
+  /**
+   * Clears the graphics layer
+   * @signature
+   */
   clearGraphics: function() {
     if (this.attr('map')) {
       this.attr('map').removeLayer(this.attr('vectorLayer'));
       this.attr('vectorLayer').getSource().clear();
     }
   },
+  /**
+   * Called internally when the address is resolved to a location by the provider
+   * @signature
+   * @param  {locationObject} location The location object
+   */
   handleAddressLocated: function(location) {
     this.clearSuggestions();
     this.attr('location', location);
@@ -141,6 +214,11 @@ export const ViewModel = widgetModel.extend({
       this.navigateMap(location);
     }
   },
+  /**
+   * Pans the map to the location and adds a point to the graphics layer
+   * @signature
+   * @param  {locationObject} location The location object
+   */
   navigateMap: function(location) {
     var map = this.attr('map');
     var coords = ol.proj.transform([location.x, location.y],

@@ -129,7 +129,7 @@ export const ViewModel = widgetModel.extend({
    * @prototype
    */
   /**
-   * @discription
+   * @description
    * Initializes the map
    * @signature
    * @param  {domElement} element The dom element to place the map

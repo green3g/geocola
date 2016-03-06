@@ -5,9 +5,44 @@ import Component from 'can/component/';
 import Stache from 'can/view/stache/';
 //import './widget.css!';
 import template from './template.stache!';
+/**
+ * @module {can.Component} form-widget
+ * @parent components
+  * @group form-widget.types 0 Types
+  * @group form-widget.templates 1 Field Types
+  * @group form-widget.parameters 2 Parameters
+  * @group form-widget.events 3 Events
+  * @group form-widget.static 4 Static
+## Description
+A configureable form widget to modify data. The form accepts a formObject property that should be an object similar to a `can.Model`. When the form is submitted, it calls the model's `save` method.
 
+## Usage
+```html
+  <form-widget {form-object}="formObject" (submit)="resetPage"
+   (cancel)="resetPage" {fields}="formFields" />
+```
+ */
+/**
+ * @typedef {optionItemObject} optionItemObject OptionItemObject
+ * @parent form-widget.types
+ * @option {String} value the value that is stored in the select dropdown
+ * @option {String} label The label that is displayed in the select dropdown
+ */
 const TEMPLATES = {
+  /**
+   * @typedef {textInputProperties} text text
+   * @parent form-widget.templates
+   * @description A simple text input field
+   * @option {String} name The name of the field
+   */
   text: '<input type="text" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}" />',
+  /**
+   * @typedef {selectInputProperties} select select
+   * @parent form-widget.templates
+   * @description A simple select dropdown field
+   * @option {String} name The name of the field
+   * @option {Array.<optionItemObject>} properties.options The select dropdown options
+   */
   select: [
     '<select id="{{name}}" class="form-control" name="{{name}}" value="{{value}}">',
     '{{#each properties.options}}',
@@ -16,21 +51,56 @@ const TEMPLATES = {
     '</select>'
   ].join('')
 };
+/**
+ * @typedef {formFieldObject} formFieldObject FormFieldObject
+ * This can either be a string representing the field name or an object with the properties described below.
+ * @parent form-widget.types
+ * @option {String} name The name of the field property
+ * @option {String} alias A label to display for the field
+ * @option {String} placeholder The field placeholder to display when no text is entered
+ * @option {String} type The type of field template to use.
+ * @option {Object} properties Additional properties to pass to the field template. For example, `options` is a property existing in the select template
+ */
 
 export let viewModel = Map.extend({
   define: {
+    /**
+     * Whether or not this form should be a bootstrap inline form
+     * @parent form-widget.parameters
+     * @property {Boolean}
+     */
     inline: {
       type: 'boolean',
       value: false
     },
+    /**
+     * An object representing a can.Model or similar object
+     * @parent form-widget.parameters
+     * @property {can.Model}
+     */
     formObject: {},
+    /**
+     * The list of form fields properties. These can be specified as strings representing the field names or the object properties described in the formFieldObject
+     * @parent form-widget.parameters
+     * @property {Array.<formFieldObject>} fields
+     */
     fields: {
       Type: can.List
     }
   },
+  /**
+   * Initilizes the form's field objects
+   * @parent form-widget.static
+   * @signature
+   */
   init: function() {
     this.createFields();
   },
+  /**
+   * Creates the `fieldObjects` property.
+   * @parent form-widget.static
+   * @signature
+   */
   createFields: function() {
     var fields = this.attr('fields');
     if (!fields) {
@@ -44,7 +114,7 @@ export let viewModel = Map.extend({
         obj = {
           name: field,
           alias: self.formatField(field),
-          template: Stache(TEMPLATES['text']),
+          template: Stache(TEMPLATES.text),
           properties: {},
           value: self.attr(['formObject', field].join('.'))
         };
@@ -60,6 +130,19 @@ export let viewModel = Map.extend({
       self.attr(['fieldObjects', field.name || field].join('.'), obj);
     });
   },
+  /**
+   * @typedef {can.Event} formSubmitEvent submit
+   * An event dispatched when the save button is clicked. The formObject is passed as an argument
+   * @parent form-widget.events
+   * @option {can.Model} formObject The formObject
+   */
+  /**
+   * Called when the form is submitted. Serializes the form data and compares it to the formObject. If there are changes, the object is updated and its `save` method is called. The event `submit` is dispatched.
+   * @param  {can.Map} scope The stache scope
+   * @param  {HTMLFormElement} form  The submitted form object
+   * @param  {can.Event} event The submit event
+   * @return {Boolean} Returns false to prevent the form from actually submitting
+   */
   formSubmit: function(scope, form, event) {
     var data = can.$(form).serializeArray();
     var formObject = this.attr('formObject');
@@ -69,23 +152,22 @@ export let viewModel = Map.extend({
         formObject.attr(newData.name, newData.value);
       }
     }
-    console.log(formObject);
     formObject.save();
     this.dispatch('submit', [formObject]);
     //prevent the form from submitting
     return false;
   },
+  /**
+   * @typedef {can.Event} formCancelEvent cancel
+   * @parent form-widget.events
+   * An event dispatched when the cancel button is clicked. No arguments are passed.
+   */
+  /**
+   * Called when the form cancel button is clicked. Dispatches the `cancel` event.
+   * @signature
+   */
   cancelForm: function() {
-    this.dispatch('cancel')
-  },
-  getAttr: function() {
-    //trim off the last argument
-    var args = Array.prototype.slice.call(arguments, 0, arguments.length - 1);
-    //capture the oject and remove it
-    var obj = args[0];
-    args.splice(0, 1);
-    //return the value
-    return obj.attr(args.join('.'));
+    this.dispatch('cancel');
   },
   /**
    * Determines whether this field should be rendered
@@ -96,18 +178,11 @@ export let viewModel = Map.extend({
     var fields = this.attr('fields');
     return true;
   },
-  getField: function(fieldName) {
-    return {
-      alias: fieldProps.attr('alias') || fieldName,
-      template: Stache(TEMPLATES[fieldProps.attr('template') || 'text'])
-    };
-  },
-  getTemplate: function(fieldName) {
-    var template = this.attr('fieldTemplates.' + fieldName) || {};
-    var properties = template.properties || {};
-    properties.key = fieldName;
-    return template.template || Stache(TEMPLATES[template.name || 'text']);
-  },
+  /**
+   * Formats the field by replacing underscores with spaces and capitalizing the first letter
+   * @param  {String} fieldName The name of the field
+   * @return {String} The formatted field string. Example: `my_field_name` will become `My field name`.
+   */
   formatField: function(fieldName) {
     fieldName = String(fieldName);
     return [fieldName.substring(0, 1).toUpperCase(), fieldName.substring(1, fieldName.length).replace(/_/g, " ")].join('');

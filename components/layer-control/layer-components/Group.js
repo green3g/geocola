@@ -9,7 +9,7 @@ var ViewModel = baseViewModel.extend({
   define:  {
     /**
      * [layers description]
-     * @type {Object}
+     * @property {Object}
      */
     layers: {
       Value: can.List
