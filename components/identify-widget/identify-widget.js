@@ -7,28 +7,35 @@ import './styles.css!';
 /**
  * @module identify-widget
  * @parent components
+ * @group identify-widget.parameters Parameters
+ * @group identify-widget.events Events
+ * @group identify-widget.static Static
  * @body
 
-   ## Description
-   A configureable feature identify tool for wms layers using wms `GetFeatureInfo` protocol. The wms server must be capable of privoviding json results
-   - Queries wms layers and displays the results when map is clicked
-   - Works inside an ol-popup componenet by centering the popup on a feature geometry when a feature is selected
-   - Support for customizing each field and the entire feature's properties is baked in
+ ## Description
+ A configureable feature identify tool for wms layers using wms `GetFeatureInfo` protocol. The wms server must be capable of privoviding json results
+ - Queries wms layers and displays the results when map is clicked
+ - Works inside an ol-popup componenet by centering the popup on a feature geometry when a feature is selected
+ - Support for customizing each field and the entire feature's properties is baked in
 
-   ## Usage
-   This component may be placed inside an `ol-popup` component, but it doesn't have to be.
-   ```html
-   <ol-popup>
-     <identify-widget {layer-properties}="propsObj" />
-   </ol-popup>
-   ```
+ ## Usage
+ This component may be placed inside an `ol-popup` component, but it doesn't have to be.
+ ```html
+ <ol-popup>
+   <identify-widget {layer-properties}="propsObj" />
+ </ol-popup>
+ ```
+ */
+/**
+ * @typedef {layerProperties} layerProperties layerProperties
+ * @type {RegExp}
  */
 export const ViewModel = can.Map.extend({
   define: {
     /**
      * The selector for the `ol-map` map node.
+     * @parent identify-widget.parameters
      * @signature `{String}` `map-node="#map"`
-     * @signature
      * @property {String} mapNode
      */
     mapNode: {
@@ -36,6 +43,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * The selector for the `ol-popup` dom node
+     * @parent identify-widget.parameters
      * @signature `{String}` `popup-node="#identify-popup"`
      */
     popupNode: {
@@ -43,6 +51,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * The max number of features to return for each layer. The default is 10.
+     * @parent identify-widget.parameters
      * @signature `{Number}` `max-feature-count="10"`
      * @property {Number} maxFeatureCount
      */
@@ -52,6 +61,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * Buffer distance in pixels around the map click. The default is 10.
+     * @parent identify-widget.parameters
      * @signature `{Number}` `feature-buffer="10"`
      * @property {Number} featureBuffer
      */
@@ -60,14 +70,16 @@ export const ViewModel = can.Map.extend({
       value: 10
     },
     /**
-     * [layerProperties description]
-     * @property {Object}
+     * Layer configuration properties
+     * @parent identify-widget.parameters
+     * @property {LayerProperties}
      */
     layerProperties: {
       Value: can.Map
     },
     /**
      * [mapClickKey description]
+     * @parent identify-widget.parameters
      * @property {Object}
      */
     mapClickKey: {
@@ -76,6 +88,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * [features description]
+     * @parent identify-widget.parameters
      * @property {Object}
      */
     features: {
@@ -83,6 +96,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * [loading description]
+     * @parent identify-widget.parameters
      * @property {Object}
      */
     loading: {
@@ -94,6 +108,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * [deferreds description]
+     * @parent identify-widget.parameters
      * @property {Object}
      */
     deferreds: {
@@ -101,6 +116,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * [activeFeatureIndex description]
+     * @parent identify-widget.parameters
      * @property {Object}
      */
     activeFeatureIndex: {
@@ -109,6 +125,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * [hasNextFeature description]
+     * @parent identify-widget.parameters
      * @property {Object}
      */
     hasNextFeature: {
@@ -119,6 +136,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * [hasPreviousFeature description]
+     * @parent identify-widget.parameters
      * @property {Object}
      */
     hasPreviousFeature: {
@@ -128,6 +146,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * [activeFeature description]
+     * @parent identify-widget.parameters
      * @property {Object}
      */
     activeFeature: {
@@ -228,9 +247,6 @@ export const ViewModel = can.Map.extend({
       }
     },
   },
-  /**
-   * @prototype
-   */
   /**
    * [function description]
    * @param  {[type]} models [description]

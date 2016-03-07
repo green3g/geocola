@@ -1,7 +1,7 @@
 {
   "sites": {
     "docs": {
-      "glob": "{guides,components,providers}/**/*.{js,md}",
+      "glob": "**/*.{js,md}",
       "parent": "Home",
       "dest": "../cola-docs"
     }

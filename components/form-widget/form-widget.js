@@ -138,6 +138,7 @@ export let viewModel = Map.extend({
    */
   /**
    * Called when the form is submitted. Serializes the form data and compares it to the formObject. If there are changes, the object is updated and its `save` method is called. The event `submit` is dispatched.
+   * @parent form-widget.static
    * @param  {can.Map} scope The stache scope
    * @param  {HTMLFormElement} form  The submitted form object
    * @param  {can.Event} event The submit event
@@ -164,6 +165,7 @@ export let viewModel = Map.extend({
    */
   /**
    * Called when the form cancel button is clicked. Dispatches the `cancel` event.
+   * @parent form-widget.static
    * @signature
    */
   cancelForm: function() {
@@ -171,6 +173,7 @@ export let viewModel = Map.extend({
   },
   /**
    * Determines whether this field should be rendered
+   * @parent form-widget.static
    * @param  {String} fieldName The fieldname
    * @return {Boolean} True if the field is in the list of fields, false if otherwise
    */
@@ -180,6 +183,7 @@ export let viewModel = Map.extend({
   },
   /**
    * Formats the field by replacing underscores with spaces and capitalizing the first letter
+   * @parent form-widget.static
    * @param  {String} fieldName The name of the field
    * @return {String} The formatted field string. Example: `my_field_name` will become `My field name`.
    */
