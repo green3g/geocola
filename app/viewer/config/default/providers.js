@@ -5,7 +5,7 @@ import mapfishProvider from 'providers/print/MapfishPrint';
 
 export let printProvider = new mapfishProvider({
   url: '/proxy/geoserver/pdf',
-  method: 'GET'
+  method: 'POST'
 });
 export let locationProvider = new esriProvider({
   url: 'http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/'
