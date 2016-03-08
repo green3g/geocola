@@ -7,3 +7,7 @@ form.locator-widget {
   top: 45px;
   left:0;
 }
+
+.locator-suggestions {
+  z-index: 1000;
+}

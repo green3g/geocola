@@ -1,39 +1,34 @@
-
-body {
+#app {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   overflow:hidden;
 }
 
-#absoluteWrapper {
-position: absolute;
-bottom: 0;
-left: 0;
-right: 0;
-top: 65px;
+#main {
+  position: absolute;
+  top: 70px;
+  bottom: 50px;
+  left: 0;
+  right: 0;
 }
 
-.panel,
-.panel-body,
-ol-map {
-  height:100%;
-  width:100%;
-  display:block;
+tab-container, .panel, .panel-body, ol-map {
+  height: 100%;
+  width: 100%;
+  display: block;
 }
-
 iframe {
   width: 100%;
-  height:100%;
+  height: 100%;
 }
-
-@media screen and (max-width: 768px){
-  #absoluteWrapper {
+@media screen and (max-width: 768px) {
+  #main {
     top: 105px;
   }
 }
-
-.list-group-item {
-  z-index: 1000;
-}
-
 .container {
-  width:100%;
+  width: 100%;
 }
