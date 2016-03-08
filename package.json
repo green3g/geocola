@@ -26,12 +26,12 @@
     "proj4": "^2.3.12",
     "steal": "^0.15.0"
   },
+  "main": "cola",
   "system": {
-    "main": "cola",
     "bundle": [
-      "app/locator/",
       "app/viewer/",
-      "app/viewer/config/faribault/"
+      "app/viewer/config/default/",
+      "app/locator/"
     ],
     "npmIgnore": [
       "openlayers"
