@@ -4,13 +4,14 @@ import 'bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css!';
 import '../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css!';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
+import './crud.css!'
 import 'components/crud-manager/';
 import 'components/tab-container/';
 
 
 export let AppViewModel = can.Map.extend({
   define: {
-    connections: {
+    models: {
       Type: can.List
     },
     parameters: {
@@ -24,14 +25,25 @@ export let AppViewModel = can.Map.extend({
     id: {
       type: 'number',
       value: null
+    },
+    activeModel: {
+      value: null
+    },
+    sidebarHidden: {
+      type: 'boolean',
+      value: false
     }
+  },
+  activate: function(model) {
+    this.attr('activeModel', model);
   },
   startup: function(domNode) {
     this.initRoute();
+    this.activateDefaultModel();
     can.$(domNode).html(can.view(template, this));
   },
   initRoute: function() {
-    can.route(':page/:id/');
+    can.route(':modelName/:page/:id/');
     can.route.ready();
     this.attr(can.route.attr());
 
@@ -41,12 +53,27 @@ export let AppViewModel = can.Map.extend({
     this.bind('page', this.updateRoute.bind(this, 'page'));
     this.bind('parameters', this.updateRoute.bind(this, 'parameters'));
   },
+  toggleMenu: function(e) {
+    this.attr('sidebarHidden', !this.attr('sidebarHidden'))
+  },
+  activateDefaultModel: function() {
+    if (this.attr('modelName')) {
+      var self = this;
+      this.attr('models').forEach(function(model) {
+        if (model.id === this.attr('modelName')) {
+          self.activate(model);
+        }
+      })
+    } else {
+      this.activate(this.attr('models')[0]);
+    }
+  },
   routeChange: function() {
     this.attr(can.route.attr());
   },
   updateRoute: function(name, action, value, oldValue) {
     console.log(name, value);
-    if(!value){
+    if (!value) {
       can.route.attr(name, '');
     }
     can.route.attr(name, value);
