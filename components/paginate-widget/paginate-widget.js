@@ -62,7 +62,6 @@ export let viewModel = Map.extend({
   gotoNext: function() {
     if (this.attr('hasNext')) {
       this.attr('activePageIndex', this.attr('activePageIndex') + 1);
-      console.log(this.attr('activePageIndex'))
     }
   },
   gotoPrevious: function() {
@@ -71,10 +70,13 @@ export let viewModel = Map.extend({
     }
   },
   gotoPage: function(p) {
-    if (p >= 0 && p < this.attr('pages')) {
-      this.attr('activePageIndex', p);
+    if (p > 0 && p <= this.attr('pages')) {
+      this.attr('activePageIndex', p - 1);
     }
     return false;
+  },
+  isActive: function(p){
+    return this.attr('activePageIndex') === p - 1;
   }
 });
 

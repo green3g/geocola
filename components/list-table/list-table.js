@@ -50,7 +50,8 @@ export const ViewModel = viewModel.extend({
      * @property {Array.<can.Model | can.Map | Object>}
      */
     objects: {
-      value: List
+      Value: List,
+      Type: List
     },
     /**
      * A list of the currently selected objects in the table
@@ -58,7 +59,8 @@ export const ViewModel = viewModel.extend({
      * @property {Array.<can.Map>}
      */
     selectedObjects: {
-      Value: List
+      Value: List,
+      Type: List
     },
     /**
      * A virtual property that helps the template determine whether all objects are selected

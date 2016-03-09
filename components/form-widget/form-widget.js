@@ -73,11 +73,13 @@ export let viewModel = Map.extend({
       type: 'boolean',
       value: false
     },
-    /**
-     * An object representing a can.Model or similar object
-     * @parent form-widget.parameters
-     * @property {can.Model}
-     */
+    objectId: {
+      type: 'number',
+      set: function(id) {
+        this.fetchObject(this.attr('connection'), id);
+        return id;
+      }
+    },
     formObject: {},
     /**
      * The list of form fields properties. These can be specified as strings representing the field names or the object properties described in the formFieldObject
@@ -86,6 +88,9 @@ export let viewModel = Map.extend({
      */
     fields: {
       Type: can.List
+    },
+    connection: {
+      value: null
     }
   },
   /**
@@ -94,7 +99,22 @@ export let viewModel = Map.extend({
    * @signature
    */
   init: function() {
-    this.createFields();
+    if (this.attr('formObject')) {
+      this.createFields();
+    }
+  },
+  fetchObject: function(con, id) {
+    console.log(id);
+    if (!con || !id) {
+      return;
+    }
+    var self = this;
+    return con.get({
+      id: id
+    }).then(function(obj) {
+      self.attr('formObject', obj);
+      self.createFields();
+    });
   },
   /**
    * Creates the `fieldObjects` property.

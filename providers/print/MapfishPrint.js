@@ -236,7 +236,7 @@ export default Print.extend({
     var spec = JSON.stringify(this.getPrintObject(options));
     var url;
     if (this.attr('method') === 'GET') {
-      url = this.attr('url') + '?spec=' + encodeURIComponent(jsonData);
+      url = this.attr('url') + '?spec=' + encodeURIComponent(spec);
 
       if (this.attr('proxy')) {
         url = this.attr('proxy') + encodeURIComponent(url);
@@ -245,6 +245,7 @@ export default Print.extend({
         url: url,
         title: options.title
       });
+      return this.attr('deferred').promise();
     } else {
       url = this.attr('url') + '/create.json';
       if (this.attr('proxy')) {
@@ -452,7 +453,8 @@ export default Print.extend({
           'SERVICE': 'WMS',
           'REQUEST': 'GetLegendGraphic',
           'WIDTH': 15,
-          'HEIGHT': 15
+          'HEIGHT': 15,
+          'FORMAT': 'image/png'
         }, source.getParams());
 
         var singlelayers = subLayers.split(',');

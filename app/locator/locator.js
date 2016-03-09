@@ -39,16 +39,6 @@ export let AppViewModel = can.Map.extend({
         layers: new ol.Collection([
           new ol.layer.Tile({
             source: new ol.source.OSM()
-          }),
-          new ol.layer.Image({
-            maxResolution: 2,
-            source: new ol.source.ImageWMS({
-              url: 'http://104.254.109.118:8080/cgi-bin/mapserv.exe?map=%2Fms4w%2Fapps%2Fgeomoose2%2Fmaps%2F%2Ffaribault%2Fcadastral%2Fparcels.map',
-              params: {
-                LAYERS: 'parcels',
-                SRS: 'EPSG:3857'
-              }
-            })
           })
         ])
       }

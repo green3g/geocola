@@ -106,6 +106,9 @@ export let viewModel = Map.extend({
           }, {
             label: 'Does not contain',
             value: 'not_in'
+          }, {
+            label: 'is like',
+            value: 'like'
           }]
         }
       }, {
@@ -125,7 +128,6 @@ export let viewModel = Map.extend({
   removeFilter: function(scope, dom, event, obj) {
     let index = this.attr('filters').indexOf(obj);
     this.attr('filters').splice(index, 1);
-    this.filtersChanged();
   },
   /**
    * Adds a new filter to the list of filters in this widget
@@ -137,8 +139,6 @@ export let viewModel = Map.extend({
   addFilter: function(scope, dom, event, obj) {
     this.attr('filters').push(obj);
     this.attr('formObject', new Filter());
-    this.filtersChanged();
-  },
   /**
    * @typedef {filtersChangedEvent} filtersChangedEvent filters-changed
    * @parent filter-widget.events
@@ -147,8 +147,6 @@ export let viewModel = Map.extend({
   /**
    * A helper function called when the filters change. Dispatches the event `filtersChanged`.
    */
-  filtersChanged: function() {
-    this.dispatch('filters-changed', [this.attr('filters')]);
   }
 });
 

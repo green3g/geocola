@@ -6,7 +6,7 @@
       </a>
     </li>
     {{#each visiblePages}}
-      <li class="{{#is %index activePageIndex}}active{{/is}}"><a href="" ($click)="gotoPage(%index)">{{.}}</a></li>
+      <li class="{{#if isActive(.)}}active{{/if}}"><a href="" ($click)="gotoPage(.)">{{.}}</a></li>
     {{/each}}
     <li class="{{^hasNext}}disabled{{/hasNext}}">
       <a href="#" aria-label="Next" ($click)="gotoNext">
