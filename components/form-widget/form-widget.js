@@ -23,7 +23,7 @@ A configureable form widget to modify data. The form accepts a formObject proper
 ```
  */
 /**
- * @typedef {optionItemObject} optionItemObject OptionItemObject
+ * @typedef {optionItemObject} form-widget.types.optionItemObject OptionItemObject
  * @parent form-widget.types
  * @option {String} value the value that is stored in the select dropdown
  * @option {String} label The label that is displayed in the select dropdown

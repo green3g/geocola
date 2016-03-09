@@ -8,6 +8,7 @@ import './styles.css!';
  * @module identify-widget
  * @parent components
  * @group identify-widget.parameters Parameters
+ * @group identify-widget.types Types
  * @group identify-widget.events Events
  * @group identify-widget.static Static
  * @body
@@ -27,8 +28,26 @@ import './styles.css!';
  ```
  */
 /**
- * @typedef {layerProperties} layerProperties layerProperties
- * @type {RegExp}
+ * @typedef {layerPropertiesObject} identify-widget.types.layerPropertiesObject layerPropertiesObject
+ * An object consisting of a key mapped to the layer name as returned by the server with its value consisting of properties defining the layer display.
+ * @parent identify-widget.types
+ * @option {String} alias The label to display for the layer The default is the layer name as provided by the server
+ * @option {String | can.view.renderer} template The template to render for this layer's popup. This can be a template imported via `import templateName from './templatePath.stache!';` (recommended) or a string template. The default is `components/identify-widget/featureTemplate.stache`
+ * @option {identify-widget.types.fieldPropertiesObject} properties An object consisting of layerFieldProperties.
+ */
+
+/**
+ * @typedef {fieldPropertiesObject} identify-widget.types.fieldPropertiesObject fieldPropertiesObject
+ * An object consisting of a key representing the field name and the value being properties defining each field's appearance
+ * @parent identify-widget.types
+ * @option {String} alias The label to display for this field
+ * @option {Boolean} exclude If set to true, this field will not display in the identify widget
+ * @option {function(value)} formatter A formatter function for the field's value that will return a string and accept the value of the field as a parameter.
+```
+formatter: function(name) {
+   return name + ' is Awesome!';
+ }
+ ```
  */
 export const ViewModel = can.Map.extend({
   define: {
@@ -72,13 +91,13 @@ export const ViewModel = can.Map.extend({
     /**
      * Layer configuration properties
      * @parent identify-widget.parameters
-     * @property {LayerProperties}
+     * @property {layerProperties}
      */
     layerProperties: {
       Value: can.Map
     },
     /**
-     * [mapClickKey description]
+     * The map click key to assign to this widget. When the map is clicked, and this key is the set as the current map click, it will trigger an identify.
      * @parent identify-widget.parameters
      * @property {Object}
      */
@@ -87,17 +106,17 @@ export const ViewModel = can.Map.extend({
       value: 'identify'
     },
     /**
-     * [features description]
+     * The list of features that have been identified
      * @parent identify-widget.parameters
-     * @property {Object}
+     * @property {Array<ol.Feature>}
      */
     features: {
       Value: can.List
     },
     /**
-     * [loading description]
+     * Whether or not all identifies have completed. This is used internally by the template.
      * @parent identify-widget.parameters
-     * @property {Object}
+     * @property {can.Deferred}
      */
     loading: {
       value: function() {
@@ -107,26 +126,26 @@ export const ViewModel = can.Map.extend({
       }
     },
     /**
-     * [deferreds description]
+     * A list of pending identify deferreds
      * @parent identify-widget.parameters
-     * @property {Object}
+     * @property {Array<can.Deferred>}
      */
     deferreds: {
       Value: can.List,
     },
     /**
-     * [activeFeatureIndex description]
+     * The currently selected feature index
      * @parent identify-widget.parameters
-     * @property {Object}
+     * @property {Number}
      */
     activeFeatureIndex: {
       value: 0,
       type: 'number'
     },
     /**
-     * [hasNextFeature description]
+     * If the feature list has one or more features after the selected feature, this will be true. This is used by the template to enable/disable the forward and back buttons.
      * @parent identify-widget.parameters
-     * @property {Object}
+     * @property {Boolean}
      */
     hasNextFeature: {
       get: function() {
@@ -135,9 +154,9 @@ export const ViewModel = can.Map.extend({
       }
     },
     /**
-     * [hasPreviousFeature description]
+     * If the feature list has one or more features before the selected feature, this will be true. This is used by the template to enable/disable the forward and back buttons.
      * @parent identify-widget.parameters
-     * @property {Object}
+     * @property {Boolean}
      */
     hasPreviousFeature: {
       get: function() {
@@ -145,9 +164,9 @@ export const ViewModel = can.Map.extend({
       }
     },
     /**
-     * [activeFeature description]
+     * A virtual property that returns an object consisting of the formatted fields, values, and layer properties.
      * @parent identify-widget.parameters
-     * @property {Object}
+     * @property {can.Map}
      */
     activeFeature: {
       get: function() {
