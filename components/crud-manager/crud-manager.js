@@ -24,12 +24,11 @@ export let viewModel = Map.extend({
       type: 'boolean',
       value: false
     },
-    page: {
-      type: 'string',
-      value: 'all'
-    },
     parameters: {
       Value: Map
+    },
+    page: {
+      value: 'all'
     },
     promise: {
       get: function(prev, setAttr) {
@@ -51,14 +50,34 @@ export let viewModel = Map.extend({
       }]
     },
     editFields: {
-      Type: List
+      value: null
     },
     tableFields: {
-      Type: List
+      value: null
     },
     detailFields: {
-      Type: List
+      value: null
+    },
+    queryFilters: {
+      Value: List
+    },
+    queryPage: {
+      type: 'number',
+      value: 1
     }
+  },
+  updateFilterParam: function() {
+    var filters = this.attr('queryFilters');
+    if (filters.length) {
+      this.removeAttr('parameters.page');
+      this.attr('parameters.filter[objects]', JSON.stringify(filters.attr()));
+    } else {
+      this.removeAttr('parameters.filter[objects]');
+    }
+    return filters;
+  },
+  updatePageParam: function() {
+    this.attr('parameters.page', this.attr('queryPage') - 1);
   },
   editObject: function(scope, dom, event, object) {
     this.attr('formObject', object);
@@ -89,20 +108,19 @@ export let viewModel = Map.extend({
       });
       this.attr('selectedObjects').replace([]);
     }
-  },
-  updateFilterParam: function(scope, dom, event, filters) {
-    if (filters.length) {
-      this.removeAttr('parameters.page');
-      this.attr('parameters.filter[objects]', JSON.stringify(filters.attr()));
-    } else {
-      this.removeAttr('parameters.filter[objects]');
-    }
-    console.log(this.attr('parameters'));
   }
 });
 
 Component.extend({
   tag: 'crud-manager',
   viewModel: viewModel,
-  template: template
+  template: template,
+  events: {
+    '{viewModel.queryFilters} change': function() {
+      this.viewModel.updateFilterParam();
+    },
+    '{viewModel.queryPage} change': function() {
+      this.viewModel.updatePageParam();
+    }
+  }
 });
