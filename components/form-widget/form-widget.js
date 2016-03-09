@@ -6,7 +6,7 @@ import Stache from 'can/view/stache/';
 //import './widget.css!';
 import template from './template.stache!';
 
-const TEMPLATES = {
+const FIELD_TYPES = {
   text: '<input type="text" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}" />',
   select: [
     '<select id="{{name}}" class="form-control" name="{{name}}" value="{{value}}">',
@@ -26,7 +26,7 @@ export let viewModel = Map.extend({
     objectId: {
       type: 'number',
       set: function(id) {
-        this.fetchObject(this.attr('connection'), id);
+        this.fetchObject(this.attr('connection.connection'), id);
         return id;
       }
     },
@@ -44,7 +44,6 @@ export let viewModel = Map.extend({
     }
   },
   fetchObject: function(con, id) {
-    console.log(id);
     if (!con || !id) {
       return;
     }
@@ -69,16 +68,18 @@ export let viewModel = Map.extend({
         obj = {
           name: field,
           alias: self.formatField(field),
-          template: Stache(TEMPLATES['text']),
+          template: Stache(FIELD_TYPES['text']),
           properties: {},
+          formatter: null,
           value: self.attr(['formObject', field].join('.'))
         };
       } else {
         obj = {
           name: field.name,
-          alias: field.alias || self.formatField(field),
-          template: field.template || Stache(TEMPLATES[field.type || 'text']),
+          alias: field.alias || self.formatField(field.name),
+          template: field.template || Stache(FIELD_TYPES[field.type || 'text']),
           properties: field.properties || {},
+          formatter: field.formatter || null,
           value: self.attr(['formObject', field.name].join('.'))
         };
       }
@@ -86,17 +87,31 @@ export let viewModel = Map.extend({
     });
   },
   formSubmit: function(scope, form, event) {
+
+    //get the form data in an array
     var data = can.$(form).serializeArray();
+
+    //get the form model object
     var formObject = this.attr('formObject');
+
+    //loop through it and update the model object as necessary
     for (var i = 0; i < data.length; i++) {
       var newData = data[i];
-      if (formObject.attr(newData.name) !== newData.value) {
-        formObject.attr(newData.name, newData.value);
+      var formatter = this.attr('fieldObjects.' + newData.name + '.formatter');
+
+      //format the field value if a formatter exists
+      var value = formatter ? formatter(newData.value, data) : newData.value;
+
+      //if it changed, update the value
+      if (formObject.attr(newData.name) !== value) {
+        formObject.attr(newData.name, value);
       }
     }
-    console.log(formObject);
+
+    //save the model object
     formObject.save();
     this.dispatch('submit', [formObject]);
+
     //prevent the form from submitting
     return false;
   },

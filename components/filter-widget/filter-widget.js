@@ -56,14 +56,28 @@ export let viewModel = Map.extend({
             label: 'Does not contain',
             value: 'not_in'
           }, {
-            label: 'is like',
+            label: 'Like',
             value: 'like'
           }]
         }
       }, {
         name: 'val',
         alias: 'Value',
-        placeholder: 'Enter the filter value'
+        placeholder: 'Enter the filter value',
+        formatter: function(val, data){
+          var operator;
+          data.forEach(function(field){
+            if(field.name === 'op'){
+              operator = field.value;
+            }
+          });
+          switch(operator){
+            case 'like':
+              return '%' + val + '%';
+            default:
+              return val;
+          }
+        }
       }]
     }
   },
