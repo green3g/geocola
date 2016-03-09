@@ -55,6 +55,9 @@ export let viewModel = Map.extend({
           }, {
             label: 'Does not contain',
             value: 'not_in'
+          }, {
+            label: 'is like',
+            value: 'like'
           }]
         }
       }, {
@@ -67,7 +70,6 @@ export let viewModel = Map.extend({
   removeFilter: function(scope, dom, event, obj) {
     let index = this.attr('filters').indexOf(obj);
     this.attr('filters').splice(index, 1);
-    this.filtersChanged();
   },
   toggleVisible: function() {
     this.attr('visible', !this.attr('visible'));
@@ -75,10 +77,6 @@ export let viewModel = Map.extend({
   addFilter: function(scope, dom, event, obj) {
     this.attr('filters').push(obj);
     this.attr('formObject', new Filter());
-    this.filtersChanged();
-  },
-  filtersChanged: function() {
-    this.dispatch('filtersChanged', [this.attr('filters')])
   }
 });
 
