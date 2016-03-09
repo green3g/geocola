@@ -30,6 +30,20 @@ export let viewModel = Map.extend({
     page: {
       value: 'all'
     },
+    totalItems: {
+      type: 'number'
+    },
+    totalPages: {
+      get: function(val, setAttr) {
+        var self = this;
+        this.attr('promise').then(function(data) {
+          var total = data.attr('meta.total');
+          self.attr('totalItems', total);
+          var pages = parseInt(total/ self.attr('queryPerPage'));
+          setAttr(pages);
+        });
+      }
+    },
     promise: {
       get: function(prev, setAttr) {
         return this.attr('connection.connection').getList(this.attr('parameters').attr());
@@ -63,24 +77,33 @@ export let viewModel = Map.extend({
     },
     queryPage: {
       type: 'number',
-      value: 1
+      value: 0
+    },
+    queryPerPage: {
+      type: 'number',
+      value: 10
     },
     formObject: {
       value: null
     }
   },
-  updateFilterParam: function() {
-    var filters = this.attr('queryFilters');
+  updateFilterParam: function(filters) {
+    //reset the page filter
+    this.attr('queryPage', 0);
     if (filters.length) {
-      this.removeAttr('parameters.page');
+      //if there are filters in the list, set the filter parameter
       this.attr('parameters.filter[objects]', JSON.stringify(filters.attr()));
     } else {
+      //remove the filter parameter
       this.removeAttr('parameters.filter[objects]');
     }
     return filters;
   },
-  updatePageParam: function() {
-    this.attr('parameters.page', this.attr('queryPage') - 1);
+  updatePageParam: function(page) {
+    this.attr('parameters.page[number]', page + 1);
+  },
+  updatePerPageParam: function(perPage) {
+    this.attr('parameters.page[size]', perPage);
   },
   editObject: function(scope, dom, event, obj) {
     this.attr('viewId', this.attr('connection.connection').id(obj));
@@ -120,11 +143,14 @@ Component.extend({
   viewModel: viewModel,
   template: template,
   events: {
-    '{viewModel.queryFilters} change': function() {
-      this.viewModel.updateFilterParam();
+    '{viewModel.queryFilters} change': function(filters) {
+      this.viewModel.updateFilterParam(filters);
     },
-    '{viewModel.queryPage} change': function() {
-      this.viewModel.updatePageParam();
+    '{viewModel} queryPage': function(obj, evt, newPage) {
+      this.viewModel.updatePageParam(newPage);
+    },
+    '{viewModel} queryPerPage': function(obj, evt, perPage) {
+      this.viewModel.updatePerPageParam(newPage);
     }
   }
 });
