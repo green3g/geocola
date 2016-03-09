@@ -23,13 +23,38 @@ export let viewModel = Map.extend({
       type: 'boolean',
       value: false
     },
+    objectId: {
+      type: 'number',
+      set: function(id) {
+        this.fetchObject(this.attr('connection'), id);
+        return id;
+      }
+    },
     formObject: {},
     fields: {
       Type: can.List
+    },
+    connection: {
+      value: null
     }
   },
   init: function() {
-    this.createFields();
+    if (this.attr('formObject')) {
+      this.createFields();
+    }
+  },
+  fetchObject: function(con, id) {
+    console.log(id);
+    if (!con || !id) {
+      return;
+    }
+    var self = this;
+    return con.get({
+      id: id
+    }).then(function(obj) {
+      self.attr('formObject', obj);
+      self.createFields();
+    });
   },
   createFields: function() {
     var fields = this.attr('fields');

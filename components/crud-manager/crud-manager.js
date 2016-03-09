@@ -64,6 +64,9 @@ export let viewModel = Map.extend({
     queryPage: {
       type: 'number',
       value: 1
+    },
+    formObject: {
+      value: null
     }
   },
   updateFilterParam: function() {
@@ -79,8 +82,8 @@ export let viewModel = Map.extend({
   updatePageParam: function() {
     this.attr('parameters.page', this.attr('queryPage') - 1);
   },
-  editObject: function(scope, dom, event, object) {
-    this.attr('formObject', object);
+  editObject: function(scope, dom, event, obj) {
+    this.attr('viewId', this.attr('connection.connection').id(obj));
     this.attr('page', 'edit');
   },
   viewObject: function(scope, dom, event, obj) {
@@ -88,6 +91,7 @@ export let viewModel = Map.extend({
     this.attr('page', 'details');
   },
   resetPage: function() {
+    this.attr('viewId', null);
     this.attr('page', 'all');
   },
   createObject: function() {

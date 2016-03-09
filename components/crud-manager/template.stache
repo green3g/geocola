@@ -1,7 +1,7 @@
 {{#if promise.isResolved}}
   {{#switch page}}
     {{#case 'edit'}}
-      <form-widget {(form-object)}="formObject" (submit)="resetPage" (cancel)="resetPage" {fields}="formFields" />
+      <form-widget {object-id}="viewId" {connection}="connection.connection" (submit)="resetPage" (cancel)="resetPage" {fields}="formFields" />
     {{/case}}
     {{#case 'all'}}
       <filter-widget {(filters)}="queryFilters" />
