@@ -4,8 +4,8 @@
 import 'node_modules/openlayers/dist/ol.css!';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css!';
 import '../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css!';
-import './css/viewer.css!';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
+import './css/viewer.css!';
 
 import 'bootstrap';
 
