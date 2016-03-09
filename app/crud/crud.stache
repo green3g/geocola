@@ -1,4 +1,4 @@
 {{#each connections}}
   <h2>{{title}}</h2>
-  <crud-manager {(page)}="page" {(view-id)}="id" {(form-object)}="formObject" {connection}="connection" editable="true" {edit-fields}="editFields" {table-fields}="tableFields" {detail-fields}="detailFields" {parameters}="parameters" />
+  <crud-manager {(page)}="page" {(view-id)}="id" {(form-object)}="formObject" {connection}="connection" editable="true" {edit-fields}="editFields" {table-fields}="tableFields" {detail-fields}="detailFields" {(parameters)}="parameters" />
 {{/each}}

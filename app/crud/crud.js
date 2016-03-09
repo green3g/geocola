@@ -14,12 +14,8 @@ export let AppViewModel = can.Map.extend({
       Type: can.List
     },
     parameters: {
-      Type: can.Map
-    },
-    tabbed: {
-      get: function() {
-        return this.attr('connections').length > 1;
-      }
+      Type: can.Map,
+      Value: can.Map
     },
     page: {
       type: 'string',
@@ -35,23 +31,25 @@ export let AppViewModel = can.Map.extend({
     can.$(domNode).html(can.view(template, this));
   },
   initRoute: function() {
-    can.route(':page/:id');
+    can.route(':page/:id/');
     can.route.ready();
-    can.route.bind('change', this.routeChange.bind(this));
     this.attr(can.route.attr());
+
+    //when these properties change, update the route and vice versa
+    can.route.bind('change', this.routeChange.bind(this));
     this.bind('id', this.updateRoute.bind(this, 'id'));
     this.bind('page', this.updateRoute.bind(this, 'page'));
+    this.bind('parameters', this.updateRoute.bind(this, 'parameters'));
   },
   routeChange: function() {
     this.attr(can.route.attr());
   },
   updateRoute: function(name, action, value, oldValue) {
-    if (!value) {
-      value = null;
+    console.log(name, value);
+    if(!value){
+      can.route.attr(name, '');
     }
-    var props = ['id', 'page'];
-    if (props.indexOf(name) !== -1) {
-      can.route.attr(name, value);
-    }
+    can.route.attr(name, value);
+    console.log(can.route.attr())
   }
 });
