@@ -57,7 +57,7 @@ export let viewModel = Map.extend({
   },
   createFields: function() {
     var fields = this.attr('fields');
-    if (!fields) {
+    if (!(fields && fields.length)) {
       fields = Map.keys(this.attr('formObject'));
     }
     var self = this;
