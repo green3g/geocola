@@ -1,8 +1,11 @@
 {{#if promise.isResolved}}
   {{#switch page}}
-    {{#case 'edit'}}
-      <form-widget {object-id}="viewId" {connection}="connection.connection" (submit)="resetPage" (cancel)="resetPage" {fields}="formFields" />
-    {{/case}}
+  {{#case 'edit'}}
+    <form-widget {object-id}="viewId" {connection}="connection" (submit)="resetPage" (cancel)="resetPage" {fields}="editFields" />
+  {{/case}}
+  {{#case 'add'}}
+    <form-widget {form-object}="newObject" {connection}="connection" (submit)="resetPage" (cancel)="resetPage" {fields}="editFields" />
+  {{/case}}
     {{#case 'all'}}
       <filter-widget {(filters)}="queryFilters" />
       <list-table {objects}="promise.value" {^selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" {fields}="tableFields" {formatters}="tableFormatters" />
@@ -22,7 +25,7 @@
       page:{{queryPage}}
     {{/case}}
     {{#case 'details'}}
-      <property-table {object-id}="viewId" {connection}="connection.connection" {fields}="detailFields" {formatters}="detailFormatters" />
+      <property-table {object-id}="viewId" {connection}="connection" {fields}="detailFields" {formatters}="detailFormatters" />
       <p>
         <a href="#" class="btn btn-primary" ($click)="resetPage">
           <i class="fa fa-arrow-left"></i> Back

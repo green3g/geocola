@@ -96,8 +96,8 @@ export let viewModel = Map.extend({
   },
   createObject: function() {
     var newObject = this.attr('connection.map')();
-    this.attr('formObject', newObject);
-    this.attr('page', 'edit');
+    this.attr('newObject', newObject);
+    this.attr('page', 'add');
   },
   deleteObject: function(scope, dom, event, obj, skipConfirm) {
     if (obj && (skipConfirm || confirm('Are you sure you want to delete this record?'))) {

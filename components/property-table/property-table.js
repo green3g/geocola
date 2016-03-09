@@ -19,13 +19,13 @@ export const ViewModel = viewModel.extend({
     objectId: {
       type: 'number',
       set: function(id){
-        this.fetchObject(this.attr('connection'), id);
+        this.fetchObject(this.attr('connection.connection'), id);
         return id;
       }
     },
     connection: {
       set: function(con){
-        this.fetchObject(con, this.attr('objectId'));
+        this.fetchObject(con.attr('connection'), this.attr('objectId'));
         return con;
       }
     },
