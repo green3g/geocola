@@ -25,10 +25,12 @@ export const ViewModel = viewModel.extend({
       }
     },
     objects: {
-      value: List
+      Value: List,
+      Type: List
     },
     selectedObjects: {
-      Value: List
+      Value: List,
+      Type: List
     },
     allSelected: {
       get: function() {
