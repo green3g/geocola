@@ -54,8 +54,8 @@ export const ViewModel = viewModel.extend({
     return !this.attr('fields') ? fieldName : this.attr('fields').indexOf(fieldName) > -1;
   },
   formatField: function(fieldName) {
-    fieldName = String(fieldName);
-    return [fieldName.substring(0, 1).toUpperCase(), fieldName.substring(1, fieldName.length).replace(/_/g, " ")].join('');
+    fieldName = fieldName.replace(/_/g, " ");
+    return [fieldName.substring(0, 1).toUpperCase(), fieldName.substring(1, fieldName.length)].join('');
   },
   formatValue: function(value) {
     var f = this.attr('formatters');

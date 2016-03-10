@@ -33,8 +33,9 @@ export const ViewModel = viewModel.extend({
       Type: List
     },
     allSelected: {
-      get: function() {
-        return this.attr('objects').length === this.attr('selectedObjects').length;
+      type: 'boolean',
+      get: function(){
+        return this.attr('selectedObjects').length === this.attr('objects').length;
       }
     }
   },
@@ -50,10 +51,10 @@ export const ViewModel = viewModel.extend({
     }
   },
   toggleSelectAll: function() {
-    if (this.attr('allSelected')) {
-      this.attr('selectedObjects').replace([]);
-    } else {
+    if (this.attr('selectedObjects').length < this.attr('objects').length) {
       this.attr('selectedObjects').replace(this.attr('objects'));
+    } else {
+      this.attr('selectedObjects').replace([]);
     }
   },
   isSelected: function(obj) {
@@ -63,7 +64,8 @@ export const ViewModel = viewModel.extend({
     return !this.attr('fields') || this.attr('fields').indexOf(fieldName) > -1;
   },
   formatField: function(fieldName) {
-    return [fieldName.substring(0, 1).toUpperCase(), fieldName.substring(1, fieldName.length).replace(/_/g, " ")].join('');
+    fieldName = fieldName.replace(/_/g, ' ');
+    return [fieldName.substring(0, 1).toUpperCase(), fieldName.substring(1, fieldName.length)].join('');
   },
   formatValue: function(value) {
     var f = this.attr('formatters');
