@@ -4,7 +4,7 @@
   <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
       {{#each models}}
-        <li class="sidebar-brand"><a ($click)="activate(.)" href="#">{{title}}</a></li>
+        <li class="sidebar-brand"><a ($click)="navigateToModel(.)" href="">{{title}}</a></li>
       {{/each}}
     </ul>
   </div>
@@ -16,11 +16,14 @@
       <div class="row">
         <div class="col-lg-12">
           {{#activeModel}}
-            <h1>{{title}} <a ($click)="toggleMenu" class="btn btn-default" id="menu-toggle">Toggle Menu</a></h1>
-
-            <crud-manager {(page)}="page" {(view-id)}="id" {(form-object)}="formObject" {connection}="connection" editable="true" {edit-fields}="editFields" {table-fields}="tableFields" {detail-fields}="detailFields" {(parameters)}="parameters" />
+            <h1>{{title}} <a ($click)="toggleMenu" class="hidden-print btn btn-default" id="menu-toggle">Toggle Menu</a></h1>
+            <crud-manager {(page)}="page" {(view-id)}="viewId"  {(parameters)}="parameters" {connection}="connection" editable="true" {edit-fields}="editFields" {table-fields}="tableFields" {detail-fields}="detailFields"></crud-manager>
           {{/activeModel}}
 
+          parameters:
+          {{#each parameters}}
+          {{%key}} - {{.}}
+          {{/each}}
         </div>
       </div>
     </div>

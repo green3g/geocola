@@ -39,7 +39,7 @@ export let viewModel = Map.extend({
         this.attr('promise').then(function(data) {
           var total = data.attr('meta.total');
           self.attr('totalItems', total);
-          var pages = parseInt(total/ self.attr('queryPerPage'));
+          var pages = parseInt(total / self.attr('queryPerPage'));
           setAttr(pages);
         });
       }
@@ -85,6 +85,10 @@ export let viewModel = Map.extend({
     },
     formObject: {
       value: null
+    },
+    viewId: {
+      type: 'number',
+      value: 0
     }
   },
   updateFilterParam: function(filters) {
@@ -114,8 +118,8 @@ export let viewModel = Map.extend({
     this.attr('page', 'details');
   },
   resetPage: function() {
-    this.attr('viewId', null);
     this.attr('page', 'all');
+    this.attr('viewId', 0);
   },
   createObject: function() {
     var newObject = this.attr('connection.map')();

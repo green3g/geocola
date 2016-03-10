@@ -123,3 +123,18 @@
         margin-right: 0;
     }
 }
+
+@media print {
+  #wrapper {
+      padding-left: 0;
+  }
+
+  #wrapper #sidebar-wrapper {
+      width: 0;
+  }
+
+  #wrapper #page-content-wrapper {
+      position: relative;
+      margin-right: 0;
+  }
+}
