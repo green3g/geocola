@@ -64,7 +64,7 @@ export let viewModel = Map.extend({
         name: 'val',
         alias: 'Value',
         placeholder: 'Enter the filter value',
-        formatter: function(val, data){
+        valueParser: function(val, data){
           var operator;
           data.forEach(function(field){
             if(field.name === 'op'){
