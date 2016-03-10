@@ -68,6 +68,7 @@ export let AppViewModel = can.Map.extend({
       page: 'all',
       viewId: 0
     });
+    this.attr('parameters', {});
     this.activateModel(model);
     return false;
   },
