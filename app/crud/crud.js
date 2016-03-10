@@ -42,7 +42,6 @@ export let AppViewModel = can.Map.extend({
   initRoute: function() {
     can.route(':model/:page/:viewId/');
     can.route.ready();
-    console.log(can.route.attr());
     this.attr(can.route.attr());
 
     //bind to properties that should update the route
@@ -76,7 +75,6 @@ export let AppViewModel = can.Map.extend({
     this.activateModelById(can.route.attr('model'));
   },
   updateRoute: function(name, action, value, oldValue) {
-    console.log(name, value);
     if (!value) {
       can.route.attr(name, '');
     }
