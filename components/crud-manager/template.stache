@@ -21,7 +21,7 @@
           {{/if}}
         </div>
       {{/if}}
-      <paginate-widget {(active-page-index)}="queryPage" pages="{{totalPages}}" /> Total Items: {{totalItems}}
+      <paginate-widget {(active-page-index)}="queryPage" {pages}="totalPages" /> Total Items: {{totalItems}}
     {{/case}}
     {{#case 'details'}}
       <property-table {object-id}="viewId" {connection}="connection" {fields}="detailFields" {formatters}="detailFormatters" />

@@ -35,13 +35,13 @@ export let viewModel = Map.extend({
     },
     totalPages: {
       get: function(val, setAttr) {
-        var self = this;
-        this.attr('promise').then(function(data) {
-          var total = data.attr('meta.total');
-          self.attr('totalItems', total);
-          var pages = parseInt(total / self.attr('queryPerPage'));
-          setAttr(pages);
-        });
+        if (!this.attr('connection.properties')) {
+          return 0;
+        }
+        var total = this.attr('connection.properties.meta.total');
+        this.attr('totalItems', total);
+        var pages = parseInt(total / this.attr('queryPerPage'));
+        return pages;
       }
     },
     promise: {

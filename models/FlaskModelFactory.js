@@ -12,6 +12,7 @@ export function FlaskConnectFactory(options) {
   let Objectist = can.List.extend({
     Map: options.map
   });
+  let properties = new can.Map();
 
   //a default id
   var id = options.idProp || 'id';
@@ -29,7 +30,7 @@ export function FlaskConnectFactory(options) {
       //}
       // getData: 'GET ' + options.url,
       getListData: function(data) {
-        return can.ajax({
+        var def = can.ajax({
           url: this.resource,
           headers: {
             'Accept': 'application/vnd.api+json'
@@ -37,6 +38,13 @@ export function FlaskConnectFactory(options) {
           method: 'GET',
           data: data || {}
         });
+        def.then(function(props) {
+          //cache the raw data for future use
+          properties.attr({
+            meta: props.meta,
+          });
+        });
+        return def;
       },
       getData: function(data) {
         return can.ajax({
@@ -67,8 +75,8 @@ export function FlaskConnectFactory(options) {
       updateData: function(attrs) {
         var data = {};
         //exclude hidden properties
-        for(var a in attrs){
-          if(attrs.hasOwnProperty(a) && a.indexOf('_') !== 0){
+        for (var a in attrs) {
+          if (attrs.hasOwnProperty(a) && a.indexOf('_') !== 0) {
             data[a] = attrs[a];
           }
         }
@@ -106,7 +114,7 @@ export function FlaskConnectFactory(options) {
         return {};
       }
       //sometimes props are actually in the data property?
-      if ( props.data) {
+      if (props.data) {
         props = props.data;
       }
       //build a new object that consists of a combination of the FlaskRestless
@@ -127,7 +135,8 @@ export function FlaskConnectFactory(options) {
   return {
     connection: connection,
     map: options.map,
-    list: options.map.List
+    list: options.map.List,
+    properties: properties
   };
 };
 /**
