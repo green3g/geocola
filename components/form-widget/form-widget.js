@@ -70,7 +70,7 @@ export let viewModel = Map.extend({
           alias: self.formatField(field),
           template: Stache(FIELD_TYPES['text']),
           properties: {},
-          formatter: null,
+          valueParser: null,
           value: self.attr(['formObject', field].join('.'))
         };
       } else {
@@ -79,7 +79,7 @@ export let viewModel = Map.extend({
           alias: field.alias || self.formatField(field.name),
           template: field.template || Stache(FIELD_TYPES[field.type || 'text']),
           properties: field.properties || {},
-          formatter: field.formatter || null,
+          valueParser: field.valueParser || null,
           value: self.attr(['formObject', field.name].join('.'))
         };
       }
@@ -97,10 +97,10 @@ export let viewModel = Map.extend({
     //loop through it and update the model object as necessary
     for (var i = 0; i < data.length; i++) {
       var newData = data[i];
-      var formatter = this.attr('fieldObjects.' + newData.name + '.formatter');
+      var valueParser = this.attr('fieldObjects.' + newData.name + '.valueParser');
 
-      //format the field value if a formatter exists
-      var value = formatter ? formatter(newData.value, data) : newData.value;
+      //format the field value if a valueParser exists
+      var value = valueParser ? valueParser(newData.value, data) : newData.value;
 
       //if it changed, update the value
       if (formObject.attr(newData.name) !== value) {
