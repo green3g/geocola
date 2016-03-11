@@ -1,6 +1,6 @@
 <!--
-@page components Components
-@parent Home
+@page guides.developing.components Components
+@parent guides.developing
 -->
 
 Web components are custom elements that quickly enable functionality in an application by providing complex widgets through basic html code. Web components are provided by the CanJS library.

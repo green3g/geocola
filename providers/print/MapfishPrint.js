@@ -70,9 +70,10 @@ var encoders = {
   }
 };
 /**
- * @module MapfishPrint
- * @parent print-providers
-  * @body
+ * @module {can.Map} MapfishPrint
+ * @parent providers.print
+ * @signature `new Provider(options)`
+* @body
 # Mapfish print service provider
 Provides access to mapfish print services from the `print-widget` component
 
@@ -89,12 +90,10 @@ var provider = new Provider({
 
 ## Layers supported
 
-Layer type | Supported | Tested
----------- | --------- | ------
-`OSM`      | x         |
-`Vector`   | x         | x
-`TileWMS`  | x         | x
-`ImageWMS` | x         |
+ - OSM
+ - Vector
+ - TileWMS
+ - ImageWMS
 
 **/
 export default Print.extend({

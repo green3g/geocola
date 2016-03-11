@@ -1,3 +1,4 @@
+/*jshint esnext:true */
 import template from './crud.stache!';
 import can from 'can';
 import 'bootstrap';

@@ -1,6 +1,6 @@
 <!--
-@page printing Printing With Mapfish
-@parent guides
+@page guides.administer.server.printing Mapfish Print Service
+@parent guides.administer
 -->
 
 This document documents the steps taken setting up a working mapfish extension on Geoserver.

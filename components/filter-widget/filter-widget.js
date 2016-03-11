@@ -33,7 +33,7 @@ The filters generated follow the JSON API specification
  */
 
 /**
- * @typedef {FilterObject} filterObject FilterObject
+ * @typedef {FilterObject} filter-widget.types.filterObject FilterObject
  * @parent filter-widget.types
  * @description A filter object consisting of a fieldname, operator, and a value
  * @option {String} name The name of the field
@@ -52,7 +52,7 @@ export let viewModel = Map.extend({
     /**
      * A list of filterObjects
      * @parent filter-widget.params
-     * @property {Array.<filterObject>}
+     * @property {Array<filter-widget.types.filterObject>}
      */
     filters: {
       Value: List
@@ -139,14 +139,6 @@ export let viewModel = Map.extend({
   addFilter: function(scope, dom, event, obj) {
     this.attr('filters').push(obj);
     this.attr('formObject', new Filter());
-  /**
-   * @typedef {filtersChangedEvent} filtersChangedEvent filters-changed
-   * @parent filter-widget.events
-   * @option {Array.<filterObject>} filters
-   */
-  /**
-   * A helper function called when the filters change. Dispatches the event `filtersChanged`.
-   */
   }
 });
 

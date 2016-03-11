@@ -2,6 +2,8 @@
 @page guides Getting Started
 @parent Home
 @link ./components.html Components
+@group guides.administer Administer
+@group guides.developing Develop
 -->
 
 ## Directory Structure
