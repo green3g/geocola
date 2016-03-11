@@ -1,32 +1,34 @@
 {{#if promise.isResolved}}
   {{#switch page}}
     {{#case 'edit'}}
-      <form-widget {object-id}="viewId" {connection}="connection.connection" (submit)="resetPage" (cancel)="resetPage" {fields}="formFields" />
+      <form-widget {object-id}="viewId" {connection}="connection" (submit)="resetPage" (cancel)="resetPage" {fields}="editFields" />
+    {{/case}}
+    {{#case 'add'}}
+      <form-widget {form-object}="newObject" {connection}="connection" (submit)="resetPage" (cancel)="resetPage" {fields}="editFields" />
     {{/case}}
     {{#case 'all'}}
       <filter-widget {(filters)}="queryFilters" />
       <list-table {objects}="promise.value" {^selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" {fields}="tableFields" {formatters}="tableFormatters" />
       {{#if editable}}
         <div class="btn-group" role="group" aria-label="Management Buttons">
-          <a href="#" class="btn btn-success" ($click)="createObject">
+          <button class="btn btn-success" ($click)="createObject">
             <i class="fa fa-plus"></i> Add New
-          </a>
+          </button>
           {{#if selectedObjects.length}}
-            <a href="#" class="btn btn-danger" ($click)="deleteMultiple">
+            <button class="btn btn-danger" ($click)="deleteMultiple">
               <i class="fa fa-trash"></i> Remove Selected
-            </a>
+            </button>
           {{/if}}
         </div>
       {{/if}}
-      <paginate-widget {(active-page-index)}="queryPage" pages="50" />
-      page:{{queryPage}}
+      <paginate-widget {(active-page-index)}="queryPage" {pages}="totalPages" /> Total Items: {{totalItems}}
     {{/case}}
     {{#case 'details'}}
-      <property-table {object-id}="viewId" {connection}="connection.connection" {fields}="detailFields" {formatters}="detailFormatters" />
+      <property-table {object-id}="viewId" {connection}="connection" {fields}="detailFields" {formatters}="detailFormatters" />
       <p>
-        <a href="#" class="btn btn-primary" ($click)="resetPage">
+        <button class="hidden-print btn btn-primary" ($click)="resetPage">
           <i class="fa fa-arrow-left"></i> Back
-        </a>
+          </a>
       </p>
     {{/case}}
 
