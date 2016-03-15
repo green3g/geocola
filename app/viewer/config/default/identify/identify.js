@@ -8,7 +8,7 @@ export default {
   states: {
     alias: 'US States',
     template: statesTemplate,
-    properties: {
+    fieldProperties: {
       geometry: {
         exclude: true
       },
@@ -17,7 +17,7 @@ export default {
       },
       STATE_NAME: {
         alias: 'Name',
-        formatter: function(name) {
+        formatter: function(name, properties) {
           return name + ' is Awesome!';
         }
       }

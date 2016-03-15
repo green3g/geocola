@@ -13,13 +13,13 @@ import 'components/list-table/';
   * @group filter-widget.params Parameters
   * @group filter-widget.events Events
   * @group filter-widget.static Static
-  * @link http://jsonapi.org/ JSON-API
+  * @link http://jsonapi.org/format/#fetching-filtering JSON-API
  * @body
 ## Description
 
 A widget with several fields that let the user filter a rest response. Uses a list-table to display the current filter objects.
 
-The filters generated follow the JSON API specification
+The filters generated follow the JSON API specification implemented by Flask-Restless
 
 ## Usage
 
@@ -27,7 +27,7 @@ The filters generated follow the JSON API specification
   import 'components/filter-widget/';
   ```
 ```html
-  <filter-widget {(filters)}="filters" (filtersChanged)="updateFilterParam" />
+  <filter-widget />
   ```
 
  */

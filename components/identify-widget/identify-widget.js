@@ -4,6 +4,9 @@ import ol from 'openlayers';
 import featureTemplate from './featureTemplate.stache!';
 import template from './template.stache!';
 import './styles.css!';
+
+import 'components/property-table/';
+
 /**
  * @module identify-widget
  * @parent components
@@ -33,21 +36,7 @@ import './styles.css!';
  * @parent identify-widget.types
  * @option {String} alias The label to display for the layer The default is the layer name as provided by the server
  * @option {String | can.view.renderer} template The template to render for this layer's popup. This can be a template imported via `import templateName from './templatePath.stache!';` (recommended) or a string template. The default is `components/identify-widget/featureTemplate.stache`
- * @option {identify-widget.types.fieldPropertiesObject} properties An object consisting of layerFieldProperties.
- */
-
-/**
- * @typedef {fieldPropertiesObject} identify-widget.types.fieldPropertiesObject fieldPropertiesObject
- * An object consisting of a key representing the field name and the value being properties defining each field's appearance
- * @parent identify-widget.types
- * @option {String} alias The label to display for this field
- * @option {Boolean} exclude If set to true, this field will not display in the identify widget
- * @option {function(value)} formatter A formatter function for the field's value that will return a string and accept the value of the field as a parameter.
-```
-formatter: function(name) {
-   return name + ' is Awesome!';
- }
- ```
+ * @option {property-table.types.fieldPropertiesObject} properties An object consisting of layerFieldProperties.
  */
 export const ViewModel = can.Map.extend({
   define: {
@@ -190,8 +179,7 @@ export const ViewModel = can.Map.extend({
 
         //get the configured layer properties object key this.layerProperties.layerName
         var layerProperties = ['layerProperties', layer].join('.');
-        var template, fieldProperties, prop,
-          attributes = {};
+        var template, fieldProperties, prop;
         var title;
 
         //if its provided parse the alias and formatters
@@ -204,61 +192,26 @@ export const ViewModel = can.Map.extend({
           template = this.attr([layerProperties, 'template'].join('.'));
         }
 
-        //get the field properties like alias and formatters this.layerproperties.layername.properties
-        fieldProperties = this.attr([layerProperties, 'properties'].join('.'));
-        var featureProperties = feature.getProperties();
-        if (layerProperties && fieldProperties) {
-          //build a new attribute list
-          for (prop in featureProperties) {
-            if (featureProperties.hasOwnProperty(prop) &&
-              //if we don't have field properties for this layer or we do
-              //and the exclude property is false or undefined, show this field
-              (!fieldProperties || !fieldProperties.attr([prop, 'exclude'].join('.')))) {
-              attributes[prop] = {
-
-                //alias defaults to the property name if not provided
-                alias: fieldProperties.attr([prop, 'alias'].join('.')) || prop,
-
-                //value gets formatted if there's a formatter function
-                value: typeof fieldProperties.attr([prop, 'formatter'].join('.')) === 'function' ?
-                  fieldProperties.attr([prop, 'formatter'].join('.'))(featureProperties[prop], featureProperties) : can.esc(featureProperties[prop]),
-
-                //rawValue in case you need access to it
-                rawValue: featureProperties[prop]
-              };
-            }
-          }
-        } else {
-          //if we don't have a layerProperties for this layer, build a simpler
-          //attribute list
-          for (prop in featureProperties) {
-            if (featureProperties.hasOwnProperty(prop) &&
-              //if we don't have field properties for this layer or we do
-              //and the exclude property is false or undefined, show this field
-              (!fieldProperties || !fieldProperties.attr([prop, 'exclude'].join('.')))) {
-              attributes[prop] = {
-                alias: prop,
-                value: featureProperties[prop],
-                rawValue: featureProperties[prop]
-              };
-            }
-          }
-        }
-
         //show popup if used
         if (this.attr('popupModel')) {
-          var self = this;
           //there seems to be a bug when loading geojson features
           var extent = feature
             .getGeometry()
             .getExtent();
-          self.attr('popupModel').centerPopup(ol.extent.getCenter(extent));
+          this.attr('popupModel').centerPopup(ol.extent.getCenter(extent));
         }
+
         return {
+          //raw ol.feature
           feature: feature,
+          //feature property values
+          properties: feature.getProperties(),
+          //get the field properties like alias and formatters this.layerproperties.layername.properties
+          fieldProperties: this.attr([layerProperties, 'fieldProperties'].join('.')) || {},
+          //feature template
           featureTemplate: template || featureTemplate,
+          //the default template in case the other template wants to use it
           defaultTemplate: featureTemplate,
-          attributes: attributes,
           layer: layer,
           title: title || layer,
           index: index

@@ -1,4 +1,4 @@
-<div class="query-table">
+<div class="property-table">
   <table class="table table-striped table-condensed">
     <thead>
       <tr>
@@ -7,13 +7,11 @@
       </tr>
     </thead>
     <tbody>
-      {{#each object}}
-        {{#if renderField(%key)}}
-          <tr>
-            <td>{{formatField(%key)}}
-              <td>{{formatValue(.)}}</td>
-          </tr>
-        {{/if}}
+      {{#each attributes}}
+        <tr>
+          <td>{{alias}}</td>
+          <td>{{{value}}}</td>
+        </tr>
       {{/each}}
     </tbody>
   </table>
