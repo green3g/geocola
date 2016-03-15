@@ -82,8 +82,8 @@ export const ViewModel = viewModel.extend({
       value: List
     }
   },
-  buttonClick: function(event, object) {
-    this.dispatch(event.eventName, [object]);
+  buttonClick: function(eventName, object) {
+    this.dispatch(eventName, [object]);
   },
   toggleSelected: function(obj) {
     var index = this.attr('selectedObjects').indexOf(obj);

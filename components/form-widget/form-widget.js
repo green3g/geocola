@@ -78,6 +78,7 @@ const FIELD_TYPES = {
    * @body
    * A generic text box with a label. If the `type` property is not provided, `'text'` is the default.
    *
+   * `type: 'text'`
    */
   text: '<input type="text" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}" />',
   /**
@@ -98,6 +99,8 @@ const FIELD_TYPES = {
    * A select dropdown with options. See `selectFieldProperty` and `selectOptionProperty`.
    * @link form-widget.types.selectFieldProperty selectFieldProperty
    * @link form-widget.types.selectOptionProperty selectOptionProperty
+   *
+   * `type: 'select'`
    */
   select: [
     '<select id="{{name}}" class="form-control" name="{{name}}" value="{{value}}">',
@@ -105,6 +108,19 @@ const FIELD_TYPES = {
     '<option value="{{value}}">{{label}}</option>',
     '{{/each}}',
     '</select>'
+  ].join(''),
+  /**
+   * @page form-widget.fields.textarea Textarea
+   * @parent form-widget.fields
+   * @body
+   * A generic textarea for larger input fields
+   *
+   * `type: 'textarea'`
+   */
+  textarea: [
+    '<textarea id="{{name}}" class="form-control" name="{{name}}">',
+    '{{value}}',
+    '</textarea>'
   ].join('')
 };
 /**

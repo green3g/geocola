@@ -139,7 +139,21 @@ export let viewModel = Map.extend({
       });
       this.attr('selectedObjects').replace([]);
     }
-  }
+  },
+  setSort: function(scope, dom, event, fieldName) {
+    console.log(arguments);
+      console.log(sort);
+    var sort = this.attr('parameters.sort');
+    if (sort && sort.indexOf(fieldName) !== -1) {
+      if (sort.indexOf('-') > 0) {
+        this.attr('parameters.sort', fieldName);
+      } else {
+        this.attr('parameters.sort', '-' + fieldName);
+      }
+    } else {
+      this.attr('parameters.sort', fieldName);
+    }
+  },
 });
 
 Component.extend({

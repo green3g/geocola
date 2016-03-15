@@ -7,7 +7,8 @@
         </th>
         {{#each objects.0}}
           {{#if renderField(%key)}}
-            <th>
+            <th {{#is %key parameters.sort}}class="info"{{/is}} ($click)="buttonClick('sort', %key)">
+              <i class="fa fa-sort-desc"></i>
               {{formatField(%key)}}
             </th>
           {{/if}}
@@ -20,7 +21,7 @@
           <td class="tool-buttons">
             <i ($click)="toggleSelected(.)" class="fa {{#if isSelected(.)}}fa-check-square-o{{else}}fa-square-o{{/if}}"></i>
             {{#each buttons}}
-              <i ($click)="buttonClick(., ../.)" title="{{title}}" class="{{iconClass}}"></i>
+              <i ($click)="buttonClick(eventName, ../.)" title="{{title}}" class="{{iconClass}}"></i>
             {{/each}}
           </td>
           {{#each .}}

@@ -8,7 +8,7 @@
     {{/case}}
     {{#case 'all'}}
       <filter-widget {(filters)}="queryFilters" />
-      <list-table {objects}="promise.value" {^selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" {fields}="tableFields" {formatters}="tableFormatters" />
+      <list-table {objects}="promise.value" {^selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" (sort)="setSort" {fields}="tableFields" {formatters}="tableFormatters" {buttons}="buttons" />
       {{#if editable}}
         <div class="btn-group" role="group" aria-label="Management Buttons">
           <button class="btn btn-success" ($click)="createObject">

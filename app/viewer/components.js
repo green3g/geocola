@@ -12,7 +12,6 @@ import 'bootstrap';
 //import components used by this app
 //TODO: these may be converted into <can-import> tags eventually
 import 'components/measure-widget/';
-import 'components/ol-layer/ol-layer-tilewms';
 import 'components/ol-map/';
 import 'components/panel-container/';
 import 'components/tab-container/';
