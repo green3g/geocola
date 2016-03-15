@@ -2,11 +2,11 @@
 
   <!-- Sidebar -->
   <div id="sidebar-wrapper">
-    <ul class="sidebar-nav">
+    <div class="list-group">
       {{#each models}}
-        <li class="sidebar-brand"><a ($click)="navigateToModel(.)" href="">{{title}}</a></li>
+        <a ($click)="navigateToModel(.)" class="list-group-item {{#is activeModel .}}active{{/is}}" href="">{{title}}</a>
       {{/each}}
-    </ul>
+    </div>
   </div>
   <!-- /#sidebar-wrapper -->
 
@@ -17,12 +17,12 @@
         <div class="col-lg-12">
           {{#activeModel}}
             <h1>{{title}} <a ($click)="toggleMenu" class="hidden-print btn btn-default" id="menu-toggle">Toggle Menu</a></h1>
-            <crud-manager {(page)}="page" {(view-id)}="viewId"  {(parameters)}="parameters" {connection}="connection" editable="true" {edit-fields}="editFields" {table-fields}="tableFields" {detail-fields}="detailFields"></crud-manager>
+            <crud-manager {(page)}="page" {(view-id)}="viewId" {(parameters)}="parameters" {connection}="connection" editable="true" {edit-fields}="editFields" {table-fields}="tableFields" {detail-fields}="detailFields"></crud-manager>
           {{/activeModel}}
 
           parameters:
           {{#each parameters}}
-          {{%key}} - {{.}}
+            {{%key}} - {{.}}
           {{/each}}
         </div>
       </div>
