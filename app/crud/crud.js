@@ -16,7 +16,6 @@ export let AppViewModel = can.Map.extend({
       Type: can.List
     },
     parameters: {
-      Type: can.Map,
       Value: can.Map
     },
     page: {

@@ -28,7 +28,8 @@ export let viewModel = Map.extend({
       Value: Map
     },
     page: {
-      value: 'all'
+      value: 'all',
+      type: 'string'
     },
     totalItems: {
       type: 'number'
