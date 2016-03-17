@@ -3,7 +3,7 @@ import can from 'can';
 import widgetModel from 'components/widget-model';
 /**
  * @module panel-container
- * @parent components
+ * @parent Home.components
  * @description
  *
 A panel container. Works with [tab-container](./tab-container.html) components or as a standalone collapsible panel.

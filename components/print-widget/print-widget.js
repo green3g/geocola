@@ -4,7 +4,7 @@ import template from './print.stache!';
 import widgetModel from 'components/widget-model';
 /**
  * @module print-widget
- * @parent components
+ * @parent Home.components
  * @body
 
 ## Description

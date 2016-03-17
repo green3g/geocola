@@ -7,23 +7,8 @@ import widgetModel from 'components/widget-model';
 import icon from './icon';
 
 /**
- * @typedef {locationObject} locationObject LocationObject
- * @parent location-providers
- * @option {Number} x The x coordinate of the location
- * @option {Number} y The y coordinate of the location
- * @option {String} location The qualified name of the location
- */
-
-/**
- * @typedef {suggestionsObject} suggestionsObject SuggestionsObject
- * @parent location-providers
- * @option {Array.<String>} suggestions The array of suggestions
- * @option {Object} The raw response from the geocode server
- */
-
-/**
  * @module locator-widget
- * @parent components
+ * @parent Home.components
  * @body
  *
  ## Description
@@ -75,7 +60,7 @@ export const ViewModel = widgetModel.extend({
      */
     provider: {},
     /**
-     * @property {can.List}
+     * @property {Array<providers.locationProvider.types.suggestionsObject>}
      * current suggestions in the widget
      */
     suggestions: {

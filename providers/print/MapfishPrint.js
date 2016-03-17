@@ -70,8 +70,9 @@ var encoders = {
   }
 };
 /**
- * @module {can.Map} MapfishPrint
- * @parent providers.print
+ * @module {can.Map} providers.MapfishPrint MapfishPrint
+ * @inherits providers.printProvider
+ * @parent Home.providers
  * @signature `new Provider(options)`
 * @body
 # Mapfish print service provider

@@ -1,4 +1,8 @@
 {
+  "siteDefaults": {
+    "static": "guides/site/static",
+    "templates": "guides/site/templates"
+  },
   "sites": {
     "docs": {
       "glob": "**/*.{js,md}",

@@ -7,7 +7,7 @@ import template from './olMap.stache!';
 import './olMap.css!';
 /**
  * @module ol-map
- * @parent components
+ * @parent Home.components
  * @inherits widgetModel
  * @signature `<ol-map />` Example:
 

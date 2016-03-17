@@ -9,7 +9,7 @@ import 'components/property-table/';
 
 /**
  * @module identify-widget
- * @parent components
+ * @parent Home.components
  * @group identify-widget.parameters Parameters
  * @group identify-widget.types Types
  * @group identify-widget.events Events

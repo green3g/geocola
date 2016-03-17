@@ -8,7 +8,7 @@ import template from './template.stache!';
 import 'components/list-table/';
 /**
  * @module {can.Component} filter-widget
- * @parent components
+ * @parent Home.components
   * @group filter-widget.types Types
   * @group filter-widget.params Parameters
   * @group filter-widget.events Events
