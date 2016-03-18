@@ -31,7 +31,7 @@
     <paginate-widget {(active-page-index)}="queryPage" {pages}="totalPages" /> Total Items: {{totalItems}}
   {{/case}}
   {{#case 'details'}}
-    <property-table {object-id}="viewId" {connection}="connection" {field-properties}="fieldProperties" />
+    <property-table {object-id}="viewId" {connection}="connection" {field-properties}="detailFields" />
     <p>
       <button class="hidden-print btn btn-primary" ($click)="resetPage">
         <i class="fa fa-arrow-left"></i> Back
