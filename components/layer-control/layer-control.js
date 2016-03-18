@@ -11,7 +11,7 @@ const controlTemplates = {
 
 /**
  * @module layer-control
- * @parent components
+ * @parent Home.components
  * @body
 
 ## Description
@@ -24,7 +24,7 @@ A layer controller to handle layer visibility and perform additional layer funct
 <layer-control map-node="#map" />
 ```
 
-<img src="images/layer-control.png" />
+<img src="../cola/guides/images/layer-control.png" />
 
  */
 export const ViewModel = can.Map.extend({
@@ -42,22 +42,28 @@ export const ViewModel = can.Map.extend({
      */
     mapNode: {
       type: 'string'
+    },
+    map: {
+      type: '*',
+      value: null
     }
   },
   /**
    * @prototype
    */
+  init: function() {
+    if (this.attr('map')) {
+      this.initControl(this.attr('map'));
+    }
+  },
   /**
    * Initializes the layer control once the map is ready
    * @signature
    * @param  {[type]} mapViewModel [description]
    * @return {[type]}              [description]
    */
-  initControl: function(mapViewModel) {
-    var self = this;
-    mapViewModel.ready().then(function(map) {
-      self.addLayers(map.getLayers());
-    });
+  initControl: function(map) {
+    this.addLayers(map.getLayers());
   },
   /**
    * Calls `addLayer` for each layer currently in the collection and binds to the add/remove events of the collection
@@ -94,8 +100,8 @@ export const ViewModel = can.Map.extend({
    */
   addLayer: function(layer, index) {
     var filteredLayers = this.attr('layers').filter(function(l) {
-        return l.attr('id') === layer.get('id');
-      });
+      return l.attr('id') === layer.get('id');
+    });
     if (filteredLayers.length === 0) {
       this.attr('layers').splice(index, 0, {
         exclude: layer.get('excludeControl'),
@@ -162,7 +168,10 @@ export default can.Component.extend({
     inserted: function() {
       var node = can.$(this.viewModel.attr('mapNode'));
       if (node.length) {
-        this.viewModel.initControl(node.viewModel());
+        var self = this;
+        node.viewModel().ready().then(function(map) {
+          this.viewModel.initControl(map);
+        });
       }
     }
   }
