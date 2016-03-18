@@ -8,7 +8,7 @@ import measurements from './modules/measurements';
 import overlayManager from './modules/overlayManager';
 /**
  * @module measure-widget
- * @parent components
+ * @parent Home.components
  * @body
 
  ## Description:

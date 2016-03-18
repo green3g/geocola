@@ -7,7 +7,7 @@ import widgetModel from 'components/widget-model';
 
 /**
  * @module ol-popup
- * @parent components
+ * @parent Home.components
  * @body
  ## Description
  A basic openlayers popup to use for displaying content.

@@ -1,8 +1,9 @@
 /* jshint esnext:true */
 import can from 'can';
 /**
- * @module EsriGeocoder
- * @parent location-providers
+ * @module providers.EsriGeocoder EsriGeocoder
+ * @parent Home.providers
+ * @inherits providers.locationProvider
  * @description
  * Provides abstraction for Esri's ArcGIS Online or ArcGIS for Server geocoders
  */

@@ -4,7 +4,7 @@ import 'components/panel-container/';
 import template from './tabs.stache!';
 /**
  * @module tab-container
- * @parent components
+ * @parent Home.components
  * @description
  A basic tab container. Works with [panel-container](./panel-container.html) components.
  * @signature `<tab-container />` Example:

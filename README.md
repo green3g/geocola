@@ -1,5 +1,7 @@
 <!--
 @page Home Cola
+@group Home.components Components
+@group Home.providers Providers
 -->
 
 ## Configureable Openlayers App

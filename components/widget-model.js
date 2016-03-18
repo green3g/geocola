@@ -7,7 +7,7 @@ function getNextId() {
 }
 
 /**
- * @parent components
+ * @parent Home.components
  * @module widgetModel
  * @inherits can.Map
  *

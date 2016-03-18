@@ -6,7 +6,7 @@ import List from 'can/list/';
 import Component from 'can/component/';
 /**
  * @module {can.Component} list-table
- * @parent components
+ * @parent Home.components
   * @group list-table.types 0 Types
   * @group list-table.parameters 2 Parameters
   * @group list-table.events 3 Events

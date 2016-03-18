@@ -7,7 +7,7 @@ import Stache from 'can/view/stache/';
 import template from './template.stache!';
 /**
  * @module {can.Component} form-widget
- * @parent components
+ * @parent Home.components
   * @group form-widget.types 0 Types
   * @group form-widget.fields 1 Field Types
   * @group form-widget.events 3 Events
