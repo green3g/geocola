@@ -73,7 +73,7 @@ export const ViewModel = viewModel.extend({
             if (props.hasOwnProperty(prop) &&
               //if we don't have field properties for this layer or we do
               //and the exclude property is false or undefined, show this field
-              (!fieldProperties || !fieldProperties.attr([prop, 'exclude'].join('.')))) {
+               !fieldProperties.attr([prop, 'exclude'].join('.'))) {
 
               //add a new property
               attributes[prop] = {
@@ -81,7 +81,7 @@ export const ViewModel = viewModel.extend({
                 //the field name
                 field: prop,
 
-                //alias defaults to the property name if not provided
+                //alias defaults to the formatted property name if not provided
                 alias: fieldProperties.attr([prop, 'alias'].join('.')) || this.formatField(prop),
 
                 //value gets formatted if there's a formatter function
