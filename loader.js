@@ -12,7 +12,7 @@ function multiImport(modules) {
     return System.import(m);
   }));
 }
-export let loader = function(app, config) {
+export let load = function(app, config) {
   if (!config) {
     System.import(app).then(function(module) {
       new module.AppViewModel().startup('#app');
