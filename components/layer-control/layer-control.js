@@ -170,7 +170,7 @@ export default can.Component.extend({
       if (node.length) {
         var self = this;
         node.viewModel().ready().then(function(map) {
-          this.viewModel.initControl(map);
+          self.viewModel.initControl(map);
         });
       }
     }
