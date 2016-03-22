@@ -172,20 +172,45 @@ export let viewModel = Map.extend({
     },
     connection: {
       value: null
+    },
+    fieldObjects: {
+      get: function() {
+        var objs = new can.Map({});
+        var fields = this.attr('fields');
+        if (!(fields && fields.length)) {
+          fields = Map.keys(this.attr('formObject'));
+        }
+        var self = this;
+        fields.forEach(function(field) {
+          var obj;
+          if (typeof field === 'string') {
+            obj = {
+              name: field,
+              alias: self.formatField(field),
+              template: Stache(FIELD_TYPES.text),
+              properties: {},
+              valueParser: null,
+              value: self.attr(['formObject', field].join('.'))
+            };
+          } else {
+            obj = {
+              name: field.name,
+              alias: field.alias || self.formatField(field.name),
+              template: field.template || Stache(FIELD_TYPES[field.type || 'text']),
+              properties: field.properties || {},
+              valueParser: field.valueParser || null,
+              value: self.attr(['formObject', field.name].join('.'))
+            };
+          }
+          objs.attr(field.name || field, obj);
+        });
+        return objs;
+      }
     }
   },
   /**
    * @prototype
    */
-  /**
-   * Initilizes the form's field objects
-   * @signature
-   */
-  init: function() {
-    if (this.attr('formObject')) {
-      this.createFields();
-    }
-  },
   fetchObject: function(con, id) {
     if (!con || !id) {
       return;
@@ -195,42 +220,6 @@ export let viewModel = Map.extend({
       id: id
     }).then(function(obj) {
       self.attr('formObject', obj);
-      self.createFields();
-    });
-  },
-  /**
-   * Creates the `fieldObjects` property.
-   * @signature
-   */
-  createFields: function() {
-    var fields = this.attr('fields');
-    if (!(fields && fields.length)) {
-      fields = Map.keys(this.attr('formObject'));
-    }
-    var self = this;
-    this.attr('fieldObjects', {});
-    fields.forEach(function(field) {
-      var obj;
-      if (typeof field === 'string') {
-        obj = {
-          name: field,
-          alias: self.formatField(field),
-          template: Stache(FIELD_TYPES.text),
-          properties: {},
-          valueParser: null,
-          value: self.attr(['formObject', field].join('.'))
-        };
-      } else {
-        obj = {
-          name: field.name,
-          alias: field.alias || self.formatField(field.name),
-          template: field.template || Stache(FIELD_TYPES[field.type || 'text']),
-          properties: field.properties || {},
-          valueParser: field.valueParser || null,
-          value: self.attr(['formObject', field.name].join('.'))
-        };
-      }
-      self.attr(['fieldObjects', field.name || field].join('.'), obj);
     });
   },
   /**

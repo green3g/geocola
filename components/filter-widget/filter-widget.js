@@ -1,8 +1,6 @@
 /* jshint esnext: true */
 
-import Map from 'can/map/';
-import List from 'can/list/';
-import Component from 'can/component/';
+import can from 'can';
 //import './widget.css!';
 import template from './template.stache!';
 import 'components/list-table/';
@@ -40,14 +38,14 @@ The filters generated follow the JSON API specification implemented by Flask-Res
  * @option {String} op The value of the operator
  * @option {String} val The value of the search query. This can be any sql string or expression, for example `%myValue%`
  */
-let Filter = Map.extend({
+let Filter = can.Map.extend({
   name: null,
   op: 'like',
   val: null,
   save: function() { /* noop to simulate a supermodel */ }
 });
 
-export let viewModel = Map.extend({
+export let viewModel = can.Map.extend({
   define: {
     /**
      * A list of filterObjects
@@ -55,7 +53,7 @@ export let viewModel = Map.extend({
      * @property {Array<filter-widget.types.filterObject>}
      */
     filters: {
-      Value: List
+      Value: can.List
     },
     /**
      * The model-like object to render in the form
@@ -84,52 +82,61 @@ export let viewModel = Map.extend({
      * @property {Array.<formFieldObject>}
      */
     fields: {
-      value: [{
-        name: 'name',
-        alias: 'Field name',
-        placeholder: 'Enter a field name'
-      }, {
-        name: 'op',
-        alias: 'is',
-        placeholder: 'Choose a operator',
-        type: 'select',
-        properties: {
-          options: [{
-            label: 'Equal to',
-            value: '=='
-          }, {
-            label: 'Not equal to',
-            value: '!='
-          }, {
-            label: 'Contains',
-            value: 'in'
-          }, {
-            label: 'Does not contain',
-            value: 'not_in'
-          }, {
-            label: 'Like',
-            value: 'like'
-          }]
-        }
-      }, {
-        name: 'val',
-        alias: 'Value',
-        placeholder: 'Enter the filter value',
-        valueParser: function(val, data){
-          var operator;
-          data.forEach(function(field){
-            if(field.name === 'op'){
-              operator = field.value;
-            }
-          });
-          switch(operator){
-            case 'like':
-              return '%' + val + '%';
-            default:
-              return val;
+      get: function() {
+        var nameField = can.extend(this.attr('fieldOptions') ? {
+          type: 'select',
+          properties: {
+            options: this.attr('fieldOptions')
           }
-        }
-      }]
+        } : {}, {
+          name: 'name',
+          alias: 'Field Name',
+          placeholder: 'Enter lowercase fieldname'
+        });
+        var fields = new can.List();
+        return [nameField, {
+          name: 'op',
+          alias: 'is',
+          placeholder: 'Choose a operator',
+          type: 'select',
+          properties: {
+            options: [{
+              label: 'Equal to',
+              value: '=='
+            }, {
+              label: 'Not equal to',
+              value: '!='
+            }, {
+              label: 'Contains',
+              value: 'in'
+            }, {
+              label: 'Does not contain',
+              value: 'not_in'
+            }, {
+              label: 'Like',
+              value: 'like'
+            }]
+          }
+        }, {
+          name: 'val',
+          alias: 'Value',
+          placeholder: 'Enter the filter value',
+          valueParser: function(val, data) {
+            var operator;
+            data.forEach(function(field) {
+              if (field.name === 'op') {
+                operator = field.value;
+              }
+            });
+            switch (operator) {
+              case 'like':
+                return '%' + val + '%';
+              default:
+                return val;
+            }
+          }
+        }]
+      }
     }
   },
   /**
@@ -156,7 +163,7 @@ export let viewModel = Map.extend({
   }
 });
 
-Component.extend({
+can.Component.extend({
   tag: 'filter-widget',
   viewModel: viewModel,
   template: template,
