@@ -47,6 +47,13 @@ export let AppViewModel = can.Map.extend({
     //bind to properties that should update the route
     this.bind('viewId', this.updateRoute.bind(this, 'viewId'));
     this.bind('page', this.updateRoute.bind(this, 'page'));
+    can.route.bind('change', this.routeChanged.bind(this));
+  },
+  routeChanged: function() {
+    this.attr(can.route.attr());
+    if (this.attr('activeModel.id') !== can.route.attr('model')) {
+      this.activateModelById(can.route.attr('model'));
+    }
   },
   toggleMenu: function(e) {
     this.attr('sidebarHidden', !this.attr('sidebarHidden'))
@@ -61,9 +68,11 @@ export let AppViewModel = can.Map.extend({
   },
   activateModel: function(model) {
     this.attr('activeModel', model);
-    can.route.attr('model', model.attr('id'));
+    if (can.route.attr('model') !== model.attr('id')) {
+      can.route.attr('model', model.attr('id'));
+    }
   },
-  navigateToModel: function(model){
+  navigateToModel: function(model) {
     this.attr({
       page: 'all',
       viewId: 0
