@@ -9,7 +9,7 @@
       <li class="{{#if isActive(.)}}active{{/if}}"><a href="" ($click)="gotoPage(.)">{{.}}</a></li>
     {{/each}}
     <li class="{{^hasNext}}disabled{{/hasNext}}">
-      <a href="#" aria-label="Next" ($click)="gotoNext">
+      <a href="" aria-label="Next" ($click)="gotoNext">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>

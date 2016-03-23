@@ -1,6 +1,7 @@
 /* jshint esnext: true */
 
 import Map from 'can/map/';
+import List from 'can/list/';
 import Component from 'can/component/';
 //import './paginate-widget.css!';
 import template from './template.stache!';
@@ -50,24 +51,28 @@ export let viewModel = Map.extend({
         });
         return arr;
       }
+    },
+    pageArray: {
+      get: function(){
+        var arr = [];
+        for (var i = 1; i <= this.attr('pages'); i++) {
+          arr.push(i);
+        }
+        return arr;
+      }
     }
-  },
-  init: function() {
-    var arr = [];
-    for (var i = 1; i <= this.attr('pages'); i++) {
-      arr.push(i);
-    }
-    this.attr('pageArray', arr);
   },
   gotoNext: function() {
     if (this.attr('hasNext')) {
       this.attr('activePageIndex', this.attr('activePageIndex') + 1);
     }
+    return false;
   },
   gotoPrevious: function() {
     if (this.attr('hasPrevious')) {
       this.attr('activePageIndex', this.attr('activePageIndex') - 1);
     }
+    return false;
   },
   gotoPage: function(p) {
     if (p > 0 && p <= this.attr('pages')) {
