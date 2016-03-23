@@ -103,9 +103,10 @@ const FIELD_TYPES = {
    * `type: 'select'`
    */
   select: [
-    '<select id="{{name}}" class="form-control" name="{{name}}" value="{{value}}">',
+    '{{value}}<select id="{{name}}" class="form-control" name="{{name}}" value="{{value}}">',
+    '<option value=""{{^value}} selected{{/value}}></option>',
     '{{#each properties.options}}',
-    '<option value="{{value}}">{{label}}</option>',
+    '<option value="{{value}}"{{#is value, ../value}} selected{{/is}}>{{label}}</option>',
     '{{/each}}',
     '</select>'
   ].join(''),
@@ -175,6 +176,9 @@ export let viewModel = Map.extend({
     },
     fieldObjects: {
       get: function() {
+        if(!this.attr('formObject')){
+          return {};
+        }
         var objs = new can.Map({});
         var fields = this.attr('fields');
         if (!(fields && fields.length)) {
