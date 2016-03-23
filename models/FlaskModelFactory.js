@@ -73,13 +73,15 @@ export function FlaskConnectFactory(options) {
         });
       },
       updateData: function(attrs) {
+        console.log(attrs);
         var data = {};
         //exclude hidden properties
         for (var a in attrs) {
-          if (attrs.hasOwnProperty(a) && a.indexOf('_') !== 0) {
+          if (attrs.hasOwnProperty(a) && a.indexOf('_') !== 0 && attrs[a]) {
             data[a] = attrs[a];
           }
         }
+        console.log(data);
         return can.ajax({
           url: this.resource + '/' + attrs[id],
           headers: {
