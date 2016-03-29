@@ -11,7 +11,7 @@ import template from './template.stache!';
   * @group form-widget.types 0 Types
   * @group form-widget.fields 1 Field Types
   * @group form-widget.events 3 Events
-  * @group form-widget.params 4 Parameters
+  * @group form-widget.props 4 Properties
   *
 ## Description
 A configureable form widget to modify data. The form accepts a formObject property that should be an object similar to a `can.Map`. When the form is submitted, it calls the model's `save` method.
@@ -176,8 +176,8 @@ export let viewModel = Map.extend({
   define: {
     /**
      * Whether or not this form should be a bootstrap inline form
-     * @property {Boolean}
-     * @parent form-widget.params
+     * @property {Boolean} form-widget.props.inline
+     * @parent form-widget.props
      */
     inline: {
       type: 'boolean',
@@ -185,8 +185,8 @@ export let viewModel = Map.extend({
     },
     /**
      * The object id of the item to retrieve. If this is provided, a request will be made to the connection object with the specified id.
-     * @property {Number}
-     * @parent form-widget.params
+     * @property {Number} form-widget.props.objectId
+     * @parent form-widget.props
      */
     objectId: {
       type: 'number',
@@ -199,29 +199,29 @@ export let viewModel = Map.extend({
      * An object representing a can.Map or similar object. This object should have
      * a `save` method like a `can.Model` or `can-connect.superMap`. This object is
      * updated and its `save` method is called when the form is submitted.
-     * @property {can.Map}
-     * @parent form-widget.params
+     * @property {can.Map} form-widget.props.formObject
+     * @parent form-widget.props
      */
     formObject: {},
     /**
      * The list of form fields properties. These can be specified as strings representing the field names or the object properties described in the formFieldObject
-     * @property {Array<String|form-widget.types.formFieldObject>} fields
-     * @parent form-widget.params
+     * @property {Array<String|form-widget.types.formFieldObject>} form-widget.props.fields
+     * @parent form-widget.props
      */
     fields: {
       Type: can.List
     },
     /**
      * The connection info for this form's data
-     * @property {connectInfoObject}
-     * @parent form-widget.params
+     * @property {connectInfoObject} form-widget.props.connection
+     * @parent form-widget.props
      */
     connection: {
       value: null
     },
     /**
-     * An object consisting of field names mapped to their properties. This is used by the template to format the field, and by the viewModel to format the data when the form is submitted.
-     * @property {Object}
+     * A virtual object consisting of field names mapped to their properties. This is used by the template to format the field, and by the viewModel to format the data when the form is submitted.
+     * @property {Object} form-widget.props._fieldObjects
      */
     _fieldObjects: {
       get: function() {

@@ -12,6 +12,8 @@ const controlTemplates = {
 /**
  * @module layer-control
  * @parent Home.components
+ * @group layer-control.types Types
+ * @group layer-control.props Properties
  * @body
 
 ## Description
@@ -27,22 +29,43 @@ A layer controller to handle layer visibility and perform additional layer funct
 <img src="../cola/guides/images/layer-control.png" />
 
  */
+
+/**
+ * @typedef {controlLayerObject} layer-control.types.controlLayerObject controlLayerObject
+ * @description Custom objects for rendering layer controls
+ * @parent layer-control.types
+ * @option {Boolean} exclude Whether or not to exclude from the layer control
+ * @option {String} title The layer title
+ * @option {Boolean} visible The layers visibility
+ * @option {ol.Layer} layer The openlayers layer
+ * @option {can.stache} template The template to render the layer with. This is an object provided by can.stache a stache template imported by StealJS.
+ */
+
+
+
 export const ViewModel = can.Map.extend({
   define: {
     /**
-     * [layers description]
-     * @property {Object}
+     * An internal list of layers used by the template
+     * @property {Array<controlLayerObject>} layer-control.props.layers
+     * @parent layer-control.props
      */
     layers: {
       Value: can.List
     },
     /**
-     * [mapNode description]
-     * @property {Object}
+     * The dom node selector referencing an ol-map component
+     * @property {String}
+     * @parent layer-control.props
      */
     mapNode: {
       type: 'string'
     },
+    /**
+     * The openlayers map
+     * @property {ol.Map} layer-control.props.map
+     * @parent layer-control.props
+     */
     map: {
       type: '*',
       value: null
@@ -58,17 +81,14 @@ export const ViewModel = can.Map.extend({
   },
   /**
    * Initializes the layer control once the map is ready
-   * @signature
-   * @param  {[type]} mapViewModel [description]
-   * @return {[type]}              [description]
+   * @param  {ol.Map} map The openlayers map object
    */
   initControl: function(map) {
     this.addLayers(map.getLayers());
   },
   /**
    * Calls `addLayer` for each layer currently in the collection and binds to the add/remove events of the collection
-   * @param  {[type]} collection [description]
-   * @return {[type]}            [description]
+   * @param  {ol.Collection} collection The collection of layers
    */
   addLayers: function(collection) {
     var self = this;
@@ -94,9 +114,8 @@ export const ViewModel = can.Map.extend({
   },
   /**
    * Adds a layer to the view models collection
-   * @param  {[type]} layer [description]
-   * @param  {[type]} index [description]
-   * @return {[type]}       [description]
+   * @param  {ol.Layer} layer The layer to add
+   * @param  {Number} index The layer's position in the collection
    */
   addLayer: function(layer, index) {
     var filteredLayers = this.attr('layers').filter(function(l) {
@@ -130,8 +149,8 @@ export const ViewModel = can.Map.extend({
   },
   /**
    * Returns a template renderer for the layer
-   * @param  {[type]} layer [description]
-   * @return {[type]}       [description]
+   * @param  {ol.Layer} layer The layer to find the template renderer for
+   * @return {can.stache}       The stache renderer
    */
   getLayerTemplate: function(layer) {
     var template;

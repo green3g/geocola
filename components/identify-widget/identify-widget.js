@@ -10,9 +10,8 @@ import 'components/property-table/';
 /**
  * @module identify-widget
  * @parent Home.components
- * @group identify-widget.parameters Parameters
+ * @group identify-widget.props Properties
  * @group identify-widget.types Types
- * @group identify-widget.events Events
  * @body
 
  ## Description
@@ -29,6 +28,7 @@ import 'components/property-table/';
  </ol-popup>
  ```
  */
+
 /**
  * @typedef {layerPropertiesObject} identify-widget.types.layerPropertiesObject layerPropertiesObject
  * An object consisting of a key mapped to the layer name as returned by the server with its value consisting of properties defining the layer display.
@@ -37,20 +37,21 @@ import 'components/property-table/';
  * @option {String | can.view.renderer} template The template to render for this layer's popup. This can be a template imported via `import templateName from './templatePath.stache!';` (recommended) or a string template. The default is `components/identify-widget/featureTemplate.stache`
  * @option {property-table.types.tablePropertiesObject} properties An object consisting of tableFieldProperties.
  */
+
 export const ViewModel = can.Map.extend({
   define: {
     /**
      * The selector for the `ol-map` map node.
-     * @parent identify-widget.parameters
+     * @parent identify-widget.props
      * @signature `{String}` `map-node="#map"`
-     * @property {String} mapNode
+     * @property {String} identify-widget.props.mapNode
      */
     mapNode: {
       type: 'string'
     },
     /**
      * The selector for the `ol-popup` dom node. If this widget is placed inside an ol-popup, it this property must be provided so the identify widget can correctly center the popup on the feature.
-     * @parent identify-widget.parameters
+     * @parent identify-widget.props
      * @signature `{String}` `popup-node="#identify-popup"`
      */
     popupNode: {
@@ -58,9 +59,9 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * The max number of features to return for each layer. The default is 10.
-     * @parent identify-widget.parameters
+     * @parent identify-widget.props
      * @signature `{Number}` `max-feature-count="10"`
-     * @property {Number} maxFeatureCount
+     * @property {Number} identify-widget.props.maxFeatureCount
      */
     maxFeatureCount: {
       type: 'number',
@@ -68,9 +69,9 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * Buffer distance in pixels around the map click. The default is 10.
-     * @parent identify-widget.parameters
+     * @parent identify-widget.props
      * @signature `{Number}` `feature-buffer="10"`
-     * @property {Number} featureBuffer
+     * @property {Number} identify-widget.props.featureBuffer
      */
     featureBuffer: {
       type: 'number',
@@ -78,16 +79,16 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * Layer configuration properties
-     * @parent identify-widget.parameters
-     * @property {layerPropertiesObject}
+     * @parent identify-widget.props
+     * @property {layerPropertiesObject} identify-widget.props.layerProperties
      */
     layerProperties: {
       Value: can.Map
     },
     /**
      * The map click key to assign to this widget. When the map is clicked, and this key is the set as the current map click, it will trigger an identify.
-     * @parent identify-widget.parameters
-     * @property {Object}
+     * @parent identify-widget.props
+     * @property {Object} identify-widget.props.mapClickKey
      */
     mapClickKey: {
       type: 'string',
@@ -95,16 +96,16 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * The list of features that have been identified
-     * @parent identify-widget.parameters
-     * @property {Array<ol.Feature>}
+     * @parent identify-widget.props
+     * @property {Array<ol.Feature>} identify-widget.props._features
      */
     _features: {
       Value: can.List
     },
     /**
      * Whether or not all identifies have completed. This is used internally by the template.
-     * @parent identify-widget.parameters
-     * @property {can.Deferred}
+     * @parent identify-widget.props
+     * @property {can.Deferred} identify-widget.props._loading
      */
     _loading: {
       value: function() {
@@ -115,15 +116,15 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * A list of pending identify deferreds
-     * @parent identify-widget.parameters
-     * @property {Array<can.Deferred>}
+     * @parent identify-widget.props
+     * @property {Array<can.Deferred>} identify-widget.props._deferreds
      */
     _deferreds: {
       Value: can.List,
     },
     /**
      * The currently selected feature index
-     * @parent identify-widget.parameters
+     * @parent identify-widget.props
      * @property {Number}
      */
     _activeFeatureIndex: {
@@ -132,8 +133,8 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * If the feature list has one or more features after the selected feature, this will be true. This is used by the template to enable/disable the forward and back buttons.
-     * @parent identify-widget.parameters
-     * @property {Boolean}
+     * @parent identify-widget.props
+     * @property {Boolean} identify-widget.props._hasNextFeature
      */
     _hasNextFeature: {
       get: function() {
@@ -143,8 +144,8 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * If the feature list has one or more features before the selected feature, this will be true. This is used by the template to enable/disable the forward and back buttons.
-     * @parent identify-widget.parameters
-     * @property {Boolean}
+     * @parent identify-widget.props
+     * @property {Boolean} identify-widget.props._hasPreviousFeature
      */
     _hasPreviousFeature: {
       get: function() {
@@ -153,8 +154,8 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * A virtual property that returns an object consisting of the formatted fields, values, and layer properties.
-     * @parent identify-widget.parameters
-     * @property {can.Map}
+     * @parent identify-widget.props
+     * @property {can.Map} identify-widget.props._activeFeature
      */
     _activeFeature: {
       get: function() {

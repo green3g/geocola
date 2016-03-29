@@ -1,5 +1,5 @@
 <div class="identify-results">
-  {{#if features}}
+  {{#if _features}}
     <ul class="pagination">
       <li class="{{^_hasPreviousFeature}}disabled{{/_hasPreviousFeature}}">
         <a href="#" aria-label="Previous" ($click)="gotoPrevious">
@@ -31,9 +31,8 @@
           Warning, some of the layers did not load correctly.
         </div>
       {{/if}}
-      {{^features}}
+      {{^_features}}
       <div class="alert alert-warning" role="alert">No features were identified</div>
-      {{/features}}
+      {{/_features}}
     {{/if}}
   </div>
-_hasNextFeature

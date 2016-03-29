@@ -8,6 +8,8 @@ import widgetModel from 'components/widget-model';
 /**
  * @module ol-popup
  * @parent Home.components
+ * @group ol-popup.props Properties
+ * @group ol-popup.events Events
  * @body
  ## Description
  A basic openlayers popup to use for displaying content.
@@ -27,11 +29,24 @@ import widgetModel from 'components/widget-model';
  */
 export const ViewModel = widgetModel.extend({
   define: {
+    /**
+     * Whether or not this popup should be a modal dialog instead of a map overlay popup
+     * @property {Boolean} ol-popup.props.modal
+     * @parent ol-popup.props
+     */
     modal: {
       type: 'boolean',
       value: false
     }
   },
+  /**
+   * @prototype
+   */
+  /**
+   * Initializes the widget by adding a map click handler and setting up the ol.overlay
+   * @param  {can.Map} mapViewModel   The ol-map view model
+   * @param  {domElement} overlayElement The jquery dom element to set up this overlay in
+   */
   initWidget: function(mapViewModel, overlayElement) {
     mapViewModel.addClickHandler('popup', this.onMapClick.bind(this));
     var self = this;
@@ -48,7 +63,13 @@ export const ViewModel = widgetModel.extend({
     });
   },
   /**
-   * hides this popup
+   * @typedef {can.Event} ol-popup.events.popupHide hide
+   * An event dispatched when the popup is hidden
+   * @parent ol-popup.events
+   * @option {can.Map} popupModel The popup view model
+   */
+  /**
+   * Hides this popup and dispatches a `hide` event
    */
   hidePopup: function() {
     this.attr('overlay').setPosition(undefined);
@@ -56,9 +77,14 @@ export const ViewModel = widgetModel.extend({
     this.dispatch('hide', [this]);
   },
   /**
-   * shows this popup
-   * @param  {[type]} coordinate [description]
-   * @return {[type]}            [description]
+   * @typedef {can.Event} ol-popup.events.popupShow show
+   * An event dispatched when the popup is shown
+   * @parent ol-popup.events
+   * @option {Array<Number>} coordinate The coordinate in which the popup is shown
+   */
+  /**
+   * Displays and centers this popup on a coordinate, and dispatches the `show` event
+   * @param  {Array<Number>} coordinate The x,y pair to center the popup on
    */
   showPopup: function(coordinate) {
     if (this.attr('modal')) {
@@ -68,6 +94,10 @@ export const ViewModel = widgetModel.extend({
     }
     this.dispatch('show', [coordinate]);
   },
+  /**
+   * Centers the popup on a coordinate
+   * @param  {Array<Number>} coordinate The coordinate to center on
+   */
   centerPopup: function(coordinate) {
     if (!this.attr('modal')) {
       this.attr('overlay').setPosition(coordinate);
@@ -77,8 +107,6 @@ export const ViewModel = widgetModel.extend({
   },
   /*
    * the function when the map is clicked
-   * should return a function to perform
-   * this is meant to be overridden
    */
   onMapClick: function(event) {
     this.showPopup(event.coordinate);

@@ -1,3 +1,5 @@
+/* jshint esnext:true */
+
 import widgetModel from 'components/widget-model';
 import can from 'can';
 import template from './template.stache!';

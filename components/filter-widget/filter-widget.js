@@ -8,7 +8,7 @@ import 'components/list-table/';
  * @module {can.Map} filter-widget
  * @parent Home.components
   * @group filter-widget.types Types
-  * @group filter-widget.params Parameters
+  * @group filter-widget.props Properties
   * @link http://jsonapi.org/format/#fetching-filtering JSON-API
  * @body
 ## Description
@@ -47,8 +47,8 @@ export let viewModel = can.Map.extend({
   define: {
     /**
      * A list of filterObjects
-     * @property {Array<filter-widget.types.filterObject>}
-     * @parent filter-widget.params
+     * @property {Array<filter-widget.types.filterObject>} filter-widget.props.filters
+     * @parent filter-widget.props
      */
     filters: {
       Value: can.List
@@ -56,16 +56,16 @@ export let viewModel = can.Map.extend({
     /**
      * The model-like object to render in the form
      * @link formFieldObject formFieldObject
-     * @property {form-widget.types.formFieldObject}
-     * @parent filter-widget.params
+     * @property {form-widget.types.formFieldObject} filter-widget.props.formObject
+     * @parent filter-widget.props
      */
     formObject: {
       Value: Filter
     },
     /**
      * The buttonObjects to display in the list table
-     * @property {Array<list-table.types.buttonObject>} buttons buttons
-     * @parent filter-widget.params
+     * @property {Array<buttonObject>} filter-widget.props.buttons
+     * @parent filter-widget.props
      */
     buttons: {
       value: [{
@@ -76,8 +76,8 @@ export let viewModel = can.Map.extend({
     },
     /**
      * The fields to render in the form
-     * @property {Array.<formFieldObject>}
-     * @parent filter-widget.params
+     * @property {Array.<formFieldObject>} filter-widget.props.fields
+     * @parent filter-widget.props
      */
     fields: {
       get: function() {
@@ -133,7 +133,7 @@ export let viewModel = can.Map.extend({
                 return val;
             }
           }
-        }]
+        }];
       }
     }
   },

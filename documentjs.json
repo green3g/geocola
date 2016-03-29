@@ -8,7 +8,9 @@
       "glob": "**/*.{js,md}",
       "parent": "Home",
       "dest": "../cola-docs",
-      "ignore":"{dist,node_modules}/**/*"
+      "ignore": "{dist,node_modules}/**/*",
+      "templates": "guides/site/templates",
+      "static": "guides/site/static"
     }
   }
 }
