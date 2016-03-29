@@ -8,7 +8,7 @@ var view = {
 };
 
 var layers = [{
-  //cola layer type
+  //layer type
   type: 'TileWMS',
   //layer source options:
   sourceOptions: {

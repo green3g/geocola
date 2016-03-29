@@ -18,7 +18,7 @@ import './olMap.css!';
   ```
  * @body
  ## Description
- A openlayers map component that provides a wrapper for `ol.Map` along with additional functionality. This ol-map component provides a centralized map click handler so that different widgets may activate and deactivate their map click event. Several cola widgets use and require a reference to an ol-map component via a map-node attribute.
+ A openlayers map component that provides a wrapper for `ol.Map` along with additional functionality. This ol-map component provides a centralized map click handler so that different widgets may activate and deactivate their map click event. Several widgets use and require a reference to an ol-map component via a map-node attribute.
 
  ## Using complex map options
  When the template is rendered using `can.view('<ol-map....', ...)` map options can be supplied in a variety of ways. For complex configuration that might use custom controls or advanced settings not provided by this wrapper, a setup similar to the example below may be used. This example uses  [`can.view.bindings`](http://canjs.com/docs/can.view.bindings.html).

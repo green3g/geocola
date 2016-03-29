@@ -18,7 +18,13 @@ export default {
       STATE_NAME: {
         alias: 'Name',
         formatter: function(name, properties) {
-          return name + ' is Awesome!';
+          return [
+            'See app/viewer/config/default/identify/identify.js</strong>',
+            '<br />',
+            'to see how this is done:<br /><strong>',
+            name,
+            ' is Awesome!</strong>'
+          ].join('');
         }
       }
     }

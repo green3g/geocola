@@ -8,7 +8,7 @@ function getNextId() {
 
 /**
  * @parent Home.components
- * @module widgetModel
+ * @module components/widgetModel
  * @inherits can.Map
  *
  * @description Base widget class, not to be used directly, but inherited from.

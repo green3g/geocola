@@ -9,7 +9,7 @@
 
 @description
 
-## cola.js
+## loader.js
 
 This is the loader script. It decides which application to load, and which config to load into the app. It does so using default values and optional query parameters.
 
@@ -63,8 +63,8 @@ During development, index-dev.html should be used. This loads each individual mo
 
 Bundles are created to optimize the loading of an app. In development, an app may load many individual files. Steal-tools scans these dependencies and creates highly optimized bundles which load much quicker. To configure additional bundles, add the path to the bundle in package.json bundles section.
 
-Once the bundles are built, index.html should be used to load `steal.production.js` instead of `steal.js`. In addition, `main` must be set on the script tag. By default, it is set to `cola`.
+Once the bundles are built, index.html should be used to load `steal.production.js` instead of `steal.js`. In addition, `main` must be set on the script tag. By default, it is set to `Canola Map`.
 
 ```html
-<script src="node_modules/steal/steal.production.js" data-main="cola"></script>
+<script src="node_modules/steal/steal.production.js" data-main="Canola Map"></script>
 ```

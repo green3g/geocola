@@ -1,20 +1,20 @@
 <!--
-@page Home Cola
+@page Home Canola Map
 @group Home.components Components
 @group Home.providers Providers
 -->
 
-## Configureable Openlayers App
+## CanJS Openlayers Map
 
-Configurable and reusable mapping, data editing, components that run almost entirely in a web browser.
+A configureable set of client side web applications built on modular and reuseable web components.
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/roemhildtg/cola?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/roemhildtg/canola-map?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 There are 4 goals with this project:
 * Learn how to write better Javascript
 * Develop modular and reusable widgets to use with the Openlayers/WMS stack
-* Allow non-devs to more easily implement a flexible mapping application
 * Utilize a flexible, and easy to configure build system
+* Follow a flexible design to allow apps to be as configureable and reuseable as possible
 
 ## Getting started
 
