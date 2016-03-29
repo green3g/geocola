@@ -1,6 +1,11 @@
 /*jshint esnext:true */
 
 /**
+ * @module loader
+ * @parent guides.developing
+ */
+
+/**
  * imports multiple modules and returns a promise resolved to an array
  * of modules
  *

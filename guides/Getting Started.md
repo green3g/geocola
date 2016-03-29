@@ -7,16 +7,9 @@
 @group guides.configure Configure
 -->
 
-@description
-
 ## loader.js
 
-This is the loader script. It decides which application to load, and which config to load into the app. It does so using default values and optional query parameters.
-
-@signature `?app=app/path/&config=configName`
-@param {String} app The path to the app to load.
-The default is `app/viewer/`.
-@param {String} config The name to the config to load inside appPath/config/. The default is `default` which will load `app/viewer/default/`.
+This is the loader script. It exports a function, `load`, which accepts two parameters, the path to the app, and an optional name of config to load. `index.html` imports this script and calls this function. This may be customized to load different apps through server side scripting, query string parameters, or simply specifying the name of the app/config to load directly in the `index.html`.
 
 @body
 

@@ -7,7 +7,8 @@
     "docs": {
       "glob": "**/*.{js,md}",
       "parent": "Home",
-      "dest": "../cola-docs"
+      "dest": "../cola-docs",
+      "ignore":"{dist,node_modules}/**/*"
     }
   }
 }

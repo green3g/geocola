@@ -1,26 +1,26 @@
 <div class="identify-results">
   {{#if features}}
     <ul class="pagination">
-      <li class="{{^hasPreviousFeature}}disabled{{/hasPreviousFeature}}">
+      <li class="{{^_hasPreviousFeature}}disabled{{/_hasPreviousFeature}}">
         <a href="#" aria-label="Previous" ($click)="gotoPrevious">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
-      <li class="{{^hasNextFeature}}disabled{{/hasNextFeature}}">
+      <li class="{{^_hasNextFeature}}disabled{{/_hasNextFeature}}">
         <a href="#" aria-label="Next" ($click)="gotoNext">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
-      {{#activeFeature }}
+      {{#_activeFeature }}
         <li><a href="#" ($click)="zoomToFeature"><i class="fa fa-search-plus"></i> {{title}}: {{index}}</a></li>
-      {{/activeFeature}}
+      {{/_activeFeature}}
       {{#if loading.isPending }}
         <li><a href="#"><i class="fa fa-refresh fa-spin"></i></a></li>
       {{/if}}
     </ul>
 
     <div class="identify-scroller">
-      {{#activeFeature}} {{>featureTemplate}} {{/activeFeature}}
+      {{#_activeFeature}} {{>featureTemplate}} {{/_activeFeature}}
     </div>
   {{/if}}
 
@@ -36,3 +36,4 @@
       {{/features}}
     {{/if}}
   </div>
+_hasNextFeature

@@ -11,6 +11,8 @@ import template from './template.stache!';
   * @group form-widget.types 0 Types
   * @group form-widget.fields 1 Field Types
   * @group form-widget.events 3 Events
+  * @group form-widget.params 4 Parameters
+  *
 ## Description
 A configureable form widget to modify data. The form accepts a formObject property that should be an object similar to a `can.Map`. When the form is submitted, it calls the model's `save` method.
 
@@ -99,8 +101,34 @@ const FIELD_TYPES = {
    * A select dropdown with options. See `selectFieldProperty` and `selectOptionProperty`.
    * @link form-widget.types.selectFieldProperty selectFieldProperty
    * @link form-widget.types.selectOptionProperty selectOptionProperty
+   * # Example
+```
+{
+  name: 'op',
+  alias: 'is',
+  placeholder: 'Choose a operator',
+  type: 'select',
+  properties: {
+    options: [{
+      label: 'Equal to',
+      value: '=='
+    }, {
+      label: 'Not equal to',
+      value: '!='
+    }, {
+      label: 'Contains',
+      value: 'in'
+    }, {
+      label: 'Does not contain',
+      value: 'not_in'
+    }, {
+      label: 'Like',
+      value: 'like'
+    }]
+  }
+},
+```
    *
-   * `type: 'select'`
    */
   select: [
     '{{value}}<select id="{{name}}" class="form-control" name="{{name}}" value="{{value}}">',
@@ -137,19 +165,29 @@ const FIELD_TYPES = {
  * @option {String} The value stored in the formObject. This is provided by the form-widget internally
  */
 
+ /**
+  * @typedef {can.Event} form-widget.events.formSubmitEvent submit
+  * An event dispatched when the save button is clicked. The formObject is passed as an argument
+  * @parent form-widget.events
+  * @option {can.Map} formObject The formObject
+  */
+
 export let viewModel = Map.extend({
-  /**
-   * @prototype
-   */
   define: {
     /**
      * Whether or not this form should be a bootstrap inline form
      * @property {Boolean}
+     * @parent form-widget.params
      */
     inline: {
       type: 'boolean',
       value: false
     },
+    /**
+     * The object id of the item to retrieve. If this is provided, a request will be made to the connection object with the specified id.
+     * @property {Number}
+     * @parent form-widget.params
+     */
     objectId: {
       type: 'number',
       set: function(id) {
@@ -162,21 +200,32 @@ export let viewModel = Map.extend({
      * a `save` method like a `can.Model` or `can-connect.superMap`. This object is
      * updated and its `save` method is called when the form is submitted.
      * @property {can.Map}
+     * @parent form-widget.params
      */
     formObject: {},
     /**
      * The list of form fields properties. These can be specified as strings representing the field names or the object properties described in the formFieldObject
      * @property {Array<String|form-widget.types.formFieldObject>} fields
+     * @parent form-widget.params
      */
     fields: {
       Type: can.List
     },
+    /**
+     * The connection info for this form's data
+     * @property {connectInfoObject}
+     * @parent form-widget.params
+     */
     connection: {
       value: null
     },
-    fieldObjects: {
+    /**
+     * An object consisting of field names mapped to their properties. This is used by the template to format the field, and by the viewModel to format the data when the form is submitted.
+     * @property {Object}
+     */
+    _fieldObjects: {
       get: function() {
-        if(!this.attr('formObject')){
+        if (!this.attr('formObject')) {
           return {};
         }
         var objs = new can.Map({});
@@ -215,6 +264,11 @@ export let viewModel = Map.extend({
   /**
    * @prototype
    */
+  /**
+   * Fetches and replaces the formObject with a new formObject
+   * @param  {superMap} con The supermap connection to the api service
+   * @param  {Number} id  The id number of the object to fetch
+   */
   fetchObject: function(con, id) {
     if (!con || !id) {
       return;
@@ -226,12 +280,6 @@ export let viewModel = Map.extend({
       self.attr('formObject', obj);
     });
   },
-  /**
-   * @typedef {can.Event} form-widget.events.formSubmitEvent submit
-   * An event dispatched when the save button is clicked. The formObject is passed as an argument
-   * @parent form-widget.events
-   * @option {can.Map} formObject The formObject
-   */
   /**
    * Called when the form is submitted. Serializes the form data and compares it to the formObject. If there are changes, the object is updated and its `save` method is called. The event `submit` is dispatched.
    * @param  {can.Map} scope The stache scope
@@ -250,7 +298,7 @@ export let viewModel = Map.extend({
     //loop through it and update the model object as necessary
     for (var i = 0; i < data.length; i++) {
       var newData = data[i];
-      var valueParser = this.attr('fieldObjects.' + newData.name + '.valueParser');
+      var valueParser = this.attr('_fieldObjects.' + newData.name + '.valueParser');
 
       //format the field value if a valueParser exists
       var value = valueParser ? valueParser(newData.value, data) : newData.value;

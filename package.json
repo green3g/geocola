@@ -2,7 +2,7 @@
   "name": "COAMap",
   "version": "1.0.0",
   "description": "A configureable openlayers mapping and data management app",
-  "repository": "",
+  "repository": "https://github.com/roemhildtg/coamap",
   "scripts": {
     "test": "test",
     "build": "steal-tools",

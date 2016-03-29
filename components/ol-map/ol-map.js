@@ -123,6 +123,13 @@ export const ViewModel = widgetModel.extend({
      */
     mapOptions: {
       type: '*'
+    },
+    /**
+     * The ol.Map
+     * @property {ol.Map}
+     */
+    mapObject: {
+      value: null
     }
   },
   /**

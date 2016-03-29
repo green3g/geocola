@@ -5,12 +5,10 @@ import can from 'can';
 import template from './template.stache!';
 import 'components/list-table/';
 /**
- * @module {can.Map} components/filter-widget/viewModel
+ * @module {can.Map} filter-widget
  * @parent Home.components
   * @group filter-widget.types Types
   * @group filter-widget.params Parameters
-  * @group filter-widget.events Events
-  * @group filter-widget.static Static
   * @link http://jsonapi.org/format/#fetching-filtering JSON-API
  * @body
 ## Description
@@ -50,6 +48,7 @@ export let viewModel = can.Map.extend({
     /**
      * A list of filterObjects
      * @property {Array<filter-widget.types.filterObject>}
+     * @parent filter-widget.params
      */
     filters: {
       Value: can.List
@@ -58,6 +57,7 @@ export let viewModel = can.Map.extend({
      * The model-like object to render in the form
      * @link formFieldObject formFieldObject
      * @property {form-widget.types.formFieldObject}
+     * @parent filter-widget.params
      */
     formObject: {
       Value: Filter
@@ -65,6 +65,7 @@ export let viewModel = can.Map.extend({
     /**
      * The buttonObjects to display in the list table
      * @property {Array<list-table.types.buttonObject>} buttons buttons
+     * @parent filter-widget.params
      */
     buttons: {
       value: [{
@@ -76,6 +77,7 @@ export let viewModel = can.Map.extend({
     /**
      * The fields to render in the form
      * @property {Array.<formFieldObject>}
+     * @parent filter-widget.params
      */
     fields: {
       get: function() {
@@ -135,6 +137,9 @@ export let viewModel = can.Map.extend({
       }
     }
   },
+  /**
+   * @prototype
+   */
   /**
    * Removes a filter from the list of filters
    * @param  {can.Map} scope The stache scope

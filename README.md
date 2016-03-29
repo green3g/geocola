@@ -1,10 +1,10 @@
 <!--
-@page Home Canola Map
+@page Home Home
 @group Home.components Components
 @group Home.providers Providers
 -->
 
-## CanJS Openlayers Map
+## Configureable Openlayers Map
 
 A configureable set of client side web applications built on modular and reuseable web components.
 

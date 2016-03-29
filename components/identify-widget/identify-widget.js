@@ -13,7 +13,6 @@ import 'components/property-table/';
  * @group identify-widget.parameters Parameters
  * @group identify-widget.types Types
  * @group identify-widget.events Events
- * @group identify-widget.static Static
  * @body
 
  ## Description
@@ -36,7 +35,7 @@ import 'components/property-table/';
  * @parent identify-widget.types
  * @option {String} alias The label to display for the layer The default is the layer name as provided by the server
  * @option {String | can.view.renderer} template The template to render for this layer's popup. This can be a template imported via `import templateName from './templatePath.stache!';` (recommended) or a string template. The default is `components/identify-widget/featureTemplate.stache`
- * @option {property-table.types.fieldPropertiesObject} properties An object consisting of layerFieldProperties.
+ * @option {property-table.types.tablePropertiesObject} properties An object consisting of tableFieldProperties.
  */
 export const ViewModel = can.Map.extend({
   define: {
@@ -50,7 +49,7 @@ export const ViewModel = can.Map.extend({
       type: 'string'
     },
     /**
-     * The selector for the `ol-popup` dom node
+     * The selector for the `ol-popup` dom node. If this widget is placed inside an ol-popup, it this property must be provided so the identify widget can correctly center the popup on the feature.
      * @parent identify-widget.parameters
      * @signature `{String}` `popup-node="#identify-popup"`
      */
@@ -80,7 +79,7 @@ export const ViewModel = can.Map.extend({
     /**
      * Layer configuration properties
      * @parent identify-widget.parameters
-     * @property {layerProperties}
+     * @property {layerPropertiesObject}
      */
     layerProperties: {
       Value: can.Map
@@ -99,7 +98,7 @@ export const ViewModel = can.Map.extend({
      * @parent identify-widget.parameters
      * @property {Array<ol.Feature>}
      */
-    features: {
+    _features: {
       Value: can.List
     },
     /**
@@ -107,7 +106,7 @@ export const ViewModel = can.Map.extend({
      * @parent identify-widget.parameters
      * @property {can.Deferred}
      */
-    loading: {
+    _loading: {
       value: function() {
         var d = can.Deferred();
         d.resolve();
@@ -119,7 +118,7 @@ export const ViewModel = can.Map.extend({
      * @parent identify-widget.parameters
      * @property {Array<can.Deferred>}
      */
-    deferreds: {
+    _deferreds: {
       Value: can.List,
     },
     /**
@@ -127,7 +126,7 @@ export const ViewModel = can.Map.extend({
      * @parent identify-widget.parameters
      * @property {Number}
      */
-    activeFeatureIndex: {
+    _activeFeatureIndex: {
       value: 0,
       type: 'number'
     },
@@ -136,9 +135,9 @@ export const ViewModel = can.Map.extend({
      * @parent identify-widget.parameters
      * @property {Boolean}
      */
-    hasNextFeature: {
+    _hasNextFeature: {
       get: function() {
-        return this.attr('activeFeatureIndex') < this.attr('features').length - 1;
+        return this.attr('_activeFeatureIndex') < this.attr('_features').length - 1;
 
       }
     },
@@ -147,9 +146,9 @@ export const ViewModel = can.Map.extend({
      * @parent identify-widget.parameters
      * @property {Boolean}
      */
-    hasPreviousFeature: {
+    _hasPreviousFeature: {
       get: function() {
-        return this.attr('activeFeatureIndex') > 0;
+        return this.attr('_activeFeatureIndex') > 0;
       }
     },
     /**
@@ -157,17 +156,17 @@ export const ViewModel = can.Map.extend({
      * @parent identify-widget.parameters
      * @property {can.Map}
      */
-    activeFeature: {
+    _activeFeature: {
       get: function() {
-        //if no features, return null
-        if (!this.attr('features').length) {
+        //if no _features, return null
+        if (!this.attr('_features').length) {
           //update Map layer
           this.updateSelectedFeature(null);
           return null;
         }
 
         //get this active feature by array index
-        var feature = this.attr('features')[this.attr('activeFeatureIndex')];
+        var feature = this.attr('_features')[this.attr('_activeFeatureIndex')];
 
         //update Map layer
         this.updateSelectedFeature(feature);
@@ -220,9 +219,12 @@ export const ViewModel = can.Map.extend({
     },
   },
   /**
-   * [function description]
-   * @param  {[type]} models [description]
-   * @return {[type]}        [description]
+   * @prototype
+   */
+  /**
+   * Initializes this widget by finding the map and popup if provided and setting up the map click handler
+   * @signature
+   * @param  {Object} models A object consisting of the map and popup viewModels
    */
   initWidget: function(models) {
     this.attr('mapModel', models.map);
@@ -237,10 +239,11 @@ export const ViewModel = can.Map.extend({
     }
   },
   /**
-   * [function description]
-   * @param  {[type]} event      [description]
-   * @param  {[type]} coordinate [description]
-   * @return {[type]}            [description]
+   * Queries the available map wms layers and updates the loading status
+   * @signature
+   * @param  {ol.events.Event} event The click event dispatched by the map
+   * @param  {Array<Number>} coordinate Optional coordinate array to identify at
+   * @return {Promise} A promise that is resolved when all of the identifies have finished loading
    */
   identify: function(event, coordinate) {
     if (!coordinate) {
@@ -252,13 +255,13 @@ export const ViewModel = can.Map.extend({
     var layers = this.attr('mapModel').getMap().getLayers();
     var urls = this.getQueryURLsRecursive(layers, coordinate);
     var deferreds = [];
-    this.attr('loading', can.Deferred());
+    this.attr('_loading', can.Deferred());
     urls.forEach(function(url) {
       var def = self.getFeatureInfo(url);
       deferreds.push(def);
     });
     if (!deferreds.length) {
-      this.attr('loading').resolve([]);
+      this.attr('_loading').resolve([]);
     }
     var resolved = 0;
     deferreds.forEach(function(d) {
@@ -272,26 +275,26 @@ export const ViewModel = can.Map.extend({
         self.updateLoading(resolved, deferreds.length);
       });
     });
-    this.attr('deferreds', deferreds);
-    return this.attr('loading').promise();
+    this.attr('_deferreds', deferreds);
+    return this.attr('_loading').promise();
   },
   /**
-   *
-   *
-   * @param  {[type]} resolved [description]
-   * @param  {[type]} total    [description]
-   * @return {[type]}          [description]
+   * Updates the loading status after each identify promise is resolved
+   * @signature
+   * @param  {Number} resolved The current number of resolved promises
+   * @param  {Number} total  The total number of promises
    */
   updateLoading: function(resolved, total) {
     if (resolved === total) {
-      this.attr('loading').resolve(this.attr('features'));
+      this.attr('_loading').resolve(this.attr('_features'));
     }
   },
   /**
-   * [function description]
-   * @param  {[type]} layers     [description]
-   * @param  {[type]} coordinate [description]
-   * @return {[type]}            [description]
+   * Recursively queries wms layers for identify results. Recursion is used to drill into group layers
+   * @signature
+   * @param  {ol.Collection<ol.Layer>} layers     A collection (array) of layers
+   * @param  {Array<Number>} coordinate The current identify coordinate
+   * @return {Array<String>}            Array of GetFeatureInfo urls
    */
   getQueryURLsRecursive: function(layers, coordinate) {
     var self = this;
@@ -311,10 +314,11 @@ export const ViewModel = can.Map.extend({
     return urls;
   },
   /**
-   * [function description]
-   * @param  {[type]} layer      [description]
-   * @param  {[type]} coordinate [description]
-   * @return {[type]}            [description]
+   * Creates a wms getGetFeatureInfo url
+   * @signature
+   * @param  {ol.layer} layer      The wms layer
+   * @param  {Array<Number>} coordinate The coordinate pair to identify at
+   * @return {String}            The url to query for identify results
    */
   getQueryURL: function(layer, coordinate) {
     if (layer.getSource && layer.getVisible()) {
@@ -335,9 +339,10 @@ export const ViewModel = can.Map.extend({
     }
   },
   /**
-   * [function description]
-   * @param  {[type]} url [description]
-   * @return {[type]}     [description]
+   * Queries the wms endpoint for identify results
+   * @signature
+   * @param  {String} url The url to query
+   * @return {Deferred}     The deferred that is resolved to the raw wms feature data
    */
   getFeatureInfo: function(url) {
     return can.ajax({
@@ -347,9 +352,10 @@ export const ViewModel = can.Map.extend({
     });
   },
   /**
-   * [function description]
-   * @param  {[type]} collection [description]
-   * @return {[type]}            [description]
+   * Adds features to this widgets collection after a layer has been identified
+   * @signature
+   * @param  {Object} collection A GeoJSON feature collection
+   * @param  {Array<Number>} coordinate The coordinate pair where the mouse click occurred
    */
   addFeatures: function(collection, coordinate) {
     if (collection.features.length) {
@@ -370,7 +376,7 @@ export const ViewModel = can.Map.extend({
         features: features
       });
       features = this.getFeaturesFromJson(newCollection);
-      if (!this.attr('features').length) {
+      if (!this.attr('_features').length) {
         var index = this.getClosestFeatureIndex(features, coordinate);
         if (index) {
           //swap the feature for the first so it shows up first
@@ -379,9 +385,15 @@ export const ViewModel = can.Map.extend({
           features[0] = temp;
         }
       }
-      this.attr('features', this.attr('features').concat(features));
+      this.attr('_features', this.attr('_features').concat(features));
     }
   },
+  /**
+   * Converts raw geojson into openlayers features
+   * @signature
+   * @param  {Object } collection Raw GeoJSON object
+   * @return {ol.Collection<ol.Feature>}            The collection of openlayers features
+   */
   getFeaturesFromJson: function(collection) {
     var proj = this.attr('mapModel').getMap().getView().getProjection();
     var gjson = new ol.format.GeoJSON();
@@ -392,45 +404,47 @@ export const ViewModel = can.Map.extend({
     return features;
   },
   /**
-   * [function description]
-   * @return {[type]} [description]
+   * Navigates the identify widget to the next feature by incrementing the active feature index
+   * @signature
+   * @return {can.Map} This object
    */
   gotoNext: function() {
-    if (this.attr('hasNextFeature')) {
-      this.attr('activeFeatureIndex', this.attr('activeFeatureIndex') + 1);
+    if (this.attr('_hasNextFeature')) {
+      this.attr('_activeFeatureIndex', this.attr('_activeFeatureIndex') + 1);
     }
     return this;
   },
   /**
-   * [function description]
-   * @return {[type]} [description]
+   * Navigates the identify widget to the previous feature by decrementing the active feature index
+   * @signature
+   * @return {can.Map} This object
    */
   gotoPrevious: function() {
-    if (this.attr('hasPreviousFeature')) {
-      this.attr('activeFeatureIndex', this.attr('activeFeatureIndex') - 1);
+    if (this.attr('_hasPreviousFeature')) {
+      this.attr('_activeFeatureIndex', this.attr('_activeFeatureIndex') - 1);
     }
     return this;
   },
   /**
-   * [function description]
-   * @return {[type]} [description]
+   * clears the features in this widget
+   * @signature
    */
   clearFeatures: function() {
-    if (this.attr('loading').state() === 'pending') {
-      this.attr('deferreds').forEach(function(d) {
+    if (this.attr('_loading').state() === 'pending') {
+      this.attr('_deferreds').forEach(function(d) {
         if (d.state() === 'pending') {
           d.abort();
         }
       });
     }
-    this.attr('features').replace([]);
+    this.attr('_features').replace([]);
     this.updateSelectedFeature(null);
-    this.attr('activeFeatureIndex', 0);
+    this.attr('_activeFeatureIndex', 0);
   },
   /**
-   * [function description]
-   * @param  {[type]} feature [description]
-   * @return {[type]}         [description]
+   * Updates the currently selected feature and replaces the table attributes and the vector layer with the new feature
+   * @signature
+   * @param  {ol.Feature} feature The feature
    */
   updateSelectedFeature: function(feature) {
     if (!feature) {
@@ -459,9 +473,9 @@ export const ViewModel = can.Map.extend({
     this.attr('mapModel.mapObject').addLayer(layer);
   },
   /**
-   * [function description]
-   * @param  {[type]} object [description]
-   * @return {[type]}        [description]
+   * Zooms the map to a feature
+   * @signature
+   * @param  {Object} object An object containing a feature property
    */
   zoomToFeature: function(object) {
     var extent = object.feature
@@ -479,9 +493,9 @@ export const ViewModel = can.Map.extend({
     this.animateZoomToExtent(extent);
   },
   /**
-   * [function description]
-   * @param  {[type]} extent [description]
-   * @return {[type]}        [description]
+   * Zooms the map to an extent and creates the zoom animation
+   * @signature
+   * @param  {Array<Number>} extent The extent to zoom the map to
    */
   animateZoomToExtent: function(extent) {
     var map = this.attr('mapModel.mapObject');
@@ -499,9 +513,9 @@ export const ViewModel = can.Map.extend({
       extent, map.getSize(), [50, 50, 50, 50]);
   },
   /**
-   * [function description]
-   * @param  {[type]} e [description]
-   * @return {[type]}   [description]
+   * An error logging function for failed ajax requests
+   * @signature
+   * @param  {Error} e The error
    */
   error: function(e) {
     this.attr('hasErrors', true);
