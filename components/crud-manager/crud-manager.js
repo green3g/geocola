@@ -92,24 +92,6 @@ export let viewModel = Map.extend({
       value: 0
     }
   },
-  updateFilterParam: function(filters) {
-    //reset the page filter
-    this.attr('queryPage', 0);
-    if (filters.length) {
-      //if there are filters in the list, set the filter parameter
-      this.attr('parameters.filter[objects]', JSON.stringify(filters.attr()));
-    } else {
-      //remove the filter parameter
-      this.removeAttr('parameters.filter[objects]');
-    }
-    return filters;
-  },
-  updatePageParam: function(page) {
-    this.attr('parameters.page[number]', page + 1);
-  },
-  updatePerPageParam: function(perPage) {
-    this.attr('parameters.page[size]', perPage);
-  },
   editObject: function(scope, dom, event, obj) {
     this.attr('viewId', this.attr('connection.connection').id(obj));
     this.attr('page', 'edit');
@@ -142,8 +124,6 @@ export let viewModel = Map.extend({
     }
   },
   setSort: function(scope, dom, event, fieldName) {
-    console.log(arguments);
-      console.log(sort);
     var sort = this.attr('parameters.sort');
     if (sort && sort.indexOf(fieldName) !== -1) {
       if (sort.indexOf('-') > 0) {
@@ -155,6 +135,24 @@ export let viewModel = Map.extend({
       this.attr('parameters.sort', fieldName);
     }
   },
+  updateFilterParam: function(filters) {
+    //reset the page filter
+    this.attr('queryPage', 0);
+    if (filters.length) {
+      //if there are filters in the list, set the filter parameter
+      this.attr('parameters.filter[objects]', JSON.stringify(filters.attr()));
+    } else {
+      //remove the filter parameter
+      this.removeAttr('parameters.filter[objects]');
+    }
+    return filters;
+  },
+  updatePageParam: function(page) {
+    this.attr('parameters.page[number]', page + 1);
+  },
+  updatePerPageParam: function(perPage) {
+    this.attr('parameters.page[size]', perPage);
+  }
 });
 
 Component.extend({
