@@ -5,12 +5,10 @@ import can from 'can';
 import template from './template.stache!';
 import 'components/list-table/';
 /**
- * @module {can.Component} filter-widget
+ * @module {can.Map} filter-widget
  * @parent Home.components
   * @group filter-widget.types Types
-  * @group filter-widget.params Parameters
-  * @group filter-widget.events Events
-  * @group filter-widget.static Static
+  * @group filter-widget.props Properties
   * @link http://jsonapi.org/format/#fetching-filtering JSON-API
  * @body
 ## Description
@@ -22,7 +20,7 @@ The filters generated follow the JSON API specification implemented by Flask-Res
 ## Usage
 
   ```javascript
-  import 'components/filter-widget/';
+  import 'components/filter-widget/viewModel';
   ```
 ```html
   <filter-widget />
@@ -31,7 +29,7 @@ The filters generated follow the JSON API specification implemented by Flask-Res
  */
 
 /**
- * @typedef {FilterObject} filter-widget.types.filterObject FilterObject
+ * @typedef {filterObject} filter-widget.types.filterObject FilterObject
  * @parent filter-widget.types
  * @description A filter object consisting of a fieldname, operator, and a value
  * @option {String} name The name of the field
@@ -49,25 +47,25 @@ export let viewModel = can.Map.extend({
   define: {
     /**
      * A list of filterObjects
-     * @parent filter-widget.params
-     * @property {Array<filter-widget.types.filterObject>}
+     * @property {Array<filter-widget.types.filterObject>} filter-widget.props.filters
+     * @parent filter-widget.props
      */
     filters: {
       Value: can.List
     },
     /**
      * The model-like object to render in the form
-     * @parent filter-widget.params
      * @link formFieldObject formFieldObject
-     * @property {form-widget.types.formFieldObject}
+     * @property {form-widget.types.formFieldObject} filter-widget.props.formObject
+     * @parent filter-widget.props
      */
     formObject: {
       Value: Filter
     },
     /**
      * The buttonObjects to display in the list table
-     * @parent filter-widget.params
-     * @property {Array<list-table.types.buttonObject>} buttons buttons
+     * @property {Array<buttonObject>} filter-widget.props.buttons
+     * @parent filter-widget.props
      */
     buttons: {
       value: [{
@@ -78,8 +76,8 @@ export let viewModel = can.Map.extend({
     },
     /**
      * The fields to render in the form
-     * @parent filter-widget.params
-     * @property {Array.<formFieldObject>}
+     * @property {Array.<formFieldObject>} filter-widget.props.fields
+     * @parent filter-widget.props
      */
     fields: {
       get: function() {
@@ -135,16 +133,19 @@ export let viewModel = can.Map.extend({
                 return val;
             }
           }
-        }]
+        }];
       }
     }
   },
+  /**
+   * @prototype
+   */
   /**
    * Removes a filter from the list of filters
    * @param  {can.Map} scope The stache scope
    * @param  {event} dom   The dom event
    * @param  {event} event The can event
-   * @param  {filterObject} obj   The object to remove. This is the only argument used by the function, the rest may be null.
+   * @param  {filter-widget.types.filterObject} obj   The object to remove. This is the only argument used by the function, the rest may be null.
    */
   removeFilter: function(scope, dom, event, obj) {
     let index = this.attr('filters').indexOf(obj);

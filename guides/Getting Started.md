@@ -7,16 +7,9 @@
 @group guides.configure Configure
 -->
 
-@description
+## loader.js
 
-## cola.js
-
-This is the loader script. It decides which application to load, and which config to load into the app. It does so using default values and optional query parameters.
-
-@signature `?app=app/path/&config=configName`
-@param {String} app The path to the app to load.
-The default is `app/viewer/`.
-@param {String} config The name to the config to load inside appPath/config/. The default is `default` which will load `app/viewer/default/`.
+This is the loader script. It exports a function, `load`, which accepts two parameters, the path to the app, and an optional name of config to load. `index.html` imports this script and calls this function. This may be customized to load different apps through server side scripting, query string parameters, or simply specifying the name of the app/config to load directly in the `index.html`.
 
 @body
 
@@ -63,8 +56,8 @@ During development, index-dev.html should be used. This loads each individual mo
 
 Bundles are created to optimize the loading of an app. In development, an app may load many individual files. Steal-tools scans these dependencies and creates highly optimized bundles which load much quicker. To configure additional bundles, add the path to the bundle in package.json bundles section.
 
-Once the bundles are built, index.html should be used to load `steal.production.js` instead of `steal.js`. In addition, `main` must be set on the script tag. By default, it is set to `cola`.
+Once the bundles are built, index.html should be used to load `steal.production.js` instead of `steal.js`. In addition, `main` must be set on the script tag. By default, it is set to `Canola Map`.
 
 ```html
-<script src="node_modules/steal/steal.production.js" data-main="cola"></script>
+<script src="node_modules/steal/steal.production.js" data-main="Canola Map"></script>
 ```

@@ -1,5 +1,5 @@
 <form class="form{{#inline}}-inline{{/inline}}" ($submit)="formSubmit">
-  {{#each fieldObjects}}
+  {{#each _fieldObjects}}
       <div class="form-group">
         <label for="{{name}}">{{alias}}</label>
         {{>template}}

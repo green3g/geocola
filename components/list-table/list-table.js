@@ -8,7 +8,7 @@ import Component from 'can/component/';
  * @module {can.Component} list-table
  * @parent Home.components
   * @group list-table.types 0 Types
-  * @group list-table.parameters 2 Parameters
+  * @group list-table.props 2 Properties
   * @group list-table.events 3 Events
   * @group list-table.static 4 Static
 ## Description
@@ -32,8 +32,8 @@ export const ViewModel = viewModel.extend({
   define: {
     /**
      * Optional promise or deferred object that will resolve to an object. Once the promise resolves, the objects list will be replaced with the promise result
-     * @parent list-table.parameters
-     * @property {can.Deferred | Promise}
+     * @parent list-table.props
+     * @property {can.Deferred | Promise} list-table.props.promise
      */
     promise: {
       set: function(newVal) {
@@ -46,8 +46,8 @@ export const ViewModel = viewModel.extend({
     },
     /**
      * A list of objects to display. These objects should generally be can.Model objects but may be any can.Map or javascript object.
-     * @parent list-table.parameters
-     * @property {Array.<can.Model | can.Map | Object>}
+     * @parent list-table.props
+     * @property {Array.<can.Model | can.Map | Object>} list-table.props.objects
      */
     objects: {
       Value: List,
@@ -55,8 +55,8 @@ export const ViewModel = viewModel.extend({
     },
     /**
      * A list of the currently selected objects in the table
-     * @parent list-table.parameters
-     * @property {Array.<can.Map>}
+     * @parent list-table.props
+     * @property {Array.<can.Map>} list-table.props.selectedObjects
      */
     selectedObjects: {
       Value: List,
@@ -64,8 +64,8 @@ export const ViewModel = viewModel.extend({
     },
     /**
      * A virtual property that helps the template determine whether all objects are selected
-     * @parent list-table.parameters
-     * @property {Boolean}
+     * @parent list-table.props
+     * @property {Boolean} list-table.props.allSelected
      */
     allSelected: {
       type: 'boolean',
@@ -75,8 +75,8 @@ export const ViewModel = viewModel.extend({
     },
     /**
      * An array of buttonObjects
-     * @parent list-table.parameters
-     * @property {Array.<buttonObject>}
+     * @parent list-table.props
+     * @property {Array.<buttonObject>} list-table.props.buttons
      */
     buttons: {
       value: List

@@ -37,7 +37,7 @@ can.Map.extend({
    * @param  {float[]} point      x,y pair in latitude and longitude coordinates
    * @return {promise}            a promise resolved once the query completes. resolved with {suggestionsObject} suggestions
    */
-  getSuggestions: function(searchText, point) {},
+  getSuggestions: function(searchText, point, stuff) {},
   /**
    * Retrieves the coordinates for a known location. This location is a fully qualified address or place name returned from the `getSuggestions` query.
    * @link providers.locationProvider.types.locationObject locationObject

@@ -1,6 +1,11 @@
 /*jshint esnext:true */
 
 /**
+ * @module loader
+ * @parent guides.developing
+ */
+
+/**
  * imports multiple modules and returns a promise resolved to an array
  * of modules
  *
@@ -12,6 +17,12 @@ function multiImport(modules) {
     return System.import(m);
   }));
 }
+
+/**
+ * Loads an app with config
+ * @param  {String} app  The path to the app js file
+ * @param  {String} config The path to the config js file
+ */
 export let load = function(app, config) {
   if (!config) {
     System.import(app).then(function(module) {
@@ -33,4 +44,4 @@ export let load = function(app, config) {
       new modules[0].AppViewModel(modules[1].config).startup('#app');
     });
   }
-}
+};

@@ -9,6 +9,7 @@ import overlayManager from './modules/overlayManager';
 /**
  * @module measure-widget
  * @parent Home.components
+ * @group measure-widget.props Properties
  * @body
 
  ## Description:
@@ -29,37 +30,37 @@ export const ViewModel = can.Map.extend({
     /**
      * The selector to the `ol-map` component
      * @signature `{String}` `map-node="#map"`
-     * @property {String} mapNode
+     * @property {String} measure-widget.props.mapNode
      */
     mapNode: {
       type: 'string'
     },
     /**
-     * [clickHandler description]
-     * @property {Object}
+     * The name of the click handler key to use. The default is `'measure'`.
+     * @property {String} measure-widget.props.clickHandler
      */
     clickHandler: {
       type: 'string',
       value: 'measure'
     },
     /**
-     * [measurements description]
-     * @property {Object}
+     * An array of measurement objects to use. These are configureable in `./modules/measurements`
+     * @property {Array<measurementObjects>} measure-widget.props.measurements
      */
     measurements: {
       value: measurements
     },
     /**
-     * [unitsDropdown description]
-     * @property {Object}
+     * The current value in the units dropdown
+     * @property {String} measure-widget.props.unitsDropdown
      */
     unitsDropdown: {
       value: '',
       type: 'string'
     },
     /**
-     * [addLabels description]
-     * @property {Object}
+     * Should labels be added to the map drawings by default
+     * @property {Boolean} measure-widget.props.addLabels
      */
     addLabels: {
       value: true,
@@ -84,11 +85,6 @@ export const ViewModel = can.Map.extend({
     //but we still need to disable the default map click
     mapWidget.addClickHandler(this.attr('clickHandler'), function() { /*noop*/ });
   },
-/**
- * [function description]
- * @param  {measureTool} measureTool The measure tool object to activate
- * @return {[type]}             [description]
- */
   activateMeasureTool: function(measureTool) {
     //toggle the button
     measureTool.attr('active', !measureTool.attr('active'));

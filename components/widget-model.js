@@ -13,7 +13,7 @@ function getNextId() {
  *
  * @description Base widget class, not to be used directly, but inherited from.
  * Benefits include:
- * - guaranteed unique id (unless overridden by widget-id tag)
+ * - guaranteed unique id (unless overridden by `instance-id `tag)
  * - capabilities from custom events provided by `can.event`
  *
  * Example:

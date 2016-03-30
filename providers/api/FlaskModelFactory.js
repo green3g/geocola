@@ -1,3 +1,4 @@
+/* jshint esnext:true */
 import can from 'can';
 import superMap from 'can-connect/can/super-map/';
 
@@ -73,7 +74,6 @@ export function FlaskConnectFactory(options) {
         });
       },
       updateData: function(attrs) {
-        console.log(attrs);
         var data = {};
         //exclude hidden properties
         for (var a in attrs) {
@@ -81,7 +81,6 @@ export function FlaskConnectFactory(options) {
             data[a] = attrs[a];
           }
         }
-        console.log(data);
         return can.ajax({
           url: this.resource + '/' + attrs[id],
           headers: {
@@ -140,39 +139,4 @@ export function FlaskConnectFactory(options) {
     list: options.map.List,
     properties: properties
   };
-};
-/**
- * creates a new can.Model that connects to the flask restless api
- * @param  {string} url [description]
- * @return {can.Model}     [description]
- */
-export function FlaskRestless(url, options) {
-  if (!options) {
-    options = {};
-  }
-  return can.Model.extend({
-    id: options.idField || 'id',
-    resource: url,
-    findAll: 'GET ' + url + '?{filter}&{group}',
-    defaults: options.defaults || {},
-    parseModels: function(data) {
-      return data.objects;
-    },
-    create: function(attrs) {
-      return can.ajax({
-        url: url,
-        contentType: 'application/json',
-        data: JSON.stringify(attrs),
-        method: 'POST'
-      });
-    },
-    update: function(id, attrs) {
-      return can.ajax({
-        url: url + '/' + id,
-        contentType: 'application/json',
-        data: JSON.stringify(attrs),
-        method: 'PUT'
-      });
-    }
-  }, {});
-};
+}

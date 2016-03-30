@@ -8,6 +8,7 @@ import './olMap.css!';
 /**
  * @module ol-map
  * @parent Home.components
+ * @group ol-map.props Properties
  * @inherits widgetModel
  * @signature `<ol-map />` Example:
 
@@ -18,7 +19,7 @@ import './olMap.css!';
   ```
  * @body
  ## Description
- A openlayers map component that provides a wrapper for `ol.Map` along with additional functionality. This ol-map component provides a centralized map click handler so that different widgets may activate and deactivate their map click event. Several cola widgets use and require a reference to an ol-map component via a map-node attribute.
+ A openlayers map component that provides a wrapper for `ol.Map` along with additional functionality. This ol-map component provides a centralized map click handler so that different widgets may activate and deactivate their map click event. Several widgets use and require a reference to an ol-map component via a map-node attribute.
 
  ## Using complex map options
  When the template is rendered using `can.view('<ol-map....', ...)` map options can be supplied in a variety of ways. For complex configuration that might use custom controls or advanced settings not provided by this wrapper, a setup similar to the example below may be used. This example uses  [`can.view.bindings`](http://canjs.com/docs/can.view.bindings.html).
@@ -56,7 +57,8 @@ export const ViewModel = widgetModel.extend({
   define: {
     /**
      * Openlayers projection string to use for map. The default is `'EPSG:3857'`
-     * @property {string}
+     * @property {string} ol-map.props.projection
+     * @parent ol-map.props
      * @signature `projection="EPSG:3857"` sets the projection value
      */
     projection: {
@@ -65,7 +67,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * The starting x coordinate of the map view. The default is 0.
-     * @property {Number} x
+     * @property {Number} ol-map.props.x
+     * @parent ol-map.props
      * @signature `x="45.2123"` Sets the x value
      */
     x: {
@@ -75,7 +78,8 @@ export const ViewModel = widgetModel.extend({
     /**
      *
      * The starting y coordinate of the map view. The default is 0.
-     * @property {Number} y
+     * @property {Number} ol-map.props.y
+     * @parent ol-map.props
      *
      */
     y: {
@@ -84,7 +88,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * The starting zoom level of the map view. The default is 1.
-     * @property {Number}
+     * @property {Number} ol-map.props.zoom
+     * @parent ol-map.props
      * @signature `zoom="5"` Sets the zoom level
      * @signature `viewModel.attr('zoom', 5)` Sets the zoom level
      *
@@ -96,14 +101,16 @@ export const ViewModel = widgetModel.extend({
     /**
      * The default name of the map click handler to use. If not supplied, it
      * will be set to the first one added.
-     * @property {String}
+     * @property {String} ol-map.props.defaultClick
+     * @parent ol-map.props
      */
     defaultClick: {
       type: 'string'
     },
     /**
      * The array of current click handlers in the widget.
-     * @property {can.Map} clickHandlers
+     * @property {can.Map} ol-map.props.clickHandlers
+     * @parent ol-map.props
      */
     clickHandlers: {
       Value: can.Map
@@ -111,7 +118,8 @@ export const ViewModel = widgetModel.extend({
     /**
      * @description
      * The deferred object used to notify listeners when the map is ready
-     * @property {can.Deferred}
+     * @property {can.Deferred} ol-map.props.deferred
+     * @parent ol-map.props
      */
     deferred: {
       value: can.Deferred
@@ -119,10 +127,19 @@ export const ViewModel = widgetModel.extend({
     /**
      * @description
      * Optional map options to override the defaults
-     * @property {object} mapOptions
+     * @property {object} ol-map.props.mapOptions
+     * @parent ol-map.props
      */
     mapOptions: {
       type: '*'
+    },
+    /**
+     * The ol.Map
+     * @property {ol.Map} ol-map.props.mapObject
+     * @parent ol-map.props
+     */
+    mapObject: {
+      value: null
     }
   },
   /**

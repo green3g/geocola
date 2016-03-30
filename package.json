@@ -1,14 +1,14 @@
 {
-  "name": "cola",
+  "name": "COAMap",
   "version": "1.0.0",
-  "description": "a modular canjs/openlayers app",
-  "repository": "",
+  "description": "A configureable openlayers mapping and data management app",
+  "repository": "https://github.com/roemhildtg/coamap",
   "scripts": {
     "test": "test",
     "build": "steal-tools",
     "watch": "steal-tools --watch",
     "docs": "documentjs --watch",
-    "export": "steal-tools transform app.js"
+    "export": "node build.js"
   },
   "author": "roemhildtg",
   "license": "MIT",
@@ -18,13 +18,13 @@
     "steal-tools": "^0.15.0"
   },
   "dependencies": {
-    "bootstrap": "^3.3.5",
-    "can": "^2.3.20",
-    "can-connect": "^0.5.0-pre.2",
-    "font-awesome": "^4.4.0",
-    "openlayers": "^3.12.0",
-    "proj4": "^2.3.12",
-    "steal": "^0.15.0"
+    "bootstrap": "^3.3.6",
+    "can": "^2.3.22",
+    "can-connect": "^0.5.1",
+    "font-awesome": "^4.5.0",
+    "openlayers": "^3.14.2",
+    "proj4": "^2.3.14",
+    "steal": "^0.15.3"
   },
   "main": "loader",
   "system": {

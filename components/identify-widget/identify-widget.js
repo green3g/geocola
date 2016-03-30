@@ -10,10 +10,8 @@ import 'components/property-table/';
 /**
  * @module identify-widget
  * @parent Home.components
- * @group identify-widget.parameters Parameters
+ * @group identify-widget.props Properties
  * @group identify-widget.types Types
- * @group identify-widget.events Events
- * @group identify-widget.static Static
  * @body
 
  ## Description
@@ -30,28 +28,30 @@ import 'components/property-table/';
  </ol-popup>
  ```
  */
+
 /**
  * @typedef {layerPropertiesObject} identify-widget.types.layerPropertiesObject layerPropertiesObject
  * An object consisting of a key mapped to the layer name as returned by the server with its value consisting of properties defining the layer display.
  * @parent identify-widget.types
  * @option {String} alias The label to display for the layer The default is the layer name as provided by the server
  * @option {String | can.view.renderer} template The template to render for this layer's popup. This can be a template imported via `import templateName from './templatePath.stache!';` (recommended) or a string template. The default is `components/identify-widget/featureTemplate.stache`
- * @option {property-table.types.fieldPropertiesObject} properties An object consisting of layerFieldProperties.
+ * @option {property-table.types.tablePropertiesObject} properties An object consisting of tableFieldProperties.
  */
+
 export const ViewModel = can.Map.extend({
   define: {
     /**
      * The selector for the `ol-map` map node.
-     * @parent identify-widget.parameters
+     * @parent identify-widget.props
      * @signature `{String}` `map-node="#map"`
-     * @property {String} mapNode
+     * @property {String} identify-widget.props.mapNode
      */
     mapNode: {
       type: 'string'
     },
     /**
-     * The selector for the `ol-popup` dom node
-     * @parent identify-widget.parameters
+     * The selector for the `ol-popup` dom node. If this widget is placed inside an ol-popup, it this property must be provided so the identify widget can correctly center the popup on the feature.
+     * @parent identify-widget.props
      * @signature `{String}` `popup-node="#identify-popup"`
      */
     popupNode: {
@@ -59,9 +59,9 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * The max number of features to return for each layer. The default is 10.
-     * @parent identify-widget.parameters
+     * @parent identify-widget.props
      * @signature `{Number}` `max-feature-count="10"`
-     * @property {Number} maxFeatureCount
+     * @property {Number} identify-widget.props.maxFeatureCount
      */
     maxFeatureCount: {
       type: 'number',
@@ -69,9 +69,9 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * Buffer distance in pixels around the map click. The default is 10.
-     * @parent identify-widget.parameters
+     * @parent identify-widget.props
      * @signature `{Number}` `feature-buffer="10"`
-     * @property {Number} featureBuffer
+     * @property {Number} identify-widget.props.featureBuffer
      */
     featureBuffer: {
       type: 'number',
@@ -79,16 +79,16 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * Layer configuration properties
-     * @parent identify-widget.parameters
-     * @property {layerProperties}
+     * @parent identify-widget.props
+     * @property {layerPropertiesObject} identify-widget.props.layerProperties
      */
     layerProperties: {
       Value: can.Map
     },
     /**
      * The map click key to assign to this widget. When the map is clicked, and this key is the set as the current map click, it will trigger an identify.
-     * @parent identify-widget.parameters
-     * @property {Object}
+     * @parent identify-widget.props
+     * @property {Object} identify-widget.props.mapClickKey
      */
     mapClickKey: {
       type: 'string',
@@ -96,18 +96,18 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * The list of features that have been identified
-     * @parent identify-widget.parameters
-     * @property {Array<ol.Feature>}
+     * @parent identify-widget.props
+     * @property {Array<ol.Feature>} identify-widget.props._features
      */
-    features: {
+    _features: {
       Value: can.List
     },
     /**
      * Whether or not all identifies have completed. This is used internally by the template.
-     * @parent identify-widget.parameters
-     * @property {can.Deferred}
+     * @parent identify-widget.props
+     * @property {can.Deferred} identify-widget.props._loading
      */
-    loading: {
+    _loading: {
       value: function() {
         var d = can.Deferred();
         d.resolve();
@@ -116,58 +116,58 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * A list of pending identify deferreds
-     * @parent identify-widget.parameters
-     * @property {Array<can.Deferred>}
+     * @parent identify-widget.props
+     * @property {Array<can.Deferred>} identify-widget.props._deferreds
      */
-    deferreds: {
+    _deferreds: {
       Value: can.List,
     },
     /**
      * The currently selected feature index
-     * @parent identify-widget.parameters
+     * @parent identify-widget.props
      * @property {Number}
      */
-    activeFeatureIndex: {
+    _activeFeatureIndex: {
       value: 0,
       type: 'number'
     },
     /**
      * If the feature list has one or more features after the selected feature, this will be true. This is used by the template to enable/disable the forward and back buttons.
-     * @parent identify-widget.parameters
-     * @property {Boolean}
+     * @parent identify-widget.props
+     * @property {Boolean} identify-widget.props._hasNextFeature
      */
-    hasNextFeature: {
+    _hasNextFeature: {
       get: function() {
-        return this.attr('activeFeatureIndex') < this.attr('features').length - 1;
+        return this.attr('_activeFeatureIndex') < this.attr('_features').length - 1;
 
       }
     },
     /**
      * If the feature list has one or more features before the selected feature, this will be true. This is used by the template to enable/disable the forward and back buttons.
-     * @parent identify-widget.parameters
-     * @property {Boolean}
+     * @parent identify-widget.props
+     * @property {Boolean} identify-widget.props._hasPreviousFeature
      */
-    hasPreviousFeature: {
+    _hasPreviousFeature: {
       get: function() {
-        return this.attr('activeFeatureIndex') > 0;
+        return this.attr('_activeFeatureIndex') > 0;
       }
     },
     /**
      * A virtual property that returns an object consisting of the formatted fields, values, and layer properties.
-     * @parent identify-widget.parameters
-     * @property {can.Map}
+     * @parent identify-widget.props
+     * @property {can.Map} identify-widget.props._activeFeature
      */
-    activeFeature: {
+    _activeFeature: {
       get: function() {
-        //if no features, return null
-        if (!this.attr('features').length) {
+        //if no _features, return null
+        if (!this.attr('_features').length) {
           //update Map layer
           this.updateSelectedFeature(null);
           return null;
         }
 
         //get this active feature by array index
-        var feature = this.attr('features')[this.attr('activeFeatureIndex')];
+        var feature = this.attr('_features')[this.attr('_activeFeatureIndex')];
 
         //update Map layer
         this.updateSelectedFeature(feature);
@@ -220,9 +220,12 @@ export const ViewModel = can.Map.extend({
     },
   },
   /**
-   * [function description]
-   * @param  {[type]} models [description]
-   * @return {[type]}        [description]
+   * @prototype
+   */
+  /**
+   * Initializes this widget by finding the map and popup if provided and setting up the map click handler
+   * @signature
+   * @param  {Object} models A object consisting of the map and popup viewModels
    */
   initWidget: function(models) {
     this.attr('mapModel', models.map);
@@ -237,10 +240,11 @@ export const ViewModel = can.Map.extend({
     }
   },
   /**
-   * [function description]
-   * @param  {[type]} event      [description]
-   * @param  {[type]} coordinate [description]
-   * @return {[type]}            [description]
+   * Queries the available map wms layers and updates the loading status
+   * @signature
+   * @param  {ol.events.Event} event The click event dispatched by the map
+   * @param  {Array<Number>} coordinate Optional coordinate array to identify at
+   * @return {Promise} A promise that is resolved when all of the identifies have finished loading
    */
   identify: function(event, coordinate) {
     if (!coordinate) {
@@ -252,13 +256,13 @@ export const ViewModel = can.Map.extend({
     var layers = this.attr('mapModel').getMap().getLayers();
     var urls = this.getQueryURLsRecursive(layers, coordinate);
     var deferreds = [];
-    this.attr('loading', can.Deferred());
+    this.attr('_loading', can.Deferred());
     urls.forEach(function(url) {
       var def = self.getFeatureInfo(url);
       deferreds.push(def);
     });
     if (!deferreds.length) {
-      this.attr('loading').resolve([]);
+      this.attr('_loading').resolve([]);
     }
     var resolved = 0;
     deferreds.forEach(function(d) {
@@ -272,26 +276,26 @@ export const ViewModel = can.Map.extend({
         self.updateLoading(resolved, deferreds.length);
       });
     });
-    this.attr('deferreds', deferreds);
-    return this.attr('loading').promise();
+    this.attr('_deferreds', deferreds);
+    return this.attr('_loading').promise();
   },
   /**
-   *
-   *
-   * @param  {[type]} resolved [description]
-   * @param  {[type]} total    [description]
-   * @return {[type]}          [description]
+   * Updates the loading status after each identify promise is resolved
+   * @signature
+   * @param  {Number} resolved The current number of resolved promises
+   * @param  {Number} total  The total number of promises
    */
   updateLoading: function(resolved, total) {
     if (resolved === total) {
-      this.attr('loading').resolve(this.attr('features'));
+      this.attr('_loading').resolve(this.attr('_features'));
     }
   },
   /**
-   * [function description]
-   * @param  {[type]} layers     [description]
-   * @param  {[type]} coordinate [description]
-   * @return {[type]}            [description]
+   * Recursively queries wms layers for identify results. Recursion is used to drill into group layers
+   * @signature
+   * @param  {ol.Collection<ol.Layer>} layers     A collection (array) of layers
+   * @param  {Array<Number>} coordinate The current identify coordinate
+   * @return {Array<String>}            Array of GetFeatureInfo urls
    */
   getQueryURLsRecursive: function(layers, coordinate) {
     var self = this;
@@ -311,10 +315,11 @@ export const ViewModel = can.Map.extend({
     return urls;
   },
   /**
-   * [function description]
-   * @param  {[type]} layer      [description]
-   * @param  {[type]} coordinate [description]
-   * @return {[type]}            [description]
+   * Creates a wms getGetFeatureInfo url
+   * @signature
+   * @param  {ol.layer} layer      The wms layer
+   * @param  {Array<Number>} coordinate The coordinate pair to identify at
+   * @return {String}            The url to query for identify results
    */
   getQueryURL: function(layer, coordinate) {
     if (layer.getSource && layer.getVisible()) {
@@ -335,9 +340,10 @@ export const ViewModel = can.Map.extend({
     }
   },
   /**
-   * [function description]
-   * @param  {[type]} url [description]
-   * @return {[type]}     [description]
+   * Queries the wms endpoint for identify results
+   * @signature
+   * @param  {String} url The url to query
+   * @return {Deferred}     The deferred that is resolved to the raw wms feature data
    */
   getFeatureInfo: function(url) {
     return can.ajax({
@@ -347,9 +353,10 @@ export const ViewModel = can.Map.extend({
     });
   },
   /**
-   * [function description]
-   * @param  {[type]} collection [description]
-   * @return {[type]}            [description]
+   * Adds features to this widgets collection after a layer has been identified
+   * @signature
+   * @param  {Object} collection A GeoJSON feature collection
+   * @param  {Array<Number>} coordinate The coordinate pair where the mouse click occurred
    */
   addFeatures: function(collection, coordinate) {
     if (collection.features.length) {
@@ -370,7 +377,7 @@ export const ViewModel = can.Map.extend({
         features: features
       });
       features = this.getFeaturesFromJson(newCollection);
-      if (!this.attr('features').length) {
+      if (!this.attr('_features').length) {
         var index = this.getClosestFeatureIndex(features, coordinate);
         if (index) {
           //swap the feature for the first so it shows up first
@@ -379,9 +386,15 @@ export const ViewModel = can.Map.extend({
           features[0] = temp;
         }
       }
-      this.attr('features', this.attr('features').concat(features));
+      this.attr('_features', this.attr('_features').concat(features));
     }
   },
+  /**
+   * Converts raw geojson into openlayers features
+   * @signature
+   * @param  {Object } collection Raw GeoJSON object
+   * @return {ol.Collection<ol.Feature>}            The collection of openlayers features
+   */
   getFeaturesFromJson: function(collection) {
     var proj = this.attr('mapModel').getMap().getView().getProjection();
     var gjson = new ol.format.GeoJSON();
@@ -392,45 +405,47 @@ export const ViewModel = can.Map.extend({
     return features;
   },
   /**
-   * [function description]
-   * @return {[type]} [description]
+   * Navigates the identify widget to the next feature by incrementing the active feature index
+   * @signature
+   * @return {can.Map} This object
    */
   gotoNext: function() {
-    if (this.attr('hasNextFeature')) {
-      this.attr('activeFeatureIndex', this.attr('activeFeatureIndex') + 1);
+    if (this.attr('_hasNextFeature')) {
+      this.attr('_activeFeatureIndex', this.attr('_activeFeatureIndex') + 1);
     }
     return this;
   },
   /**
-   * [function description]
-   * @return {[type]} [description]
+   * Navigates the identify widget to the previous feature by decrementing the active feature index
+   * @signature
+   * @return {can.Map} This object
    */
   gotoPrevious: function() {
-    if (this.attr('hasPreviousFeature')) {
-      this.attr('activeFeatureIndex', this.attr('activeFeatureIndex') - 1);
+    if (this.attr('_hasPreviousFeature')) {
+      this.attr('_activeFeatureIndex', this.attr('_activeFeatureIndex') - 1);
     }
     return this;
   },
   /**
-   * [function description]
-   * @return {[type]} [description]
+   * clears the features in this widget
+   * @signature
    */
   clearFeatures: function() {
-    if (this.attr('loading').state() === 'pending') {
-      this.attr('deferreds').forEach(function(d) {
+    if (this.attr('_loading').state() === 'pending') {
+      this.attr('_deferreds').forEach(function(d) {
         if (d.state() === 'pending') {
           d.abort();
         }
       });
     }
-    this.attr('features').replace([]);
+    this.attr('_features').replace([]);
     this.updateSelectedFeature(null);
-    this.attr('activeFeatureIndex', 0);
+    this.attr('_activeFeatureIndex', 0);
   },
   /**
-   * [function description]
-   * @param  {[type]} feature [description]
-   * @return {[type]}         [description]
+   * Updates the currently selected feature and replaces the table attributes and the vector layer with the new feature
+   * @signature
+   * @param  {ol.Feature} feature The feature
    */
   updateSelectedFeature: function(feature) {
     if (!feature) {
@@ -459,9 +474,9 @@ export const ViewModel = can.Map.extend({
     this.attr('mapModel.mapObject').addLayer(layer);
   },
   /**
-   * [function description]
-   * @param  {[type]} object [description]
-   * @return {[type]}        [description]
+   * Zooms the map to a feature
+   * @signature
+   * @param  {Object} object An object containing a feature property
    */
   zoomToFeature: function(object) {
     var extent = object.feature
@@ -479,9 +494,9 @@ export const ViewModel = can.Map.extend({
     this.animateZoomToExtent(extent);
   },
   /**
-   * [function description]
-   * @param  {[type]} extent [description]
-   * @return {[type]}        [description]
+   * Zooms the map to an extent and creates the zoom animation
+   * @signature
+   * @param  {Array<Number>} extent The extent to zoom the map to
    */
   animateZoomToExtent: function(extent) {
     var map = this.attr('mapModel.mapObject');
@@ -499,9 +514,9 @@ export const ViewModel = can.Map.extend({
       extent, map.getSize(), [50, 50, 50, 50]);
   },
   /**
-   * [function description]
-   * @param  {[type]} e [description]
-   * @return {[type]}   [description]
+   * An error logging function for failed ajax requests
+   * @signature
+   * @param  {Error} e The error
    */
   error: function(e) {
     this.attr('hasErrors', true);

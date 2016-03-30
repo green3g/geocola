@@ -6,6 +6,39 @@ import List from 'can/list/';
 import Map from 'can/map/';
 import Component from 'can/component/';
 
+/**
+ * @module property-table
+ * @parent Home.components
+ * @group property-table.types Types
+ * @body
+ *
+ ## Description
+ A widget for getting and displaying an objects properties
+
+ ## Usage
+
+ ```html
+ <property-table object-id="3" {connection}="connection"
+  {field-properties}="detailFields" />
+ ```
+ */
+
+/**
+ * @typedef {tablePropertiesObject} property-table.types.tablePropertiesObject tablePropertiesObject
+ * An object consisting of a key representing the field name and the value being properties defining each field's appearance
+ * @parent property-table.types
+ * @option {String} alias The label to display for this field. The default is replace underscores with spaces
+ * and capitalize the first letter
+ * @option {Boolean} exclude If set to true, this field will not display in the identify widget
+ * @option {function(value, attributes)} formatter An optional formatter function for the field's value that will return a string.
+```
+formatter: function(name, props) {
+   return name + ' is Awesome! and my other prop is' + props.otherProp;
+ }
+ ```
+ */
+
+
 export const ViewModel = viewModel.extend({
   define: {
     edit: {
@@ -41,21 +74,7 @@ export const ViewModel = viewModel.extend({
     /**
      * A virtual property that returns an object consisting of the formatted fields, values, and layer properties.
      * @parent property-table.parameters
-     * @property {can.Map}
-     */
-    /**
-     * @typedef {fieldPropertiesObject} identify-widget.types.fieldPropertiesObject fieldPropertiesObject
-     * An object consisting of a key representing the field name and the value being properties defining each field's appearance
-     * @parent identify-widget.types
-     * @option {String} alias The label to display for this field. The default is replace underscores with spaces
-     * and capitalize the first letter
-     * @option {Boolean} exclude If set to true, this field will not display in the identify widget
-     * @option {function(value, attributes)} formatter An optional formatter function for the field's value that will return a string.
-    ```
-    formatter: function(name, props) {
-       return name + ' is Awesome! and my other prop is' + props.otherProp;
-     }
-     ```
+     * @property {tablePropertiesObject}
      */
     attributes: {
       get: function() {

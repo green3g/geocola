@@ -7,7 +7,7 @@ import Component from 'can/component/';
 import template from './template.stache!';
 import {
   FlaskConnectFactory
-} from 'models/FlaskModelFactory';
+} from 'providers/api/FlaskModelFactory';
 
 import 'components/list-table/';
 import 'components/property-table/';

@@ -9,6 +9,7 @@ import icon from './icon';
 /**
  * @module locator-widget
  * @parent Home.components
+ * @group locator-widget.props Properties
  * @body
  *
  ## Description
@@ -23,7 +24,7 @@ import icon from './icon';
 export const ViewModel = widgetModel.extend({
   define: {
     /**
-     * @property {string} addressValue
+     * @property {string} locator-widget.props.addressValue
      * The default address value for the textbox.
      */
     addressValue: {
@@ -31,7 +32,7 @@ export const ViewModel = widgetModel.extend({
       type: 'string'
     },
     /**
-     * @property {string}
+     * @property {string} locator-widget.props.url
      * the url to geocode to for find and suggest endpoints
      */
     url: {
@@ -39,7 +40,7 @@ export const ViewModel = widgetModel.extend({
       type: 'string'
     },
     /**
-     * @property {number}
+     * @property {number} locator-widget.props.zoomLevel
      * the default level of zoom to apply if using an ol-map
      */
     zoomLevel: {
@@ -48,7 +49,7 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * whether or not to navigate the map
-     * @property {boolean}
+     * @property {boolean} locator-widget.props.navigate
      */
     navigate: {
       type: 'boolean',
@@ -56,11 +57,12 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * a geocoder service provider
-     * @property {Object}
+     * @property {Object} locator-widget.props.provider
+     * @link providers.locationProvider Location Providers
      */
     provider: {},
     /**
-     * @property {Array<providers.locationProvider.types.suggestionsObject>}
+     * @property {Array<providers.locationProvider.types.suggestionsObject>} locator-widget.props.suggestions
      * current suggestions in the widget
      */
     suggestions: {
@@ -68,14 +70,14 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * the current location found by the widget
-     * @property {Object}
+     * @property {Object} locator-widget.props.location
      */
     location: {
       Value: can.Map
     },
     /**
      * A deferred representing the current loading state
-     * @property {can.Deferred}
+     * @property {can.Deferred} locator-widget.props.loading
      */
     loading: {
       value: function(){
