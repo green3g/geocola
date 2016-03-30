@@ -35,6 +35,7 @@ export let AppViewModel = can.Map.extend({
     }
   },
   startup: function(domNode) {
+    console.log(this.attr('parameters'))
     this.initRoute();
     this.activateModelById(can.route.attr('model') || this.attr('models')[0].attr('id'));
     can.$(domNode).html(can.view(template, this));
@@ -89,5 +90,19 @@ export let AppViewModel = can.Map.extend({
       can.route.attr(name, '');
     }
     can.route.attr(name, value);
+  },
+  getRelatedFilter: function(model, id) {
+    return [{
+      name: model.attr('foreignKey'),
+      op: '==',
+      val: id
+    }];
+  },
+  getRelatedConnection: function(model, id) {
+    console.log(model, id);
+    var connection = model.attr('connection');
+    var idField = model.attr('foreignKey');
+    connection.attr('map').defaults[idField] = id;
+    return connection;
   }
 });

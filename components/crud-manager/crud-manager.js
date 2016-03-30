@@ -25,7 +25,12 @@ export let viewModel = Map.extend({
       value: false
     },
     parameters: {
-      Value: Map
+      set: function(val) {
+        console.log('params set', val);
+        return val;
+      },
+      Value: Map,
+      Type: Map
     },
     page: {
       value: 'all',
@@ -36,9 +41,6 @@ export let viewModel = Map.extend({
     },
     totalPages: {
       get: function(val, setAttr) {
-        if (!this.attr('connection.properties')) {
-          return 0;
-        }
         var total = this.attr('connection.properties.meta.total');
         this.attr('totalItems', total);
         var pages = parseInt(total / this.attr('queryPerPage'));
@@ -74,23 +76,50 @@ export let viewModel = Map.extend({
       value: null
     },
     queryFilters: {
-      Value: List
+      Value: List,
+      set: function(filters) {
+        var params = this.attr('parameters');
+        if (!params) {
+          return filters;
+        }
+        this.setFilterParameter(filters);
+        return filters
+      }
     },
     queryPage: {
       type: 'number',
-      value: 0
+      value: 0,
+      set: function(page) {
+        var params = this.attr('parameters');
+        if (!params) {
+          return page;
+        }
+        params.attr('page[number]', page + 1);
+        return page;
+      }
     },
     queryPerPage: {
       type: 'number',
-      value: 10
-    },
-    formObject: {
-      value: null
+      value: 10,
+      set: function(perPage) {
+        var params = this.attr('parameters');
+        if (!params) {
+          return perPage;
+        }
+        params.attr('page[size]', perPage);
+        return perPage;
+      }
     },
     viewId: {
       type: 'number',
       value: 0
     }
+  },
+  init: function() {
+    var params = this.attr('parameters');
+    params.attr('page[size]', this.attr('queryPerPage'));
+    params.attr('page[number]', this.attr('queryPerPage'));
+    this.setFilterParameter(this.attr('queryFilters'));
   },
   editObject: function(scope, dom, event, obj) {
     this.attr('viewId', this.attr('connection.connection').id(obj));
@@ -105,6 +134,8 @@ export let viewModel = Map.extend({
     this.attr('viewId', 0);
   },
   createObject: function() {
+    //create a new empty object with the defaults provided
+    //from the connection.map property which is a special map
     var newObject = this.attr('connection.map')();
     this.attr('newObject', newObject);
     this.attr('page', 'add');
@@ -135,39 +166,22 @@ export let viewModel = Map.extend({
       this.attr('parameters.sort', fieldName);
     }
   },
-  updateFilterParam: function(filters) {
+  setFilterParameter: function(filters) {
+    var params = this.attr('parameters');
     //reset the page filter
     this.attr('queryPage', 0);
     if (filters.length) {
       //if there are filters in the list, set the filter parameter
-      this.attr('parameters.filter[objects]', JSON.stringify(filters.attr()));
+      params.attr('filter[objects]', JSON.stringify(filters.attr()));
     } else {
       //remove the filter parameter
-      this.removeAttr('parameters.filter[objects]');
+      params.removeAttr('filter[objects]');
     }
-    return filters;
-  },
-  updatePageParam: function(page) {
-    this.attr('parameters.page[number]', page + 1);
-  },
-  updatePerPageParam: function(perPage) {
-    this.attr('parameters.page[size]', perPage);
   }
 });
 
 Component.extend({
   tag: 'crud-manager',
   viewModel: viewModel,
-  template: template,
-  events: {
-    '{viewModel.queryFilters} change': function(filters) {
-      this.viewModel.updateFilterParam(filters);
-    },
-    '{viewModel} queryPage': function(obj, evt, newPage) {
-      this.viewModel.updatePageParam(newPage);
-    },
-    '{viewModel} queryPerPage': function(obj, evt, perPage) {
-      this.viewModel.updatePerPageParam(newPage);
-    }
-  }
+  template: template
 });

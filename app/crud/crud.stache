@@ -27,6 +27,20 @@
           {{#each parameters}}
             {{%key}} - {{.}}
           {{/each}}
+
+          {{#is page 'details'}}
+            {{#if activeModel.relatedModels}}
+              <hr />
+              <h2>Related Data</h2>
+              <tab-container>
+                {{#each activeModel.relatedModels}}
+                  <panel-container title="{{title}}">
+                    <crud-manager {connection}="getRelatedConnection(../, viewId)" editable="true" {query-filters}="getRelatedFilter(../, viewId)" {edit-fields}="../editFields" {detail-fields}="../detailFields" {table-fields}="../tableFields"></crud-manager>
+                  </panel-container>
+                {{/each}}
+              </tab-container>
+            {{/if}}
+          {{/is}}
         </div>
       </div>
     </div>
