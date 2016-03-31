@@ -123,14 +123,17 @@ export let viewModel = Map.extend({
   },
   editObject: function(scope, dom, event, obj) {
     this.attr('viewId', this.attr('connection.connection').id(obj));
+    this.attr('focusObject', obj);
     this.attr('page', 'edit');
   },
   viewObject: function(scope, dom, event, obj) {
     this.attr('viewId', this.attr('connection.connection').id(obj));
+    this.attr('focusObject', obj);
     this.attr('page', 'details');
   },
   resetPage: function() {
     this.attr('page', 'all');
+    this.attr('focusObject', null);
     this.attr('viewId', 0);
   },
   createObject: function() {
