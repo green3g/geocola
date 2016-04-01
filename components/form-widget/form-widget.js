@@ -81,6 +81,7 @@ const FIELD_TYPES = {
   select: '<select-field {properties}="." (change)="setField" />',
   file: '<file-field {properties}="." (change)="setField" />'
 };
+
 /**
  * @typedef {formFieldObject} form-widget.types.formFieldObject FormFieldObject
  * This can either be a string representing the field name or an object with the properties described below.
@@ -171,7 +172,6 @@ export let viewModel = can.Map.extend({
               alias: self.formatField(field),
               template: can.stache(FIELD_TYPES.text),
               properties: {},
-              valueParser: null,
               value: self.attr(['formObject', field].join('.'))
             };
           } else {
@@ -179,7 +179,6 @@ export let viewModel = can.Map.extend({
               name: field.name,
               alias: field.alias || self.formatField(field.name),
               template: field.template || can.stache(FIELD_TYPES[field.type || 'text']),
-              valueParser: field.valueParser || null,
               value: self.attr(['formObject', field.name].join('.'))
             });
           }
@@ -213,7 +212,6 @@ export let viewModel = can.Map.extend({
    */
   submitForm: function() {
     let formObject = this.attr('formObject');
-    console.log(formObject);
 
     //save the model object
     formObject.save();
@@ -222,7 +220,16 @@ export let viewModel = can.Map.extend({
     //prevent the form from submitting
     return false;
   },
-  setField: function(field, select, event, value){
+  /**
+   * Sets the formObject value when a field changes. This will allow for future
+   * functionality where the form is much more responsive to values changing, like
+   * cascading dropdowns.
+   * @param  {formFieldObject} field  The field object properties
+   * @param  {domElement} domElement The form element that dispatched the event
+   * @param  {Event} event  The event object and type
+   * @param  {Object | Number | String} value  The value that was passed from the field component
+   */
+  setField: function(field, domElement, event, value){
     var obj = this.attr('formObject');
     obj.attr(field.name, value);
   },
