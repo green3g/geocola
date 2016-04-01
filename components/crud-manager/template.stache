@@ -8,10 +8,10 @@
 
 {{#switch page}}
   {{#case 'edit'}}
-    <form-widget {object-id}="viewId" {connection}="connection" (submit)="resetPage" (cancel)="resetPage" {fields}="editFields" />
+    <form-widget {object-id}="viewId" {connection}="connection" (submit)="saveObject" (cancel)="resetPage" {fields}="editFields" />
   {{/case}}
   {{#case 'add'}}
-    <form-widget {form-object}="newObject" {connection}="connection" (submit)="resetPage" (cancel)="resetPage" {fields}="editFields" />
+    <form-widget {form-object}="newObject" {connection}="connection" (submit)="saveObject" (cancel)="resetPage" {fields}="editFields" />
   {{/case}}
   {{#case 'all'}}
     <filter-widget {(filters)}="queryFilters" {field-options}="filterFields" />

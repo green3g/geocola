@@ -26,7 +26,6 @@ export let viewModel = Map.extend({
     },
     parameters: {
       set: function(val) {
-        console.log('params set', val);
         return val;
       },
       Value: Map,
@@ -43,7 +42,7 @@ export let viewModel = Map.extend({
       get: function(val, setAttr) {
         var total = this.attr('connection.properties.meta.total');
         this.attr('totalItems', total);
-        //round up to the nearest integer 
+        //round up to the nearest integer
         var pages = Math.ceil(total / this.attr('queryPerPage'));
         return pages;
       }
@@ -130,6 +129,9 @@ export let viewModel = Map.extend({
   viewObject: function(scope, dom, event, obj) {
     this.attr('viewId', this.attr('connection.connection').id(obj));
     this.attr('focusObject', obj);
+    this.attr('page', 'details');
+  },
+  saveObject: function(){
     this.attr('page', 'details');
   },
   resetPage: function() {
