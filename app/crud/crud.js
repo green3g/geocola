@@ -98,8 +98,7 @@ export let AppViewModel = can.Map.extend({
     }];
   },
   getRelatedConnection: function(model, id) {
-    console.log(model, id);
-    var connection = model.attr('connection');
+    var connection = model.attr('model.connection');
     var idField = model.attr('foreignKey');
     connection.attr('map').defaults[idField] = id;
     return connection;
