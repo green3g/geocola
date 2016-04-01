@@ -1,10 +1,13 @@
 /* jshint esnext: true */
 
-import Map from 'can/map/';
-import Component from 'can/component/';
-import Stache from 'can/view/stache/';
+import can from 'can';
 //import './widget.css!';
 import template from './template.stache!';
+
+import './field-components/text-field';
+import './field-components/select-field';
+import './field-components/file-field';
+
 /**
  * @module {can.Component} form-widget
  * @parent Home.components
@@ -74,83 +77,9 @@ formObject: {value: Filter}
  */
 
 const FIELD_TYPES = {
-  /**
-   * @page form-widget.fields.text Text
-   * @parent form-widget.fields
-   * @body
-   * A generic text box with a label. If the `type` property is not provided, `'text'` is the default.
-   *
-   * `type: 'text'`
-   */
-  text: '<input type="text" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}" />',
-  /**
-   * @typedef {selectFieldProperty} form-widget.types.selectFieldProperty selectFieldProperty
-   * @parent form-widget.types
-   * @option {Array.<form-widget.types.selectOptionProperty>} options An array of values and labels
-   */
-  /**
-   * @typedef {selectOptionProperty} form-widget.types.selectOptionProperty selectOptionProperty
-   * @parent form-widget.types
-   * @option {*} value The value of the dropdown. This is converted to a string inside the option tag.
-   * @option {String} label The label to display in the select dropdown.
-   */
-  /**
-   * @page form-widget.fields.select Select
-   * @parent form-widget.fields
-   * @body
-   * A select dropdown with options. See `selectFieldProperty` and `selectOptionProperty`.
-   * @link form-widget.types.selectFieldProperty selectFieldProperty
-   * @link form-widget.types.selectOptionProperty selectOptionProperty
-   * # Example
-```
-{
-  name: 'op',
-  alias: 'is',
-  placeholder: 'Choose a operator',
-  type: 'select',
-  properties: {
-    options: [{
-      label: 'Equal to',
-      value: '=='
-    }, {
-      label: 'Not equal to',
-      value: '!='
-    }, {
-      label: 'Contains',
-      value: 'in'
-    }, {
-      label: 'Does not contain',
-      value: 'not_in'
-    }, {
-      label: 'Like',
-      value: 'like'
-    }]
-  }
-},
-```
-   *
-   */
-  select: [
-    '{{value}}<select id="{{name}}" class="form-control" name="{{name}}" value="{{value}}">',
-    '<option value=""{{^value}} selected{{/value}}></option>',
-    '{{#each properties.options}}',
-    '<option value="{{value}}"{{#is value, ../value}} selected{{/is}}>{{label}}</option>',
-    '{{/each}}',
-    '</select>'
-  ].join(''),
-  /**
-   * @page form-widget.fields.textarea Textarea
-   * @parent form-widget.fields
-   * @body
-   * A generic textarea for larger input fields
-   *
-   * `type: 'textarea'`
-   */
-  textarea: [
-    '<textarea id="{{name}}" class="form-control" name="{{name}}">',
-    '{{value}}',
-    '</textarea>'
-  ].join('')
+  text: '<text-field {properties}="." (change)="setField" />',
+  select: '<select-field {properties}="." (change)="setField" />',
+  file: '<file-field {properties}="." (change)="setField" />'
 };
 /**
  * @typedef {formFieldObject} form-widget.types.formFieldObject FormFieldObject
@@ -165,14 +94,14 @@ const FIELD_TYPES = {
  * @option {String} The value stored in the formObject. This is provided by the form-widget internally
  */
 
- /**
-  * @typedef {can.Event} form-widget.events.formSubmitEvent submit
-  * An event dispatched when the save button is clicked. The formObject is passed as an argument
-  * @parent form-widget.events
-  * @option {can.Map} formObject The formObject
-  */
+/**
+ * @typedef {can.Event} form-widget.events.formSubmitEvent submit
+ * An event dispatched when the save button is clicked. The formObject is passed as an argument
+ * @parent form-widget.events
+ * @option {can.Map} formObject The formObject
+ */
 
-export let viewModel = Map.extend({
+export let viewModel = can.Map.extend({
   define: {
     /**
      * Whether or not this form should be a bootstrap inline form
@@ -231,7 +160,7 @@ export let viewModel = Map.extend({
         var objs = new can.Map({});
         var fields = this.attr('fields');
         if (!(fields && fields.length)) {
-          fields = Map.keys(this.attr('formObject'));
+          fields = can.Map.keys(this.attr('formObject'));
         }
         var self = this;
         fields.forEach(function(field) {
@@ -240,20 +169,19 @@ export let viewModel = Map.extend({
             obj = {
               name: field,
               alias: self.formatField(field),
-              template: Stache(FIELD_TYPES.text),
+              template: can.stache(FIELD_TYPES.text),
               properties: {},
               valueParser: null,
               value: self.attr(['formObject', field].join('.'))
             };
           } else {
-            obj = {
+            obj = can.extend(field.properties, {
               name: field.name,
               alias: field.alias || self.formatField(field.name),
-              template: field.template || Stache(FIELD_TYPES[field.type || 'text']),
-              properties: field.properties || {},
+              template: field.template || can.stache(FIELD_TYPES[field.type || 'text']),
               valueParser: field.valueParser || null,
               value: self.attr(['formObject', field.name].join('.'))
-            };
+            });
           }
           objs.attr(field.name || field, obj);
         });
@@ -281,33 +209,11 @@ export let viewModel = Map.extend({
     });
   },
   /**
-   * Called when the form is submitted. Serializes the form data and compares it to the formObject. If there are changes, the object is updated and its `save` method is called. The event `submit` is dispatched.
-   * @param  {can.Map} scope The stache scope
-   * @param  {HTMLFormElement} form  The submitted form object
-   * @param  {can.Event} event The submit event
-   * @return {Boolean} Returns false to prevent the form from actually submitting
+   * Called when the form is submitted. The object is updated by calling it's `save` method. The event `submit` is dispatched.
    */
-  formSubmit: function(scope, form, event) {
-
-    //get the form data in an array
-    var data = can.$(form).serializeArray();
-
-    //get the form model object
-    var formObject = this.attr('formObject');
-
-    //loop through it and update the model object as necessary
-    for (var i = 0; i < data.length; i++) {
-      var newData = data[i];
-      var valueParser = this.attr('_fieldObjects.' + newData.name + '.valueParser');
-
-      //format the field value if a valueParser exists
-      var value = valueParser ? valueParser(newData.value, data) : newData.value;
-
-      //if it changed, update the value
-      if (formObject.attr(newData.name) !== value) {
-        formObject.attr(newData.name, value);
-      }
-    }
+  submitForm: function() {
+    let formObject = this.attr('formObject');
+    console.log(formObject);
 
     //save the model object
     formObject.save();
@@ -315,6 +221,10 @@ export let viewModel = Map.extend({
 
     //prevent the form from submitting
     return false;
+  },
+  setField: function(field, select, event, value){
+    var obj = this.attr('formObject');
+    obj.attr(field.name, value);
   },
   /**
    * @typedef {can.Event} form-widget.events.formCancelEvent cancel
@@ -350,7 +260,7 @@ export let viewModel = Map.extend({
   }
 });
 
-Component.extend({
+can.Component.extend({
   tag: 'form-widget',
   viewModel: viewModel,
   template: template,
