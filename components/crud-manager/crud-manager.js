@@ -43,7 +43,8 @@ export let viewModel = Map.extend({
       get: function(val, setAttr) {
         var total = this.attr('connection.properties.meta.total');
         this.attr('totalItems', total);
-        var pages = parseInt(total / this.attr('queryPerPage'));
+        //round up to the nearest integer 
+        var pages = Math.ceil(total / this.attr('queryPerPage'));
         return pages;
       }
     },
