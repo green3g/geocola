@@ -124,9 +124,8 @@ export function FlaskConnectFactory(options) {
       obj.id = props.id;
       //include the relationship id's
       for (var rel in props.relationships) {
-        if (props.relationships.hasOwnProperty(rel) &&
-          props.relationships[rel].data) {
-          obj['_' + rel] = props.relationships[rel].data.id;
+        if (props.relationships.hasOwnProperty(rel)) {
+          obj['_' + rel] = props.relationships[rel].data ? props.relationships[rel].data.id : null;
         }
       }
       return obj;

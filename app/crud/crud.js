@@ -5,7 +5,7 @@ import 'bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css!';
 import '../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css!';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
-import './crud.css!'
+import './crud.css!';
 import 'components/crud-manager/';
 import 'components/tab-container/';
 
@@ -35,7 +35,6 @@ export let AppViewModel = can.Map.extend({
     }
   },
   startup: function(domNode) {
-    console.log(this.attr('parameters'))
     this.initRoute();
     this.activateModelById(can.route.attr('model') || this.attr('models')[0].attr('id'));
     can.$(domNode).html(can.view(template, this));
@@ -99,8 +98,7 @@ export let AppViewModel = can.Map.extend({
     }];
   },
   getRelatedConnection: function(model, id) {
-    console.log(model, id);
-    var connection = model.attr('connection');
+    var connection = model.attr('model.connection');
     var idField = model.attr('foreignKey');
     connection.attr('map').defaults[idField] = id;
     return connection;

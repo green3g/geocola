@@ -34,8 +34,8 @@
               <h2>Related Data</h2>
               <tab-container>
                 {{#each activeModel.relatedModels}}
-                  <panel-container title="{{title}}">
-                    <crud-manager {connection}="getRelatedConnection(../, viewId)" editable="true" {query-filters}="getRelatedFilter(../, viewId)" {edit-fields}="../editFields" {detail-fields}="../detailFields" {table-fields}="../tableFields"></crud-manager>
+                  <panel-container title="{{model.title}}">
+                    <crud-manager {connection}="getRelatedConnection(../, viewId)" editable="true" {query-filters}="getRelatedFilter(../, viewId)" {edit-fields}="../model.editFields" {detail-fields}="../model.detailFields" {table-fields}="../model.tableFields"></crud-manager>
                   </panel-container>
                 {{/each}}
               </tab-container>
