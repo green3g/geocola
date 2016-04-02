@@ -4,28 +4,13 @@ import './list-table.css!';
 import viewModel from '../widget-model';
 import List from 'can/list/';
 import Component from 'can/component/';
-/**
- * @module {can.Component} list-table
- * @parent Home.components
-  * @group list-table.types 0 Types
-  * @group list-table.props 2 Properties
-  * @group list-table.events 3 Events
-  * @group list-table.static 4 Static
-## Description
-A configureable form widget to modify data. The form accepts a formObject property that should be an object similar to a `can.Model`. When the form is submitted, it calls the model's `save` method.
 
-## Usage
-```html
-  <list-table {form-object}="formObject" (submit)="resetPage"
-   (cancel)="resetPage" {fields}="formFields" />
-```
- */
 /**
- * @typedef {buttonObject} buttonObject buttonObject
+ * @typedef {buttonObject} list-table.types.buttonObject buttonObject
  * @parent list-table.types
  * @option {String} title The title to display on the button hover
  * @option {String} iconClass The class to use for the button icon
- * @option {String} eventname The event to dispatch when the button is clicked
+ * @option {String} eventName The event to dispatch when the button is clicked. This allows developers to bind functions to custom events, like `(eventName)="functionName"`
  */
 
 export const ViewModel = viewModel.extend({
@@ -65,9 +50,9 @@ export const ViewModel = viewModel.extend({
     /**
      * A virtual property that helps the template determine whether all objects are selected
      * @parent list-table.props
-     * @property {Boolean} list-table.props.allSelected
+     * @property {Boolean} list-table.props._allSelected
      */
-    allSelected: {
+    _allSelected: {
       type: 'boolean',
       get: function(){
         return this.attr('selectedObjects').length === this.attr('objects').length;
@@ -76,15 +61,27 @@ export const ViewModel = viewModel.extend({
     /**
      * An array of buttonObjects
      * @parent list-table.props
-     * @property {Array.<buttonObject>} list-table.props.buttons
+     * @property {Array.<list-table.types.buttonObject>} list-table.props.buttons
      */
     buttons: {
       value: List
     }
   },
+  /**
+   * @prototype
+   */
+  /**
+   * Called when a button is clicked. This dispatches the buttons event.
+   * @param  {String} eventName The name of the event to dispatch
+   * @param  {can.Map} object  The row data
+   */
   buttonClick: function(eventName, object) {
     this.dispatch(eventName, [object]);
   },
+  /**
+   * Toggles a row as selected or not selected
+   * @param  {can.Map} obj The row to toggle 
+   */
   toggleSelected: function(obj) {
     var index = this.attr('selectedObjects').indexOf(obj);
     if (index > -1) {

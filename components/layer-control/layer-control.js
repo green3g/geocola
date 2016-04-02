@@ -47,10 +47,10 @@ export const ViewModel = can.Map.extend({
   define: {
     /**
      * An internal list of layers used by the template
-     * @property {Array<controlLayerObject>} layer-control.props.layers
+     * @property {Array<controlLayerObject>} layer-control.props._layers
      * @parent layer-control.props
      */
-    layers: {
+    _layers: {
       Value: can.List
     },
     /**
@@ -62,7 +62,7 @@ export const ViewModel = can.Map.extend({
       type: 'string'
     },
     /**
-     * The openlayers map
+     * The openlayers map. Instead of providing a reference to ol-map component, you can provide a `ol.Map` object directly.
      * @property {ol.Map} layer-control.props.map
      * @parent layer-control.props
      */
@@ -118,11 +118,11 @@ export const ViewModel = can.Map.extend({
    * @param  {Number} index The layer's position in the collection
    */
   addLayer: function(layer, index) {
-    var filteredLayers = this.attr('layers').filter(function(l) {
+    var filteredLayers = this.attr('_layers').filter(function(l) {
       return l.attr('id') === layer.get('id');
     });
     if (filteredLayers.length === 0) {
-      this.attr('layers').splice(index, 0, {
+      this.attr('_layers').splice(index, 0, {
         exclude: layer.get('excludeControl'),
         title: layer.get('title') || 'Layer',
         visible: layer.getVisible(),
@@ -139,9 +139,9 @@ export const ViewModel = can.Map.extend({
    */
   removeLayerById: function(id) {
     var self = this;
-    this.attr('layers').each(function(layer, index) {
+    this.attr('_layers').each(function(layer, index) {
       if (layer.attr('layer').get('id') === id) {
-        self.attr('layers').splice(index, 1);
+        self.attr('_layers').splice(index, 1);
         return false;
       }
     });

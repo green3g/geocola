@@ -1,5 +1,5 @@
 <ul class="list-group layer-control">
-  {{#each layers}}
+  {{#each _layers}}
   <li class="list-group-item">
     {{{template}}}
   </li>
