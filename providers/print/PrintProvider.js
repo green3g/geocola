@@ -1,7 +1,7 @@
 /*jshint esnext:true */
 import Map from 'can/map/';
 /**
- * @module {can.Map} providers.printProvider Print Provider Spec
+ * @module {can.Map} providers.printProvider Print Provider
  * @parent Home.providers
  * @description
  * A print provider is the basic lower level api that connects

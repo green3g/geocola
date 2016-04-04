@@ -9,8 +9,8 @@ import template from './template.stache!';
 export let viewModel = Map.extend({
   define: {
     /**
-     * The number of pages
-     * @property {Number}
+     * The number of pages to show in the widget
+     * @property {Number} list-table.props.pages
      */
     pages: {
       type: 'number',
@@ -25,8 +25,8 @@ export let viewModel = Map.extend({
       type: 'number'
     },
     /**
-     * Whether there is another page
-     * @property {Object}
+     * A virtual property used by the template to indicate whether or not there is a next page
+     * @property {Boolean} list-table.props.hasNext
      */
     hasNext: {
       get: function() {
@@ -34,8 +34,8 @@ export let viewModel = Map.extend({
       }
     },
     /**
-     * [hasPreviousFeature description]
-     * @property {Object}
+     * A virtual property used by the template to indicate whether or not there is a previous page
+     * @property {Boolean} list-table.props.hasPrevious
      */
     hasPrevious: {
       get: function() {

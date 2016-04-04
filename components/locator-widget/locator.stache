@@ -3,7 +3,7 @@
     <div class="input-group">
       <div class="input-group-addon"><i class="fa fa-search" /></div>
       <input ($keyup)="searchAddressValue %element.value" class="addressInput form-control" placeholder="Find an address or place" value= {{addressValue}} />
-      {{#unless loading.isResolved}}
+      {{#unless _loading.isResolved}}
         <div class="input-group-addon"><i class="fa fa-spinner fa-spin" /></div>
       {{/unless}}
       {{#if addressValue}}

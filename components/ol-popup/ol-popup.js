@@ -7,30 +7,11 @@ import widgetModel from 'components/widget-model';
 
 /**
  * @module ol-popup
- * @parent Home.components
- * @group ol-popup.props Properties
- * @group ol-popup.events Events
- * @body
- ## Description
- A basic openlayers popup to use for displaying content.
-
- ## Usage
- Place inside an `ol-map` component object
-
- ```html
- <ol-map>
-   <ol-popup>
-     <p>My content</p>
-     <my-component option="..."></my-component>
-   </ol-popup>
- </ol-map>
- ```
- *
  */
 export const ViewModel = widgetModel.extend({
   define: {
     /**
-     * Whether or not this popup should be a modal dialog instead of a map overlay popup
+     * Whether or not the current state of this popup should be a modal dialog instead of a map overlay popup. This can be changed dynamically 
      * @property {Boolean} ol-popup.props.modal
      * @parent ol-popup.props
      */

@@ -4,15 +4,8 @@ import 'components/panel-container/';
 import template from './tabs.stache!';
 /**
  * @module tab-container
- * @parent Home.components
- * @description
- A basic tab container. Works with [panel-container](./panel-container.html) components.
- * @signature `<tab-container />` Example:
-
- ```html
-   <tab-container></tab-container>
- ```
  */
+
 export const ViewModel = can.Map.extend({
   define: {
     /**

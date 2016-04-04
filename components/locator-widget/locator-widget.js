@@ -8,40 +8,31 @@ import icon from './icon';
 
 /**
  * @module locator-widget
- * @parent Home.components
- * @group locator-widget.props Properties
- * @body
- *
- ## Description
- A widget for getting and displaying suggestions and address locations from a geocoder provider. Optionally navigates and displays locations to an `ol-map` component.
-
- ## Usage
-
- ```html
- <locator-widget {provider}="providerKeyName" map-node="#map" />
- ```
  */
 export const ViewModel = widgetModel.extend({
   define: {
     /**
-     * @property {string} locator-widget.props.addressValue
-     * The default address value for the textbox.
+    * The default address value for the textbox.
+     * @property {String} locator-widget.props.addressValue
+     * @parent locator-widget.props
      */
     addressValue: {
       value: null,
       type: 'string'
     },
     /**
-     * @property {string} locator-widget.props.url
-     * the url to geocode to for find and suggest endpoints
+    * the url to geocode to for find and suggest endpoints
+     * @property {String} locator-widget.props.url
+     * @parent locator-widget.props
      */
     url: {
       value: null,
       type: 'string'
     },
     /**
-     * @property {number} locator-widget.props.zoomLevel
-     * the default level of zoom to apply if using an ol-map
+    * The default level of zoom to apply if using an ol-map. The default is `18`
+     * @property {Number} locator-widget.props.zoomLevel
+     * @parent locator-widget.props
      */
     zoomLevel: {
       value: 18,
@@ -49,7 +40,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * whether or not to navigate the map
-     * @property {boolean} locator-widget.props.navigate
+     * @property {Boolean} locator-widget.props.navigate
+     * @parent locator-widget.props
      */
     navigate: {
       type: 'boolean',
@@ -57,13 +49,15 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * a geocoder service provider
-     * @property {Object} locator-widget.props.provider
+     * @property {providers.locationProvider} locator-widget.props.provider
      * @link providers.locationProvider Location Providers
+     * @parent locator-widget.props
      */
     provider: {},
     /**
      * @property {Array<providers.locationProvider.types.suggestionsObject>} locator-widget.props.suggestions
      * current suggestions in the widget
+     * @parent locator-widget.props
      */
     suggestions: {
       Value: can.List
@@ -71,15 +65,17 @@ export const ViewModel = widgetModel.extend({
     /**
      * the current location found by the widget
      * @property {Object} locator-widget.props.location
+     * @parent locator-widget.props
      */
     location: {
       Value: can.Map
     },
     /**
-     * A deferred representing the current loading state
-     * @property {can.Deferred} locator-widget.props.loading
+     * A deferred representing the current _loading state
+     * @property {can.Deferred} locator-widget.props._loading
+     * @parent locator-widget.props
      */
-    loading: {
+    _loading: {
       value: function(){
         return can.Deferred().resolve();
       }
@@ -135,8 +131,8 @@ export const ViewModel = widgetModel.extend({
     if (address.length && address.length > 5) {
       var provider = this.attr('provider');
       provider.cancelPending();
-      this.attr('loading', provider.getSuggestions(address, point));
-      this.attr('loading').then(this.updateSuggestions.bind(this));
+      this.attr('_loading', provider.getSuggestions(address, point));
+      this.attr('_loading').then(this.updateSuggestions.bind(this));
     }
   },
   /**
@@ -146,9 +142,14 @@ export const ViewModel = widgetModel.extend({
    */
   selectAddress: function(address) {
     this.attr('addressValue', address);
-    this.attr('loading', this.attr('provider').getLocation(address));
-    this.attr('loading').then(this.handleAddressLocated.bind(this));
+    this.attr('_loading', this.attr('provider').getLocation(address));
+    this.attr('_loading').then(this.handleAddressLocated.bind(this));
   },
+  /**
+   * @typedef {can.Event} locator-widget.events.addressCleared address-cleared
+   * @parent locator-widget.events
+   * An event dispatched when the the address is cleared using the clear button
+   */
   /**
    * Clears the suggestions, address value, and any graphics on the layer if it exists. Dispatches event `address-cleared`
    * @signature
@@ -160,9 +161,15 @@ export const ViewModel = widgetModel.extend({
     this.dispatch('address-cleared');
   },
   /**
+   * @typedef {can.Event} locator-widget.events.suggestionsFound suggestions-found
+   * @parent locator-widget.events
+   * An event dispatched when suggestions are found from the provider
+   * @option {Array.<String>} suggestions The suggestions that were found by the provider
+   */
+  /**
    * Called internally to update the suggestions list when suggestions are found by the provider. Dispatches event `suggestions-found` with the array of suggestions
    * @signature
-   * @param  {suggestionsObject} results An array of string results
+   * @param  {providers.locationProvider.types.suggestionsObject} results An array of string results
    */
   updateSuggestions: function(results) {
     if (results.suggestions != this.attr('suggestions')) {
@@ -170,6 +177,11 @@ export const ViewModel = widgetModel.extend({
       this.dispatch('suggestions-found', [results.suggestions]);
     }
   },
+  /**
+   * @typedef {can.Event} locator-widget.events.suggestionsCleared suggestions-cleared
+   * @parent locator-widget.events
+   * An event dispatched when the the suggestions are cleared from the widget
+   */
   /**
    * Empties the list of suggestions-cleared
    * @signature
@@ -189,9 +201,15 @@ export const ViewModel = widgetModel.extend({
     }
   },
   /**
+   * @typedef {can.Event} locator-widget.events.locationFound location-found
+   * @parent locator-widget.events
+   * An event dispatched when the the location is found by the provider
+   * @option {providers.locationProvider.types.locationObject} location The location found by the provider
+   */
+  /**
    * Called internally when the address is resolved to a location by the provider
    * @signature
-   * @param  {locationObject} location The location object
+   * @param  {providers.locationProvider.types.locationObject} location The location object
    */
   handleAddressLocated: function(location) {
     this.clearSuggestions();
@@ -204,7 +222,7 @@ export const ViewModel = widgetModel.extend({
   /**
    * Pans the map to the location and adds a point to the graphics layer
    * @signature
-   * @param  {locationObject} location The location object
+   * @param  {providers.locationProvider.types.locationObject} location The location object
    */
   navigateMap: function(location) {
     var map = this.attr('map');

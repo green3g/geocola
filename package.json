@@ -7,7 +7,7 @@
     "test": "test",
     "build": "steal-tools",
     "watch": "steal-tools --watch",
-    "docs": "documentjs --watch",
+    "docs": "documentjs --watch -d",
     "export": "node build.js"
   },
   "author": "roemhildtg",

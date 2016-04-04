@@ -2,13 +2,13 @@
 
 @module {can.Component} list-table
 @parent Home.components
-@group list-table.types 0 Types
-@group list-table.props 2 Properties
+@group list-table.types Types
+@group list-table.props Properties
 
 -->
 
 ## Description
-A configureable table that displays rows of data.
+A configureable table that displays arrays of objects in a table format with rows of data.
 
 The widget is configureable to allow for custom functionality. A `buttons` property provides this capability. When the button is clicked, the eventName is dispatched. In this way, it can be configured to emit any event and display a button with any icon.
 

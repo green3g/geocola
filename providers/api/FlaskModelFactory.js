@@ -8,6 +8,17 @@ function getNextId() {
   return uniqueId++;
 }
 
+/**
+ * @typedef {connectInfoObject} apiProvider.types.connectInfoObject ConnectInfoObject
+  * @parent providers.apiProvider.types
+  * @option {can.Model | superMap} connection The data model used to create, update and delete objects.
+  * @option {can.Map | object} map The object used to create new objects. This object can be used to specify default values and properties when creating new empty objects.
+ *  @option {can.List | Array} list The list used internally by can-connect
+  * @option {Object} properties Additional metadata about the api and data
+ */
+ /**
+  * @function FlaskConnectFactory
+  */
 export function FlaskConnectFactory(options) {
   //a new list which should hold the objects
   let Objectist = can.List.extend({

@@ -2,7 +2,7 @@
 
 import Map from 'can/map/';
 /**
- * @module {can.Map} providers.locationProvider Location Provider Spec
+ * @module {can.Map} providers.locationProvider Location Provider
  * @parent Home.providers
  * @description
  * A location provider is the basic lower level api that connects

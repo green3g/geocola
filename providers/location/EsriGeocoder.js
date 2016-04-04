@@ -2,7 +2,6 @@
 import can from 'can';
 /**
  * @module providers.EsriGeocoder EsriGeocoder
- * @parent Home.providers
  * @inherits providers.locationProvider
  * @description
  * Provides abstraction for Esri's ArcGIS Online or ArcGIS for Server geocoders

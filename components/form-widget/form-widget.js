@@ -208,6 +208,12 @@ export let viewModel = can.Map.extend({
     });
   },
   /**
+   * @typedef {can.Event} form-widget.events.formSubmit submit
+   * @parent form-widget.events
+   * An event dispatched when the form is submitted
+   * @option {can.Map | Object} formObject The form object that is saved 
+   */
+  /**
    * Called when the form is submitted. The object is updated by calling it's `save` method. The event `submit` is dispatched.
    */
   submitForm: function() {
@@ -234,7 +240,7 @@ export let viewModel = can.Map.extend({
     obj.attr(field.name, value);
   },
   /**
-   * @typedef {can.Event} form-widget.events.formCancelEvent cancel
+   * @typedef {can.Event} form-widget.events.formCancel cancel
    * @parent form-widget.events
    * An event dispatched when the cancel button is clicked. No arguments are passed.
    */

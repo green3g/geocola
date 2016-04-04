@@ -8,19 +8,6 @@ import Component from 'can/component/';
 
 /**
  * @module property-table
- * @parent Home.components
- * @group property-table.types Types
- * @body
- *
- ## Description
- A widget for getting and displaying an objects properties
-
- ## Usage
-
- ```html
- <property-table object-id="3" {connection}="connection"
-  {field-properties}="detailFields" />
- ```
  */
 
 /**
@@ -30,25 +17,69 @@ import Component from 'can/component/';
  * @option {String} alias The label to display for this field. The default is replace underscores with spaces
  * and capitalize the first letter
  * @option {Boolean} exclude If set to true, this field will not display in the identify widget
- * @option {function(value, attributes)} formatter An optional formatter function for the field's value that will return a string.
+ * @option {function(value, attributes)} formatter An optional formatter function for the field's value that will return a string. This function may accept two arguments, the first being the property value, and the second being an object with all of the objects properties. This is provided in case a developer wants to use other proerties to format a value.
 ```
 formatter: function(name, props) {
    return name + ' is Awesome! and my other prop is' + props.otherProp;
  }
  ```
+
+ * @description
+
+## Example
+
+```
+var fieldProps = {
+  bbox: {
+    exclude: true
+  },
+  STATE_NAME: {
+    alias: 'Name',
+    formatter: function(name, properties) {
+      return name + ' is Awesome!</strong>';
+    }
+  }
+};
+```
+ */
+
+/**
+ * @typedef {tableValuesObject} property-table.types.tableValuesObject tableValuesObject
+ * @parent property-table.types
+ * An object used by the template to render the fields and their formatted values
+ * @option {String} field The unformatted field name
+ * @option {String} alias The formatted field name or alias
+ * @option {String | Number | Boolean} value The formatted value
+ * @option {String | Number | Boolean} rawValue The unformatted value
+ *
  */
 
 
 export const ViewModel = viewModel.extend({
   define: {
+    /**
+     * A flag to allow editing (Not yet implemented)
+     * @property {Boolean} property-table.props.edit
+     * @parent property-table.props
+     */
     edit: {
       type: 'boolean',
       value: true
     },
+    /**
+     * A flag to allow deleting (Not yet implemented)
+     * @property {Boolean} property-table.props.delete
+     * @parent property-table.props
+     */
     delete: {
       type: 'boolean',
       value: true
     },
+    /**
+     * The ID value of the object that should be retrieved. This value along with the connection object will be used to retrieve an object from a RESTful service
+     * @property {Number} property-table.props.objectId
+     * @parent property-table.props
+     */
     objectId: {
       type: 'number',
       set: function(id) {
@@ -56,25 +87,37 @@ export const ViewModel = viewModel.extend({
         return id;
       }
     },
+    /**
+     * The The connection object that should be used to retrieve an object. This value along with the objectId value will be used to retrieve an object from a RESTful service
+     * @property {providers.apiProvider} property-table.props.connection
+     * @parent property-table.props
+     */
     connection: {
       set: function(con) {
         this.fetchObject(con.attr('connection'), this.attr('objectId'));
         return con;
       }
     },
+    /**
+     * A generic object to display in a tabular format. This can be used instead of providing a connection and objectId property
+     * @property {can.Map | Object} property-table.props.object
+     * @parent property-table.props
+     */
     object: {
       Type: Map
     },
-    fields: {
-      value: null
-    },
-    formatters: {
+    /**
+     * A configuration object defining exactly how to display the properties fields and values
+     * @property {property-table.types.tablePropertiesObject} property-table.props.fieldProperties
+     * @parent property-table.props
+     */
+    fieldProperties: {
       value: null
     },
     /**
      * A virtual property that returns an object consisting of the formatted fields, values, and layer properties.
-     * @parent property-table.parameters
-     * @property {tablePropertiesObject}
+     * @parent property-table.props
+     * @property {property-table.types.tableValuesObject} property-table.props.attributes
      */
     attributes: {
       get: function() {

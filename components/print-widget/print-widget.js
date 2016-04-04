@@ -4,62 +4,56 @@ import template from './print.stache!';
 import widgetModel from 'components/widget-model';
 /**
  * @module print-widget
- * @parent Home.components
- * @body
-
-## Description
- A basic print widget ui that interracts with a print provider, such as the `providers/print/MapfishPrint`
-
- ## Usage
-
- ```html
- <print-widget map-node="#ol-map-id" {provider}="instanciatedProvider" />
- ```
  */
 export const ViewModel = widgetModel.extend({
   define: {
     /**
-     * [mapNode description]
-     * @signature
-     * @property {String} mapNode
+     * The ol-map node selector
+     * @property {String} print-widget.props.mapNode
+     * @parent print-widget.props
      */
     mapNode: {
       type: 'string'
     },
     /**
-     * [mapTitle description]
-     * @property {Object}
+     * The default map title to send to the print service.
+     * @property {String} print-widget.props.mapTitle
+     * @parent print-widget.props
      */
     mapTitle: {
       type: 'string',
       value: 'Map Print'
     },
     /**
-     * [selectedLayout description]
-     * @property {Object}
+     * The default layout to select from the print widget
+     * @property {String} print-widget.props.selectedLayout
+     * @parent print-widget.props
      */
     selectedLayout: {
       type: 'string',
       value: null
     },
     /**
-     * [selectedDpi description]
-     * @property {Object}
+     * The default dpi to select from the print widget
+     * @property {Number} print-widget.props.selectedDpi
+     * @parent print-widget.props
      */
     selectedDpi: {
       type: 'number',
       value: null
     },
     /**
-     * [printResults description]
-     * @property {Object}
+     * The current list of print results in the widget
+     * @property {Array} print-widget.props.printResults
+     * @parent print-widget.props
      */
     printResults: {
       value: []
     },
     /**
-     * [provider description]
-     * @property {Object}
+     * The print provider to use for printing
+     * @property {providers.printProvider} print-widget.props.provider
+     * @parent print-widget.props
      */
     provider: {
       value: null

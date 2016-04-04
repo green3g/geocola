@@ -3,29 +3,15 @@ import can from 'can';
 import widgetModel from 'components/widget-model';
 /**
  * @module panel-container
- * @parent Home.components
- * @description
- *
-A panel container. Works with [tab-container](./tab-container.html) components or as a standalone collapsible panel.
- * @signature `<panel-container />` Example:
-
- ```html
-   <tab-container>
-     <panel-container attributes="...">
-       <div>content in this panel</div>
-     </panel-container>
-     <!--additional panels -->
-   </tab-container>
- ```
  */
 import template from './panel.stache!';
 import './panel.css!';
 export const ViewModel = widgetModel.extend({
   define: {
     /**
-     * @description
      * The title to use in the tab for this panel
-     * @property {String} title
+     * @property {String} panel-container.props.title
+     * @parent panel-container.props
      */
     title: {
       type: 'string',
@@ -33,7 +19,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * The heading to use in the collapsible header
-     * @property {String}
+     * @property {String} panel-container.props.heading
+     * @parent panel-container.props
      */
     heading: {
       type: 'string',
@@ -41,7 +28,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * Whether or not this panel is visible by default in the tab container
-     * @property {Boolean}
+     * @property {Boolean} panel-container.props.visible
+     * @parent panel-container.props
      */
     visible: {
       type: 'boolean',
@@ -49,7 +37,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * Whether or not this panel is collapsed by default
-     * @property {Boolean}
+     * @property {Boolean} panel-container.props.open
+     * @parent panel-container.props
      */
     open: {
       type: 'boolean',
@@ -57,21 +46,41 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * Whether or not this panel is collapsible
-     * @property {Boolean}
+     * @property {Boolean} panel-container.props.collapsible
+     * @parent panel-container.props
      */
     collapsible: {
       type: 'boolean',
       value: false
     }
   },
+  /**
+   * @prototype
+   */
+  /**
+   * Opens or closes this panel if it is collapsible. Otherwise this will have no effect.
+   * @signature
+   * @return {can.Map} this view model
+   */
   toggle: function() {
     this.attr('open', !this.attr('open'));
+    return this;
   },
+  /**
+   * Hides this panel
+   * @signature
+   * @return {can.Map} this view model
+   */
   hide: function() {
     this.attr('visible', false);
     this.dispatch('hide', [this]);
     return this;
   },
+  /**
+   * Shows this panel
+   * @signature
+   * @return {can.Map} this view model
+   */
   show: function() {
     this.attr('visible', true);
     this.dispatch('show', [this]);

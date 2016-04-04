@@ -11,23 +11,6 @@ const controlTemplates = {
 
 /**
  * @module layer-control
- * @parent Home.components
- * @group layer-control.types Types
- * @group layer-control.props Properties
- * @body
-
-## Description
-
-A layer controller to handle layer visibility and perform additional layer functions.
-
-## Usage
-
-```html
-<layer-control map-node="#map" />
-```
-
-<img src="../cola/guides/images/layer-control.png" />
-
  */
 
 /**
@@ -55,7 +38,7 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * The dom node selector referencing an ol-map component
-     * @property {String}
+     * @property {String} layer-control.props.mapNode
      * @parent layer-control.props
      */
     mapNode: {

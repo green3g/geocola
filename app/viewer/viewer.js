@@ -14,7 +14,6 @@ export let AppViewModel = can.Map.extend({
     console.log(arguments);
   },
   startup: function(domNode) {
-
     this.attr('mapOptions.layers', this.getLayers(this.attr('mapOptions.layers')));
     this.attr('mapOptions.view', this.getView(this.attr('mapOptions.view')));
     //render the template with the config

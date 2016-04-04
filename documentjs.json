@@ -10,7 +10,8 @@
       "dest": "../cola-docs",
       "ignore": "{dist,node_modules}/**/*",
       "templates": "guides/site/templates",
-      "static": "guides/site/static"
+      "static": "guides/site/static",
+      "devBuild": true
     }
   }
 }
