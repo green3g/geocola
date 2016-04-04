@@ -11,6 +11,7 @@ A configureable set of client side web applications built on modular and reuseab
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/roemhildtg/canola-map?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 <img src="static/img/overall-screenshot.png" alt="Overall Screenshot" />
+![Overall Image](guides/site/static/img/overall-screenshot.png)
 
 There are 4 goals with this project:
 * Learn how to write better Javascript
