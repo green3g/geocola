@@ -1,3 +1,12 @@
+<div class="error-alerts">
+  {{#each errors}}
+    <div ($click)="removeError(.)" class="alert alert-{{level}}  alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      {{message}}: {{error}}
+    </div>
+  {{/each}}
+</div>
+
 {{#if promise.isPending}}
   <div class="progress">
     <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
@@ -39,6 +48,13 @@
       <button class="hidden-print btn btn-warning" ($click)="editObject(null, null null, focusObject)">
         <i class="fa fa-wrench"></i> Edit
       </button>
+    </div>
+  {{/case}}
+  {{#case 'loading'}}
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
   {{/case}}
 {{/switch}}

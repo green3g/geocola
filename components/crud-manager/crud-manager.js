@@ -75,8 +75,7 @@ export let viewModel = Map.extend({
     detailFields: {
       value: null
     },
-    queryFilters: {
-    },
+    queryFilters: {},
     queryPage: {
       type: 'number',
       value: 0,
@@ -104,6 +103,13 @@ export let viewModel = Map.extend({
     viewId: {
       type: 'number',
       value: 0
+    },
+    progress: {
+      type: 'number',
+      value: 100
+    },
+    errors: {
+      Value: List
     }
   },
   init: function() {
@@ -122,8 +128,28 @@ export let viewModel = Map.extend({
     this.attr('focusObject', obj);
     this.attr('page', 'details');
   },
-  saveObject: function() {
-    this.attr('page', 'details');
+  saveObject: function(scope, dom, event, obj, deferred) {
+    var self = this;
+    this.attr('progress', 100);
+    this.attr('page', 'loading');
+    if (deferred) {
+      deferred.then(function(result) {
+        self.attr('viewId', result.attr('id'));
+        self.attr('page', 'details');
+      }).fail(function(e) {
+        console.warn(e);
+        self.attr('errors').push({
+          message: 'Saving the object failed',
+          error: e.statusText,
+          level: 'danger'
+        });
+        self.attr('page', 'all');
+      });
+    }
+  },
+  removeError: function(e) {
+    var index = this.attr('errors').indexOf(e);
+    this.attr('errors').splice(index, 1);
   },
   resetPage: function() {
     this.attr('page', 'all');
