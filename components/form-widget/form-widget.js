@@ -33,14 +33,6 @@ const FIELD_TYPES = {
  * @option {String} The value stored in the formObject. This is provided by the form-widget internally
  */
 
-/**
- * @typedef {can.Event} form-widget.events.formSubmitEvent submit
- * An event dispatched when the save button is clicked. The formObject is passed as an argument
- * @parent form-widget.events
- * @option {can.Map} formObject The formObject
- * @option {can.Deferred | Object} save The result of the formObject.save()
- */
-
 export let viewModel = can.Map.extend({
   define: {
     /**
@@ -90,7 +82,7 @@ export let viewModel = can.Map.extend({
       Type: can.List,
       get: function(val) {
 
-        return (val.length ? val : can.Map.keys(this.attr('formObject'))).map(function(f) {
+        return (val && val.length ? val : can.Map.keys(this.attr('formObject'))).map(function(f) {
           if (typeof f === 'string') {
             return {
               name: f
@@ -164,14 +156,25 @@ export let viewModel = can.Map.extend({
     });
   },
   /**
+   * @typedef {can.Event} form-widget.events.formSubmitEvent submit
+   * An event dispatched when the save button is clicked. The formObject is passed as an argument
+   * @parent form-widget.events
+   * @option {can.Map} formObject The formObject
+   */
+  /**
    * Called when the form is submitted. The object is updated by calling it's `save` method. The event `submit` is dispatched.
    */
   submitForm: function() {
     let formObject = this.attr('formObject');
-
     this.dispatch('submit', [formObject]);
 
   },
+  /**
+   * @typedef {can.Event} form-widget.events.formFieldChangeEvent fieldChange
+   * An event dispatched when a form field changes. The formObject is passed as an argument
+   * @parent form-widget.events
+   * @option {can.Map} formObject The formObject
+   */
   /**
    * Sets the formObject value when a field changes. This will allow for future
    * functionality where the form is much more responsive to values changing, like
@@ -184,6 +187,7 @@ export let viewModel = can.Map.extend({
   setField: function(field, domElement, event, value) {
     var obj = this.attr('formObject');
     obj.attr(field.name, value);
+    this.dispatch('fieldChange', [obj]);
   },
   /**
    * @typedef {can.Event} form-widget.events.formCancelEvent cancel

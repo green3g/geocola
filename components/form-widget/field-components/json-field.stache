@@ -1,7 +1,7 @@
 <div class="form-group">
   <fieldset>
     <legend>{{alias}}</legend>
-    <form-widget {form-object}="jsonFormObject" (submit)="saveField" {fields}="formFields" show-buttons="false" />
+    <form-widget {form-object}="jsonFormObject" (fieldChange)="saveField" {fields}="formFields" show-buttons="false" />
   </fieldset>
 
 </div>

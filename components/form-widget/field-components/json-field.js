@@ -33,9 +33,8 @@ export let ViewModel = widgetModel.extend({
       }
     }
   },
-  saveField: function() {
-    this.dispatch('change', [JSON.stringify(
-      this.attr('jsonFormObject').attr())])
+  saveField: function(scope, dom, event, obj) {
+    this.dispatch('change', [JSON.stringify(obj.attr())]);
   },
   onChange(element) {
     this.dispatch('change', [element.value]);
