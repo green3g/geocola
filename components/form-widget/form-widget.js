@@ -38,6 +38,7 @@ const FIELD_TYPES = {
  * An event dispatched when the save button is clicked. The formObject is passed as an argument
  * @parent form-widget.events
  * @option {can.Map} formObject The formObject
+ * @option {can.Deferred | Object} save The result of the formObject.save()
  */
 
 export let viewModel = can.Map.extend({
@@ -86,7 +87,18 @@ export let viewModel = can.Map.extend({
      * @parent form-widget.props
      */
     fields: {
-      Type: can.List
+      Type: can.List,
+      get: function(val) {
+
+        return (val.length ? val : can.Map.keys(this.attr('formObject'))).map(function(f) {
+          if (typeof f === 'string') {
+            return {
+              name: f
+            };
+          }
+          return f;
+        });
+      }
     },
     /**
      * The connection info for this form's data
@@ -106,13 +118,7 @@ export let viewModel = can.Map.extend({
           return {};
         }
         var fields = this.attr('fields');
-        if (!(fields && fields.length)) {
-          fields = can.Map.keys(this.attr('formObject')).map(function(f) {
-            return {
-              name: f
-            };
-          });
-        }
+
         var self = this;
         if (oldValue) {
           fields.forEach(function(field) {
@@ -164,11 +170,9 @@ export let viewModel = can.Map.extend({
     let formObject = this.attr('formObject');
 
     //save the model object
-    formObject.save();
-    this.dispatch('submit', [formObject]);
+    var save = formObject.save();
+    this.dispatch('submit', [formObject, save]);
 
-    //prevent the form from submitting
-    return false;
   },
   /**
    * Sets the formObject value when a field changes. This will allow for future
