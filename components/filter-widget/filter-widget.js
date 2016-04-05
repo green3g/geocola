@@ -6,26 +6,6 @@ import template from './template.stache!';
 import 'components/list-table/';
 /**
  * @module {can.Map} filter-widget
- * @parent Home.components
-  * @group filter-widget.types Types
-  * @group filter-widget.props Properties
-  * @link http://jsonapi.org/format/#fetching-filtering JSON-API
- * @body
-## Description
-
-A widget with several fields that let the user filter a rest response. Uses a list-table to display the current filter objects.
-
-The filters generated follow the JSON API specification implemented by Flask-Restless
-
-## Usage
-
-  ```javascript
-  import 'components/filter-widget/viewModel';
-  ```
-```html
-  <filter-widget />
-  ```
-
  */
 
 /**
@@ -37,9 +17,26 @@ The filters generated follow the JSON API specification implemented by Flask-Res
  * @option {String} val The value of the search query. This can be any sql string or expression, for example `%myValue%`
  */
 let Filter = can.Map.extend({
-  name: null,
-  op: 'like',
-  val: null,
+  define: {
+    val: {
+      set: function(val) {
+        var operator = this.attr('op');
+        switch (operator) {
+          case 'like':
+            return '%' + val + '%';
+          default:
+            return val;
+        }
+      }
+    },
+    name: {
+      type: 'string'
+    },
+    op: {
+      value: 'like',
+      type: 'string'
+    }
+  },
   save: function() { /* noop to simulate a supermodel */ }
 });
 
@@ -118,21 +115,7 @@ export let viewModel = can.Map.extend({
         }, {
           name: 'val',
           alias: 'Value',
-          placeholder: 'Enter the filter value',
-          valueParser: function(val, data) {
-            var operator;
-            data.forEach(function(field) {
-              if (field.name === 'op') {
-                operator = field.value;
-              }
-            });
-            switch (operator) {
-              case 'like':
-                return '%' + val + '%';
-              default:
-                return val;
-            }
-          }
+          placeholder: 'Enter the filter value'
         }];
       }
     }
