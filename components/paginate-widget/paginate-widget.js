@@ -47,7 +47,7 @@ export let viewModel = Map.extend({
         var pages = this.attr('pages');
         var active = this.attr('activePageIndex') + 1;
         var arr = this.attr('pageArray').filter(function(p) {
-          return p <= active + 2 && p >= active - 2 && p > 0 && p <= pages;
+          return p <= active + 3 && p >= active - 3 && p > 0 && p <= pages;
         });
         return arr;
       }
