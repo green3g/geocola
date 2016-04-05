@@ -3,7 +3,7 @@
     <select ($change)="onChange(%element.value)" id="{{name}}" class="form-control" name="{{name}}">
       <option value="" {{^value}} selected {{/value}}></option>
       {{#each options}}
-        <option value="{{value}}" {{#is value ../value}} selected {{/is}}>{{label}}</option>
+        <option value="{{value}}" {{#isSelected(value)}} selected {{/isSelected}}>{{label}}</option>
       {{/each}}
     </select>
 </div>
