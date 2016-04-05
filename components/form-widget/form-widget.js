@@ -7,79 +7,17 @@ import template from './template.stache!';
 import './field-components/text-field';
 import './field-components/select-field';
 import './field-components/file-field';
+import './field-components/json-field';
 
 /**
  * @module {can.Component} form-widget
- * @parent Home.components
-  * @group form-widget.types 0 Types
-  * @group form-widget.fields 1 Field Types
-  * @group form-widget.events 3 Events
-  * @group form-widget.props 4 Properties
-  *
-## Description
-A configureable form widget to modify data. The form accepts a formObject property that should be an object similar to a `can.Map`. When the form is submitted, it calls the model's `save` method.
-
-
-## Example Template
-```html
-  <form-widget {form-object}="formObject" (submit)="resetPage"
-   (cancel)="resetPage" {fields}="formFields" />
-```
-
-## Javascript
-```javascript
-
-let Filter = Map.extend({
-  name: null,
-  op: 'like',
-  val: null,
-  save: function() {  } //noop to simulate a supermodel
-});
-
-//...
-fields: {
-  value: [{
-    name: 'name',
-    alias: 'Field name',
-    placeholder: 'Enter a field name'
-  }, {
-    name: 'op',
-    alias: 'is',
-    placeholder: 'Choose a operator',
-    type: 'select',
-    properties: {
-      options: [{
-        label: 'Equal to',
-        value: '=='
-      }, {
-        label: 'Not equal to',
-        value: '!='
-      }, {
-        label: 'Contains',
-        value: 'in'
-      }, {
-        label: 'Does not contain',
-        value: 'not_in'
-      }, {
-        label: 'is like',
-        value: 'like'
-      }]
-    }
-  }, {
-    name: 'val',
-    alias: 'Value',
-    placeholder: 'Enter the filter value'
-  }]
-},
-formObject: {value: Filter}
-//...
-```
  */
 
 const FIELD_TYPES = {
   text: '<text-field {properties}="." (change)="setField" />',
   select: '<select-field {properties}="." (change)="setField" />',
-  file: '<file-field {properties}="." (change)="setField" />'
+  file: '<file-field {properties}="." (change)="setField" />',
+  json: '<json-field {properties}="." (change)="setField" />'
 };
 
 /**
@@ -104,6 +42,15 @@ const FIELD_TYPES = {
 
 export let viewModel = can.Map.extend({
   define: {
+    /**
+     * Whether or not to show the submit/cancel buttons
+     * @property {Boolean} form-widget.props.showButtons
+     * @parent form-widget.props
+     */
+    showButtons: {
+      type: 'boolean',
+      value: true
+    },
     /**
      * Whether or not this form should be a bootstrap inline form
      * @property {Boolean} form-widget.props.inline
@@ -154,36 +101,39 @@ export let viewModel = can.Map.extend({
      * @property {Object} form-widget.props._fieldObjects
      */
     _fieldObjects: {
-      get: function() {
+      get: function(oldValue, setValue) {
         if (!this.attr('formObject')) {
           return {};
         }
-        var objs = new can.Map({});
         var fields = this.attr('fields');
         if (!(fields && fields.length)) {
-          fields = can.Map.keys(this.attr('formObject'));
+          fields = can.Map.keys(this.attr('formObject')).map(function(f) {
+            return {
+              name: f
+            };
+          });
         }
         var self = this;
+        if (oldValue) {
+          fields.forEach(function(field) {
+            var newVal = self.attr(['formObject', field.name].join('.'));
+            oldValue.attr([field.name, 'value'].join('.'), newVal);
+          });
+          this.attr('_fieldObjects', oldValue);
+          return oldValue;
+        }
+        var objs = new can.Map({});
         fields.forEach(function(field) {
           var obj;
-          if (typeof field === 'string') {
-            obj = {
-              name: field,
-              alias: self.formatField(field),
-              template: can.stache(FIELD_TYPES.text),
-              properties: {},
-              value: self.attr(['formObject', field].join('.'))
-            };
-          } else {
-            obj = can.extend(field.properties, {
-              name: field.name,
-              alias: field.alias || self.formatField(field.name),
-              template: field.template || can.stache(FIELD_TYPES[field.type || 'text']),
-              value: self.attr(['formObject', field.name].join('.'))
-            });
-          }
-          objs.attr(field.name || field, obj);
+          obj = can.extend(field.properties, {
+            name: field.name,
+            alias: field.alias || self.formatField(field.name),
+            template: field.template || can.stache(FIELD_TYPES[field.type || 'text']),
+            value: self.attr(['formObject', field.name].join('.'))
+          });
+          objs.attr(obj.name, obj);
         });
+        this.attr('_fieldObjects', objs);
         return objs;
       }
     }
@@ -229,7 +179,7 @@ export let viewModel = can.Map.extend({
    * @param  {Event} event  The event object and type
    * @param  {Object | Number | String} value  The value that was passed from the field component
    */
-  setField: function(field, domElement, event, value){
+  setField: function(field, domElement, event, value) {
     var obj = this.attr('formObject');
     obj.attr(field.name, value);
   },
