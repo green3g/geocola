@@ -169,9 +169,7 @@ export let viewModel = can.Map.extend({
   submitForm: function() {
     let formObject = this.attr('formObject');
 
-    //save the model object
-    var save = formObject.save();
-    this.dispatch('submit', [formObject, save]);
+    this.dispatch('submit', [formObject]);
 
   },
   /**

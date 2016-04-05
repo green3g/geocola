@@ -128,24 +128,23 @@ export let viewModel = Map.extend({
     this.attr('focusObject', obj);
     this.attr('page', 'details');
   },
-  saveObject: function(scope, dom, event, obj, deferred) {
+  saveObject: function(scope, dom, event, obj) {
     var self = this;
     this.attr('progress', 100);
     this.attr('page', 'loading');
-    if (deferred) {
-      deferred.then(function(result) {
-        self.attr('viewId', result.attr('id'));
-        self.attr('page', 'details');
-      }).fail(function(e) {
-        console.warn(e);
-        self.attr('errors').push({
-          message: 'Saving the object failed',
-          error: e.statusText,
-          level: 'danger'
-        });
-        self.attr('page', 'all');
+    var deferred = this.attr('connection.connection').save(obj);
+    deferred.then(function(result) {
+      self.attr('viewId', result.attr('id'));
+      self.attr('page', 'details');
+    }).fail(function(e) {
+      console.warn(e);
+      self.attr('errors').push({
+        message: 'Saving the object failed',
+        error: e.statusText,
+        level: 'danger'
       });
-    }
+      self.attr('page', 'all');
+    });
   },
   removeError: function(e) {
     var index = this.attr('errors').indexOf(e);
@@ -165,7 +164,7 @@ export let viewModel = Map.extend({
   },
   deleteObject: function(scope, dom, event, obj, skipConfirm) {
     if (obj && (skipConfirm || confirm('Are you sure you want to delete this record?'))) {
-      obj.destroy();
+      this.attr('connection.connection').destroy(obj);
     }
   },
   deleteMultiple: function() {
