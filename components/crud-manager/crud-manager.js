@@ -76,15 +76,6 @@ export let viewModel = Map.extend({
       value: null
     },
     queryFilters: {
-      Value: List,
-      set: function(filters) {
-        var params = this.attr('parameters');
-        if (!params) {
-          return filters;
-        }
-        this.setFilterParameter(filters);
-        return filters
-      }
     },
     queryPage: {
       type: 'number',
@@ -131,7 +122,7 @@ export let viewModel = Map.extend({
     this.attr('focusObject', obj);
     this.attr('page', 'details');
   },
-  saveObject: function(){
+  saveObject: function() {
     this.attr('page', 'details');
   },
   resetPage: function() {
@@ -176,7 +167,7 @@ export let viewModel = Map.extend({
     var params = this.attr('parameters');
     //reset the page filter
     this.attr('queryPage', 0);
-    if (filters.length) {
+    if (filters && filters.length) {
       //if there are filters in the list, set the filter parameter
       params.attr('filter[objects]', JSON.stringify(filters.attr()));
     } else {
@@ -189,5 +180,11 @@ export let viewModel = Map.extend({
 Component.extend({
   tag: 'crud-manager',
   viewModel: viewModel,
-  template: template
+  template: template,
+  events: {
+    //bind to the change event of the entire list
+    '{viewModel.queryFilters} change': function(filters) {
+      this.viewModel.setFilterParameter(filters);
+    }
+  }
 });
