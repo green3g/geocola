@@ -12,11 +12,10 @@ import template from './json-field.stache!';
  */
 
 /**
- * @typedef {textFieldProperties} form-widget.types.textFieldProperties textFieldProperties
+ * @typedef {textFieldProperties} form-widget.types.jsonFieldProperties jsonFieldProperties
  * @parent form-widget.types
- * @option {String} type The type of textbox, this can be any html input type
- * @option {Boolean} textarea Set to true if the input textbox should be a large textarea
- * @link http://www.w3schools.com/html/html_form_input_types.asp HTML Input Types
+ * @option {can.Map} map The object to use as the form object template
+ * @option {Array<String|form-widget.types.formFieldObject>} formFields The form fields to use in the form
  */
 
 export let ViewModel = widgetModel.extend({
@@ -35,9 +34,6 @@ export let ViewModel = widgetModel.extend({
   },
   saveField: function(scope, dom, event, obj) {
     this.dispatch('change', [JSON.stringify(obj.attr())]);
-  },
-  onChange(element) {
-    this.dispatch('change', [element.value]);
   }
 })
 
