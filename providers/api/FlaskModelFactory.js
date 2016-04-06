@@ -8,12 +8,21 @@ function getNextId() {
   return uniqueId++;
 }
 
+const PropertiesObject = can.Map.extend({
+  define: {
+    totalItems: {
+      type: 'number',
+      value: 0
+    }
+  }
+});
+
 export function FlaskConnectFactory(options) {
   //a new list which should hold the objects
   let Objectist = can.List.extend({
     Map: options.map
   });
-  let properties = new can.Map();
+  let properties = new PropertiesObject();
 
   //a default id
   var id = options.idProp || 'id';
@@ -41,9 +50,7 @@ export function FlaskConnectFactory(options) {
         });
         def.then(function(props) {
           //cache the raw data for future use
-          properties.attr({
-            meta: props.meta
-          });
+          properties.attr('totalItems', props.meta.total);
         });
         return def;
       },

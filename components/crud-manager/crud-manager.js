@@ -45,20 +45,15 @@ export let viewModel = Map.extend({
       value: 'all',
       type: 'string'
     },
-    totalItems: {
-      type: 'number',
-      value: 0
-    },
     totalPages: {
       get: function(val, setAttr) {
         //round up to the nearest integer
-        var pages = Math.ceil(this.attr('totalItems') / this.attr('queryPerPage'));
+        var pages = Math.ceil(this.attr('view.connectionProperties.totalItems') / this.attr('queryPerPage'));
         return pages;
       }
     },
     promise: {
       get: function(prev, setAttr) {
-        console.log(this);
         return this.attr('view.connection').getList(this.attr('parameters').attr());
       }
     },
