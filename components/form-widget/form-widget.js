@@ -79,16 +79,17 @@ export let viewModel = can.Map.extend({
      * @parent form-widget.props
      */
     fields: {
-      Type: can.List,
       get: function(val) {
-
-        return (val && val.length ? val : can.Map.keys(this.attr('formObject'))).map(function(f) {
-          if (typeof f === 'string') {
+        if (!val || !val.length) {
+          val = can.Map.keys(this.attr('formObject'));
+        }
+        return val.map(function(field) {
+          if (typeof field === 'string') {
             return {
-              name: f
+              name: field
             };
           }
-          return f;
+          return field;
         });
       }
     },
@@ -120,16 +121,15 @@ export let viewModel = can.Map.extend({
           this.attr('_fieldObjects', oldValue);
           return oldValue;
         }
-        var objs = new can.Map({});
+        var objs = new can.Map();
         fields.forEach(function(field) {
-          var obj;
-          obj = can.extend(field.properties, {
-            name: field.name,
-            alias: field.alias || self.formatField(field.name),
-            template: field.template || can.stache(FIELD_TYPES[field.type || 'text']),
-            value: self.attr(['formObject', field.name].join('.'))
-          });
-          objs.attr(obj.name, obj);
+          objs.attr(field.name, can.extend(
+            field.properties ? field.properties.attr() : {}, {
+              name: field.name,
+              alias: field.alias || self.formatField(field.name),
+              template: field.template || can.stache(FIELD_TYPES[field.type || 'text']),
+              value: self.attr(['formObject', field.name].join('.'))
+            }));
         });
         this.attr('_fieldObjects', objs);
         return objs;

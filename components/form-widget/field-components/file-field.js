@@ -27,15 +27,15 @@ export let ViewModel = widgetModel.extend({
       Value: can.Map
     },
     files: {
-      Type: can.List
+      Value: can.List
     }
   },
-  onChange(element) {
+  onChange: function(element) {
     if (element.files) {
-      this.attr('files', element.files);
+      this.attr('files').replace(element.files);
     }
   },
-  uploadFiles() {
+  uploadFiles: function() {
     var files = this.attr('files');
     var data = new FormData();
     files.forEach(function(f, index) {
@@ -66,6 +66,7 @@ export let ViewModel = widgetModel.extend({
       // Handle errors here
       console.warn('ERRORS: ', data.error);
     }
+    this.attr('files').replace([]);
   },
   uploadError(jqXHR, textStatus, errorThrown) {
     // Handle errors here
