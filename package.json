@@ -1,6 +1,6 @@
 {
   "name": "COAMap",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A configureable openlayers mapping and data management app",
   "repository": "https://github.com/roemhildtg/coamap",
   "scripts": {
