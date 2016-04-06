@@ -20,7 +20,7 @@
         <div class="col-lg-12">
           {{#activeModel}}
             <h1>{{title}}</h1>
-            <crud-manager {(page)}="page" {(view-id)}="viewId" {(parameters)}="parameters" {connection}="connection" editable="true" {edit-fields}="editFields" {table-fields}="tableFields" {detail-fields}="detailFields"></crud-manager>
+            <crud-manager {(page)}="page" {(view-id)}="viewId" {(parameters)}="parameters" {connection}="connection" disable-edit="{{disableEdit}}" {edit-fields}="editFields" {table-fields}="tableFields" {detail-fields}="detailFields"></crud-manager>
           {{/activeModel}}
 
           parameters:
@@ -35,7 +35,7 @@
               <tab-container>
                 {{#each activeModel.relatedModels}}
                   <panel-container title="{{model.title}}">
-                    <crud-manager {connection}="getRelatedConnection(../, viewId)" editable="true" {query-filters}="getRelatedFilter(../, viewId)" {edit-fields}="../model.editFields" {detail-fields}="../model.detailFields" {table-fields}="../model.tableFields"></crud-manager>
+                    <crud-manager {connection}="getRelatedConnection(../, viewId)" disable-edit="{{model.disableEdit}}" {query-filters}="getRelatedFilter(../, viewId)" {edit-fields}="model.editFields" {detail-fields}="model.detailFields" {table-fields}="model.tableFields"></crud-manager>
                   </panel-container>
                 {{/each}}
               </tab-container>

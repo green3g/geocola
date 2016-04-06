@@ -15,6 +15,19 @@ import 'components/form-widget/';
 import 'components/filter-widget/';
 import 'components/paginate-widget/';
 
+const DEFAULT_BUTTONS = [{
+  iconClass: 'fa fa-list-ul',
+  eventName: 'view'
+}];
+const EDIT_BUTTONS = DEFAULT_BUTTONS.concat([{
+  iconClass: 'fa fa-pencil',
+  eventName: 'edit',
+  title: 'Edit Row'
+}, {
+  iconClass: 'fa fa-trash',
+  eventName: 'delete'
+}]);
+
 export let viewModel = Map.extend({
   define: {
     connection: {
@@ -54,17 +67,9 @@ export let viewModel = Map.extend({
     },
     buttons: {
       type: '*',
-      value: [{
-        iconClass: 'fa fa-pencil',
-        eventName: 'edit',
-        title: 'Edit Row'
-      }, {
-        iconClass: 'fa fa-trash',
-        eventName: 'delete'
-      }, {
-        iconClass: 'fa fa-list-ul',
-        eventName: 'view'
-      }]
+      get: function() {
+        return this.attr('disableEdit') ? DEFAULT_BUTTONS : EDIT_BUTTONS;
+      }
     },
     editFields: {
       value: null
@@ -74,6 +79,10 @@ export let viewModel = Map.extend({
     },
     detailFields: {
       value: null
+    },
+    disableEdit: {
+      type: 'boolean',
+      value: false
     },
     queryFilters: {},
     queryPage: {
