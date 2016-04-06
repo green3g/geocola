@@ -42,7 +42,7 @@ export function FlaskConnectFactory(options) {
         def.then(function(props) {
           //cache the raw data for future use
           properties.attr({
-            meta: props.meta,
+            meta: props.meta
           });
         });
         return def;

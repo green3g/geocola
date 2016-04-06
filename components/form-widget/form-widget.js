@@ -61,7 +61,7 @@ export let viewModel = can.Map.extend({
     objectId: {
       type: 'number',
       set: function(id) {
-        this.fetchObject(this.attr('connection.connection'), id);
+        this.fetchObject(this.attr('connection'), id);
         return id;
       }
     },

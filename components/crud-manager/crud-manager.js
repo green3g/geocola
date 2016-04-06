@@ -3,6 +3,8 @@
 import Map from 'can/map/';
 import List from 'can/list/';
 import Component from 'can/component/';
+import Route from 'can/route/';
+
 //import './widget.css!';
 import template from './template.stache!';
 import {
@@ -30,12 +32,7 @@ const EDIT_BUTTONS = DEFAULT_BUTTONS.concat([{
 
 export let viewModel = Map.extend({
   define: {
-    connection: {
-      value: null
-    },
-    editable: {
-      type: 'boolean',
-      value: false
+    view: {
     },
     parameters: {
       set: function(val) {
@@ -49,40 +46,27 @@ export let viewModel = Map.extend({
       type: 'string'
     },
     totalItems: {
-      type: 'number'
+      type: 'number',
+      value: 0
     },
     totalPages: {
       get: function(val, setAttr) {
-        var total = this.attr('connection.properties.meta.total');
-        this.attr('totalItems', total);
         //round up to the nearest integer
-        var pages = Math.ceil(total / this.attr('queryPerPage'));
+        var pages = Math.ceil(this.attr('totalItems') / this.attr('queryPerPage'));
         return pages;
       }
     },
     promise: {
       get: function(prev, setAttr) {
-        return this.attr('connection.connection').getList(this.attr('parameters').attr());
+        console.log(this);
+        return this.attr('view.connection').getList(this.attr('parameters').attr());
       }
     },
     buttons: {
       type: '*',
       get: function() {
-        return this.attr('disableEdit') ? DEFAULT_BUTTONS : EDIT_BUTTONS;
+        return this.attr('view.disableEdit') ? DEFAULT_BUTTONS : EDIT_BUTTONS;
       }
-    },
-    editFields: {
-      value: null
-    },
-    tableFields: {
-      value: null
-    },
-    detailFields: {
-      value: null
-    },
-    disableEdit: {
-      type: 'boolean',
-      value: false
     },
     queryFilters: {},
     queryPage: {
@@ -128,12 +112,12 @@ export let viewModel = Map.extend({
     this.setFilterParameter(this.attr('queryFilters'));
   },
   editObject: function(scope, dom, event, obj) {
-    this.attr('viewId', this.attr('connection.connection').id(obj));
+    this.attr('viewId', this.attr('view.connection').id(obj));
     this.attr('focusObject', obj);
     this.attr('page', 'edit');
   },
   viewObject: function(scope, dom, event, obj) {
-    this.attr('viewId', this.attr('connection.connection').id(obj));
+    this.attr('viewId', this.attr('view.connection').id(obj));
     this.attr('focusObject', obj);
     this.attr('page', 'details');
   },
@@ -141,7 +125,7 @@ export let viewModel = Map.extend({
     var self = this;
     this.attr('progress', 100);
     this.attr('page', 'loading');
-    var deferred = this.attr('connection.connection').save(obj);
+    var deferred = this.attr('view.connection').save(obj);
     deferred.then(function(result) {
       self.attr('viewId', result.attr('id'));
       self.attr('page', 'details');
@@ -166,14 +150,15 @@ export let viewModel = Map.extend({
   },
   createObject: function() {
     //create a new empty object with the defaults provided
-    //from the connection.map property which is a special map
-    var newObject = this.attr('connection.map')();
+    //from the template property which is a map
+    var newObject = this.attr('view.template')();
+
     this.attr('newObject', newObject);
     this.attr('page', 'add');
   },
   deleteObject: function(scope, dom, event, obj, skipConfirm) {
     if (obj && (skipConfirm || confirm('Are you sure you want to delete this record?'))) {
-      this.attr('connection.connection').destroy(obj);
+      this.attr('view.connection').destroy(obj);
     }
   },
   deleteMultiple: function() {
