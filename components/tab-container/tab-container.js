@@ -9,8 +9,10 @@ import template from './tabs.stache!';
 export const ViewModel = can.Map.extend({
   define: {
     /**
-     * the list of panel objects
-     * @property {can.List} panels
+     * the list of panel objects. TThis propert is updated automatically when a panel
+     * is inserted inside of a tab-container.
+     * @property {can.List} tab-container.props.panels
+     * @parent tab-container.props
      */
     panels: {
       Value: can.List

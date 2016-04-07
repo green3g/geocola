@@ -16,7 +16,6 @@ function getNextId() {
  *  @option {can.List | Array} list The list used internally by can-connect
   * @option {Object} properties Additional metadata about the api and data
  */
- /**
 const PropertiesObject = can.Map.extend({
   define: {
     totalItems: {
@@ -26,6 +25,7 @@ const PropertiesObject = can.Map.extend({
   }
 });
 
+/**
   * @function FlaskConnectFactory
   */
 export function FlaskConnectFactory(options) {

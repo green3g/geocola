@@ -2,6 +2,7 @@
 
 @module tab-container
 @parent Home.components
+@group tab-container.props Properties
 
 -->
 
