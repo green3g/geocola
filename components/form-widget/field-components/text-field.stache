@@ -1,10 +1,8 @@
 <div class="form-group">
-  {{#properties}}
     <label for="{{name}}">{{alias}}</label>
     {{#if textarea}}
       <textarea ($change)="onChange(%element)" id="{{name}}" class="form-control" name="{{name}}">{{value}}</textarea>
     {{else}}
       <input ($change)="onChange(%element)" type="{{#if type}}{{type}}{{else}}text{{/if}}" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}" />
     {{/if}}
-  {{/properties}}
 </div>

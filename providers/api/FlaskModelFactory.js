@@ -17,6 +17,15 @@ function getNextId() {
   * @option {Object} properties Additional metadata about the api and data
  */
  /**
+const PropertiesObject = can.Map.extend({
+  define: {
+    totalItems: {
+      type: 'number',
+      value: 0
+    }
+  }
+});
+
   * @function FlaskConnectFactory
   */
 export function FlaskConnectFactory(options) {
@@ -24,7 +33,7 @@ export function FlaskConnectFactory(options) {
   let Objectist = can.List.extend({
     Map: options.map
   });
-  let properties = new can.Map();
+  let properties = new PropertiesObject();
 
   //a default id
   var id = options.idProp || 'id';
@@ -52,9 +61,7 @@ export function FlaskConnectFactory(options) {
         });
         def.then(function(props) {
           //cache the raw data for future use
-          properties.attr({
-            meta: props.meta,
-          });
+          properties.attr('totalItems', props.meta.total);
         });
         return def;
       },

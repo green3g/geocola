@@ -3,6 +3,8 @@
     {{>template}}
   {{/each}}
 
-  <button type="button" class="btn btn-default" ($click)="submitForm">Submit</button>
-  <a class="btn btn-default" ($click)="cancelForm">Cancel</a>
+  {{#if showButtons}}
+    <button type="button" class="btn btn-default" ($click)="submitForm">Submit</button>
+    <a class="btn btn-default" ($click)="cancelForm">Cancel</a>
+  {{/if}}
 </form>

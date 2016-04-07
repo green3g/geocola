@@ -1,17 +1,17 @@
 <div class="form-group">
   <div class="input-group">
-    {{#properties}}
-      <label for="{{name}}">{{alias}}
-        {{#if value}}
-          <br /><small>Existing: <a target="_blank" href="{{value}}">{{value}}</a></small>
-        {{/if}}
-      </label>
-      <input ($change)="onChange(%element)" type="file" class="form-control" id="{{name}}" name="{{name}}" {{#if multiple}} multiple {{/if}} />
-      {{#if ../files}}
-        <span class="input-group-btn">
-        <button type="button" ($click)="uploadFiles" class="btn btn-success">Upload</button>
+    <label for="{{properties.name}}">{{properties.alias}}</label>
+    <input ($change)="onChange(%element)" type="file" class="form-control" id="{{properties.name}}" name="{{properties.name}}" {{#if properties.multiple}} multiple {{/if}} />
+    {{#if files.length}}
+      <span class="input-group-btn">
+        <button type="button" ($click)="uploadFiles" class="btn btn-success">
+          {{#if properties.value}}Upload and Replace File{{else}}Upload File{{/if}}
+        </button>
       </span>
-      {{/if}}
-    {{/properties}}
+    {{/if}}
   </div>
+
+  {{#if properties.value}}
+    <br /><small>Current Value: <a target="_blank" href="{{properties.value}}">{{properties.value}}</a></small>
+  {{/if}}
 </div>

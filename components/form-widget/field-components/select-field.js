@@ -59,7 +59,11 @@ export let ViewModel = widgetModel.extend({
   },
   onChange(value) {
     //we could perform some other logic here
+    this.attr('properties.value', value);
     this.dispatch('change', [value])
+  },
+  isSelected(value){
+    return value == this.attr('properties').value;
   }
 })
 
