@@ -1,5 +1,6 @@
 <!--
 
+@module property-table
 @parent Home.components
 @group property-table.types Types
 @group property-table.props Properties

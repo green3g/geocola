@@ -10,7 +10,7 @@ function getNextId() {
 
 /**
  * @typedef {connectInfoObject} apiProvider.types.connectInfoObject ConnectInfoObject
-  * @parent providers.apiProvider.types
+  * @parent apiProvider.types
   * @option {can.Model | superMap} connection The data model used to create, update and delete objects.
   * @option {can.Map | object} map The object used to create new objects. This object can be used to specify default values and properties when creating new empty objects.
  *  @option {can.List | Array} list The list used internally by can-connect
@@ -26,7 +26,21 @@ const PropertiesObject = can.Map.extend({
 });
 
 /**
-  * @function FlaskConnectFactory
+ * @typedef {FlaskConnectOptions} apiProvider.types.FlaskConnectOptions FlaskConnectOptions
+ * @parent apiProvider.types
+ * @option {can.Map} map The template object to use when creating new objects. This
+ * map can supply default values, getters and setters, and types of properties on an object
+ * @option {String} idProp The proerty to use for the id
+ * @option {String} name The name of the connection to use. This should be unique across the application, and should reference
+ * the data type that flask-restless is serving. Flask Restless defaults to using the tablename as the data type name
+ * @option {String} url The url to the Flask-Restless resource
+ */
+
+/**
+ *
+ * A factory function that creates a new Flask-Restless API connection. 
+  * @parent apiProvider.providers
+  * @param {apiProvider.types.FlaskConnectOptions} options The factory options
   */
 export function FlaskConnectFactory(options) {
   //a new list which should hold the objects

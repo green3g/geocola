@@ -1,19 +1,20 @@
 /*jshint esnext:true */
 import Map from 'can/map/';
 /**
- * @module {can.Map} providers.printProvider Print Provider
+ * @module {can.Map} printProvider Print Provider
  * @parent Home.providers
  * @description
  * A print provider is the basic lower level api that connects
  * the print widget to a print service. It provides a standard set of properties and methods that the print widget can use to connect to any print generator service.
- * @group providers.printProvider.types Types
- * @group providers.printProvider.properties Properties
+ * @group printProvider.types Types
+ * @group printProvider.properties Properties
+ * @group printProvider.providers Print Providers
  */
 export default Map.extend({
   define: {
     /**
      * The print dpi setting
-     * @parent providers.printProvider.properties
+     * @parent printProvider.properties
      * @property {Number}
      */
     dpis: {
@@ -21,7 +22,7 @@ export default Map.extend({
     },
     /**
      * A list of layout strings
-     * @parent providers.printProvider.properties
+     * @parent printProvider.properties
      * @property {Array<String>}
      */
     layouts: {
@@ -29,7 +30,7 @@ export default Map.extend({
     },
     /**
      * A list of layout scales
-     * @parent providers.printProvider.properties
+     * @parent printProvider.properties
      * @property {Array<Number>}
      */
     scales: {
@@ -37,7 +38,7 @@ export default Map.extend({
     },
     /**
      * A list of output file formats
-     * @parent providers.printProvider.properties
+     * @parent printProvider.properties
      * @property {Array<String>}
      */
     outputFormats: {
@@ -54,8 +55,8 @@ export default Map.extend({
    */
   loadCapabilities: function() {},
   /**
-   * @typedef {printOptions} providers.printProvider.types.printOptions printOptions
-   * @parent providers.printProvider.types
+   * @typedef {printOptions} printProvider.types.printOptions printOptions
+   * @parent printProvider.types
    * Required options sent to the print function of a print provider
    * @option {ol.Map} map The openlayers map object to print
    * @option {String} layout The layout to print the map to
@@ -63,16 +64,16 @@ export default Map.extend({
    * @option {number} dpi The dpi setting to use in generating the printout
    */
   /**
-   * @typedef {printResult} providers.printProvider.types.printResult printResult
-   * @parent providers.printProvider.types
+   * @typedef {printResult} printProvider.types.printResult printResult
+   * @parent printProvider.types
    * @option {String} error If an error occurs this property will contain the error. The title property will contain a user friendly error message.
    * @option {String} title The printout title or title of the error
    * @option {String} url The url to the print result
    */
   /**
    * [function description]
-   * @param  {providers.printProvider.types.printOptions} options The print options
-   * @return {providers.printProvider.types.printResult}         A promise that resolves to a {printResult}
+   * @param  {printProvider.types.printOptions} options The print options
+   * @return {printProvider.types.printResult}         A promise that resolves to a {printResult}
    */
   print: function(options) {}
 });

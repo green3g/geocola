@@ -70,44 +70,23 @@ var encoders = {
   }
 };
 /**
- * @module {can.Map} providers.MapfishPrint MapfishPrint
- * @inherits providers.printProvider
- * @signature `new Provider(options)`
-* @body
-# Mapfish print service provider
-Provides access to mapfish print services from the `print-widget` component
-
-This provider has been tested with the geoserver mapfish plugin, and should also work with the mapfish server.
-
-## Usage
-```javascript
-import Provider from 'providers/print/MapfishPrint';
-var provider = new Provider({
-  url: 'path/to/mapfish/pdf/',
-  //other options
-});
-```
-
-## Layers supported
-
- - OSM
- - Vector
- - TileWMS
- - ImageWMS
-
+ * @module {can.Map} MapfishPrint 
 **/
+
 export default Print.extend({
   define: can.extend(Print.prototype.define, {
     /**
      * The url to the mapfish print endpoint
-     * @property {String}
+     * @property {String} MapfishPrint.props.url
+     * @parent MapfishPrint.props
      */
     url: {
       type: 'string'
     },
     /**
      * Whether or not to include legends. The default is `true`
-     * @property {Boolean}
+     * @property {Boolean} MapfishPrint.props.legends
+     * @parent MapfishPrint.props
      */
     legends: {
       type: 'boolean',
@@ -115,7 +94,8 @@ export default Print.extend({
     },
     /**
      * The url to a proxy if required
-     * @property {String}
+     * @property {String} MapfishPrint.props.proxy
+     * @parent MapfishPrint.props
      */
     proxy: {
       type: 'string',
@@ -123,7 +103,8 @@ export default Print.extend({
     },
     /**
      * The method to use for printing. The default is `'POST'`
-     * @property {String}
+     * @property {String} MapfishPrint.props.method
+     * @parent MapfishPrint.props
      */
     method: {
       type: 'string',
@@ -138,7 +119,8 @@ export default Print.extend({
      * dpi: 300,
      * mapTitle: 'Map Print'
      * ```
-     * @property {Object}
+     * @property {Object} MapfishPrint.props.pageDefaults
+     * @parent MapfishPrint.props
      */
     pageDefaults: {
       value: {
@@ -154,20 +136,8 @@ export default Print.extend({
      * outputFormat: 'pdf',
      * outputFilename: 'Print.pdf'
      * ```
-     * @property {Object}
-     * @body
-     * ### Page/Print Defaults Properties
-     Page properties should align with the settings in the print service configuration
-
-     Option            | type      | default              | Description
-     ----------------- | --------- | -------------------- | --------------------------------------------
-     **pageDefaults**  |           |                      |
-     `layout`          | `string`  | `'8.5x11 Landscape'` | The name of the default layout to use
-     `dpi`             | `integer` | `300`                | The default pixel density of the output file
-     `mapTitle`        | `string`  | `'Map Print'`        | The default title placed on the output file
-     **printDefaults** |           |                      |
-     `outputFormat`    | `string`  | `'pdf'`              | The default output file format.
-     `outputFilename`  | `string`  | `'Print.pdf'`        | The default filename
+     * @property {Object} MapfishPrint.props.printDefaults
+     * @parent MapfishPrint.props
 
      */
     printDefaults: {
@@ -179,7 +149,8 @@ export default Print.extend({
     /**
      * The default time to wait for the print service to complete
      * before timeout in milliseconds.
-     * @property {Number}
+     * @property {Number} MapfishPrint.props.maxWait
+     * @parent MapfishPrint.props
      */
     maxWait: {
       value: 10000,
@@ -189,6 +160,7 @@ export default Print.extend({
   /**
    * @prototype
    */
+
   /**
    * Loads the print capabilities and returns a promise
    * resolved with the print data
@@ -218,15 +190,6 @@ export default Print.extend({
    * `title` property.
    * @signature
    * @param  {Object} options The print out options.
-   * ```
-   * var options = {
-   * 	map: map,
-   * 	layout: '8.5x11 Landscape',
-   * 	title: 'My Map Title',
-   * 	dpi: 300
-   * }
-   * provider.print(options);
-   * ```
    * @return {Promise} The promise that resolves to an object with
    * a `url` and `title` property. If the print fails, the `url` will be null, and instead an object with a `title` and `error` property will be returned
    */

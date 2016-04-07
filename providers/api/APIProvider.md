@@ -1,8 +1,9 @@
 <!--
 
-@page providers.apiProvider API Provider
+@page apiProvider API Provider
 @parent Home.providers
-@group providers.apiProvider.types Types
+@group apiProvider.types Types
+@group apiProvider.providers API Providers
 
 -->
 
