@@ -26,27 +26,44 @@ export let ViewModel = widgetModel.extend({
     properties: {
       Value: can.Map
     },
-    files: {
-      Value: can.List
+    pendingFiles: {
+      Type: can.List
+    },
+    currentFiles: {
+      get: function() {
+        var val = this.attr('properties.value');
+        if (val) {
+          return val.split(',');
+        }
+      }
+    },
+    state: {
+      value: {
+        isResolved: true
+      }
+    },
+    progress: {
+      type: 'number',
+      value: 100
     }
   },
-  onChange: function(element) {
+  onChange(element) {
     if (element.files) {
-      this.attr('files').replace(element.files);
+      this.attr('pendingFiles', element.files);
     }
   },
-  uploadFiles: function() {
-    var files = this.attr('files');
+  uploadFiles() {
+    var files = this.attr('pendingFiles');
     var data = new FormData();
     files.forEach(function(f, index) {
       data.append(index, f)
     });
     let val = this.attr('properties.value');
-    if(val){
+    if (val) {
       data.append('replace', val);
     }
     var self = this;
-    can.ajax({
+    this.attr('state', can.ajax({
       url: this.attr('properties.url'),
       type: 'POST',
       data: data,
@@ -56,17 +73,18 @@ export let ViewModel = widgetModel.extend({
       contentType: false, // Set content type to false as jQuery will tell the server its a query string request
       success: this.uploadSuccess.bind(this),
       error: this.uploadError.bind(this)
-    });
+    }));
   },
   uploadSuccess(data, textStatus, jqXHR) {
     if (typeof data.error === 'undefined') {
       this.attr('properties.value', data.url);
-      this.dispatch('change', [data.url]);
+      var fieldValue = data.uploads.join(',');
+      this.dispatch('change', [fieldValue]);
     } else {
       // Handle errors here
       console.warn('ERRORS: ', data.error);
     }
-    this.attr('files').replace([]);
+    this.attr('pendingFiles').replace([]);
   },
   uploadError(jqXHR, textStatus, errorThrown) {
     // Handle errors here

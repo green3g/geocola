@@ -2,16 +2,31 @@
   <div class="input-group">
     <label for="{{properties.name}}">{{properties.alias}}</label>
     <input ($change)="onChange(%element)" type="file" class="form-control" id="{{properties.name}}" name="{{properties.name}}" {{#if properties.multiple}} multiple {{/if}} />
-    {{#if files.length}}
+    {{#if pendingFiles.length}}
       <span class="input-group-btn">
         <button type="button" ($click)="uploadFiles" class="btn btn-success">
-          {{#if properties.value}}Upload and Replace File{{else}}Upload File{{/if}}
+          {{#if currentFiles}}Upload and Replace File{{else}}Upload File{{/if}}
         </button>
       </span>
     {{/if}}
   </div>
 
-  {{#if properties.value}}
-    <br /><small>Current Value: <a target="_blank" href="{{properties.value}}">{{properties.value}}</a></small>
+  {{#if state.isPending}}
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  {{/if}}
+
+  {{#if currentFiles}}
+    <div class="file-field file-list">
+      <p>Current Value: </p>
+      <ul>
+        {{#each currentFiles}}
+          <li><a target="_blank" href="{{.}}">{{.}}</a></li>
+        {{/each}}
+      </ul>
+    </div>
   {{/if}}
 </div>
