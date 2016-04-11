@@ -1,5 +1,5 @@
 /*jshint esnext:true */
-import Map from 'can/map/';
+import CanMap from 'can/map/';
 /**
  * @module {can.Map} printProvider Print Provider
  * @parent Home.providers
@@ -10,7 +10,7 @@ import Map from 'can/map/';
  * @group printProvider.properties Properties
  * @group printProvider.providers Print Providers
  */
-export default Map.extend({
+export default CanMap.extend({
   define: {
     /**
      * The print dpi setting

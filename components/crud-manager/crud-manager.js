@@ -1,6 +1,6 @@
 /* jshint esnext: true */
 
-import Map from 'can/map/';
+import CanMap from 'can/map/';
 import List from 'can/list/';
 import Component from 'can/component/';
 import Route from 'can/route/';
@@ -30,7 +30,7 @@ const EDIT_BUTTONS = DEFAULT_BUTTONS.concat([{
   eventName: 'delete'
 }]);
 
-export let viewModel = Map.extend({
+export let viewModel = CanMap.extend({
   define: {
     view: {
     },
@@ -38,8 +38,8 @@ export let viewModel = Map.extend({
       set: function(val) {
         return val;
       },
-      Value: Map,
-      Type: Map
+      Value: CanMap,
+      Type: CanMap
     },
     page: {
       value: 'all',

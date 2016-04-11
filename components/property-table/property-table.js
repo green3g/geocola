@@ -3,7 +3,7 @@ import template from './property-table.stache!';
 // import './property-table.css!';
 import viewModel from '../widget-model';
 import List from 'can/list/';
-import Map from 'can/map/';
+import CanMap from 'can/map/';
 import Component from 'can/component/';
 
 /**
@@ -104,7 +104,7 @@ export const ViewModel = viewModel.extend({
      * @parent property-table.props
      */
     object: {
-      Type: Map
+      Type: CanMap
     },
     /**
      * A configuration object defining exactly how to display the properties fields and values
