@@ -1,10 +1,10 @@
 <!--
-@page guides Getting Started
-@parent Home
+@page geocola.start Getting Started
+@parent geocola
 @link ./components.html Components
-@group guides.administer Administer
-@group guides.developing Develop
-@group guides.configure Configure
+@group start.administer Administer
+@group start.developing Develop
+@group start.configure Configure
 -->
 
 ## loader.js

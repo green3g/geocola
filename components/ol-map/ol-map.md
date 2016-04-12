@@ -1,8 +1,7 @@
 <!--
 
-@module ol-map
-@parent Home.components
-@group ol-map.props Properties
+@module {can.Component} components/ol-map <ol-map />
+@parent geocola.components
 
 -->
 

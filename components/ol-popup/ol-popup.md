@@ -1,9 +1,7 @@
 <!--
 
-@module ol-popup
-@parent Home.components
-@group ol-popup.props Properties
-@group ol-popup.events Events
+@module {can.Component} components/ol-popup <ol-popup />
+@parent geocola.components
 
 -->
 

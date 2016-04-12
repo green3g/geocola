@@ -7,51 +7,31 @@ import './styles.css!';
 
 import 'components/property-table/';
 
-/**
- * @module identify-widget
- * @parent Home.components
- * @group identify-widget.props Properties
- * @group identify-widget.types Types
- * @body
-
- ## Description
- A configureable feature identify tool for wms layers using wms `GetFeatureInfo` protocol. The wms server must be capable of privoviding json results
- - Queries wms layers and displays the results when map is clicked
- - Works inside an ol-popup componenet by centering the popup on a feature geometry when a feature is selected
- - Support for customizing each field and the entire feature's properties is baked in
-
- ## Usage
- This component may be placed inside an `ol-popup` component, but it doesn't have to be.
- ```html
- <ol-popup>
-   <identify-widget {layer-properties}="propsObj" />
- </ol-popup>
- ```
- */
-
-/**
- * @typedef {layerPropertiesObject} identify-widget.types.layerPropertiesObject layerPropertiesObject
- * An object consisting of a key mapped to the layer name as returned by the server with its value consisting of properties defining the layer display.
- * @parent identify-widget.types
- * @option {String} alias The label to display for the layer The default is the layer name as provided by the server
- * @option {String | can.view.renderer} template The template to render for this layer's popup. This can be a template imported via `import templateName from './templatePath.stache!';` (recommended) or a string template. The default is `components/identify-widget/featureTemplate.stache`
- * @option {property-table.types.tablePropertiesObject} properties An object consisting of tableFieldProperties.
- */
-
+ /**
+  * @constructor components/identify-widget.ViewModel ViewModel
+  * @parent components/identify-widget
+  * @group components/identify-widget.ViewModel.props Properties
+  *
+  * @description A `<identify-widget />` component's ViewModel
+  */
 export const ViewModel = can.Map.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
      * The selector for the `ol-map` map node.
-     * @parent identify-widget.props
+     * @parent components/identify-widget.ViewModel.props
      * @signature `{String}` `map-node="#map"`
-     * @property {String} identify-widget.props.mapNode
+     * @property {String} components/identify-widget.ViewModel.props.mapNode
      */
     mapNode: {
       type: 'string'
     },
     /**
      * The selector for the `ol-popup` dom node. If this widget is placed inside an ol-popup, it this property must be provided so the identify widget can correctly center the popup on the feature.
-     * @parent identify-widget.props
+     * @property {String} components/identify-widget.ViewModel.props.popupNode
+     * @parent components/identify-widget.ViewModel.props
      * @signature `{String}` `popup-node="#identify-popup"`
      */
     popupNode: {
@@ -59,9 +39,9 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * The max number of features to return for each layer. The default is 10.
-     * @parent identify-widget.props
+     * @parent components/identify-widget.ViewModel.props
      * @signature `{Number}` `max-feature-count="10"`
-     * @property {Number} identify-widget.props.maxFeatureCount
+     * @property {Number} components/identify-widget.ViewModel.props.maxFeatureCount
      */
     maxFeatureCount: {
       type: 'number',
@@ -69,9 +49,9 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * Buffer distance in pixels around the map click. The default is 10.
-     * @parent identify-widget.props
+     * @parent components/identify-widget.ViewModel.props
      * @signature `{Number}` `feature-buffer="10"`
-     * @property {Number} identify-widget.props.featureBuffer
+     * @property {Number} components/identify-widget.ViewModel.props.featureBuffer
      */
     featureBuffer: {
       type: 'number',
@@ -79,16 +59,16 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * Layer configuration properties
-     * @parent identify-widget.props
-     * @property {layerPropertiesObject} identify-widget.props.layerProperties
+     * @parent components/identify-widget.ViewModel.props
+     * @property {geocola.types.LayerPropertiesObject} components/identify-widget.ViewModel.props.layerProperties
      */
     layerProperties: {
       Value: can.Map
     },
     /**
      * The map click key to assign to this widget. When the map is clicked, and this key is the set as the current map click, it will trigger an identify.
-     * @parent identify-widget.props
-     * @property {Object} identify-widget.props.mapClickKey
+     * @parent components/identify-widget.ViewModel.props
+     * @property {Object} components/identify-widget.ViewModel.props.mapClickKey
      */
     mapClickKey: {
       type: 'string',
@@ -96,16 +76,16 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * The list of features that have been identified
-     * @parent identify-widget.props
-     * @property {Array<ol.Feature>} identify-widget.props._features
+     * @parent components/identify-widget.ViewModel.props
+     * @property {Array<ol.Feature>} components/identify-widget.ViewModel.props._features
      */
     _features: {
       Value: can.List
     },
     /**
      * Whether or not all identifies have completed. This is used internally by the template.
-     * @parent identify-widget.props
-     * @property {can.Deferred} identify-widget.props._loading
+     * @parent components/identify-widget.ViewModel.props
+     * @property {can.Deferred} components/identify-widget.ViewModel.props._loading
      */
     _loading: {
       value: function() {
@@ -116,16 +96,16 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * A list of pending identify deferreds
-     * @parent identify-widget.props
-     * @property {Array<can.Deferred>} identify-widget.props._deferreds
+     * @parent components/identify-widget.ViewModel.props
+     * @property {Array<can.Deferred>} components/identify-widget.ViewModel.props._deferreds
      */
     _deferreds: {
       Value: can.List,
     },
     /**
      * The currently selected feature index
-     * @parent identify-widget.props
-     * @property {Number}
+     * @parent components/identify-widget.ViewModel.props
+     * @property {Number} components/identify-widget.ViewModel.props._activeFeatureIndex
      */
     _activeFeatureIndex: {
       value: 0,
@@ -133,8 +113,8 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * If the feature list has one or more features after the selected feature, this will be true. This is used by the template to enable/disable the forward and back buttons.
-     * @parent identify-widget.props
-     * @property {Boolean} identify-widget.props._hasNextFeature
+     * @parent components/identify-widget.ViewModel.props
+     * @property {Boolean} components/identify-widget.ViewModel.props._hasNextFeature
      */
     _hasNextFeature: {
       get: function() {
@@ -144,8 +124,8 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * If the feature list has one or more features before the selected feature, this will be true. This is used by the template to enable/disable the forward and back buttons.
-     * @parent identify-widget.props
-     * @property {Boolean} identify-widget.props._hasPreviousFeature
+     * @parent components/identify-widget.ViewModel.props
+     * @property {Boolean} components/identify-widget.ViewModel.props._hasPreviousFeature
      */
     _hasPreviousFeature: {
       get: function() {
@@ -154,8 +134,8 @@ export const ViewModel = can.Map.extend({
     },
     /**
      * A virtual property that returns an object consisting of the formatted fields, values, and layer properties.
-     * @parent identify-widget.props
-     * @property {can.Map} identify-widget.props._activeFeature
+     * @parent components/identify-widget.ViewModel.props
+     * @property {can.Map} components/identify-widget.ViewModel.props._activeFeature
      */
     _activeFeature: {
       get: function() {
@@ -219,9 +199,6 @@ export const ViewModel = can.Map.extend({
       }
     },
   },
-  /**
-   * @prototype
-   */
   /**
    * Initializes this widget by finding the map and popup if provided and setting up the map click handler
    * @signature

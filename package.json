@@ -22,6 +22,7 @@
     "can": "^2.3.22",
     "can-connect": "^0.5.1",
     "font-awesome": "^4.5.0",
+    "jquery": "^2.2.3",
     "openlayers": "^3.14.2",
     "proj4": "^2.3.14",
     "steal": "^0.15.3"

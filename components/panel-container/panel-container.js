@@ -6,12 +6,22 @@ import widgetModel from 'components/widget-model';
  */
 import template from './panel.stache!';
 import './panel.css!';
+/**
+ * @constructor components/panel-container.ViewModel ViewModel
+ * @parent components/panel-container
+ * @group components/panel-container.ViewModel.props Properties
+ *
+ * @description A `<panel-container />` component's ViewModel
+ */
 export const ViewModel = widgetModel.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
      * The title to use in the tab for this panel
-     * @property {String} panel-container.props.title
-     * @parent panel-container.props
+     * @property {String} components/panel-container.ViewModel.props.title
+     * @parent components/panel-container.ViewModel.props
      */
     title: {
       type: 'string',
@@ -19,8 +29,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * The heading to use in the collapsible header
-     * @property {String} panel-container.props.heading
-     * @parent panel-container.props
+     * @property {String} components/panel-container.ViewModel.props.heading
+     * @parent components/panel-container.ViewModel.props
      */
     heading: {
       type: 'string',
@@ -28,8 +38,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * Whether or not this panel is visible by default in the tab container
-     * @property {Boolean} panel-container.props.visible
-     * @parent panel-container.props
+     * @property {Boolean} components/panel-container.ViewModel.props.visible
+     * @parent components/panel-container.ViewModel.props
      */
     visible: {
       type: 'boolean',
@@ -37,8 +47,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * Whether or not this panel is collapsed by default
-     * @property {Boolean} panel-container.props.open
-     * @parent panel-container.props
+     * @property {Boolean} components/panel-container.ViewModel.props.open
+     * @parent components/panel-container.ViewModel.props
      */
     open: {
       type: 'boolean',
@@ -46,17 +56,14 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * Whether or not this panel is collapsible
-     * @property {Boolean} panel-container.props.collapsible
-     * @parent panel-container.props
+     * @property {Boolean} components/panel-container.ViewModel.props.collapsible
+     * @parent components/panel-container.ViewModel.props
      */
     collapsible: {
       type: 'boolean',
       value: false
     }
   },
-  /**
-   * @prototype
-   */
   /**
    * Opens or closes this panel if it is collapsible. Otherwise this will have no effect.
    * @signature

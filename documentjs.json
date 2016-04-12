@@ -6,12 +6,11 @@
   "sites": {
     "docs": {
       "glob": "**/*.{js,md}",
-      "parent": "Home",
+      "parent": "geocola",
       "dest": "../cola-docs",
       "ignore": "{dist,node_modules}/**/*",
       "templates": "guides/site/templates",
-      "static": "guides/site/static",
-"forceBuild": true
+      "static": "guides/site/static"
     }
   }
 }

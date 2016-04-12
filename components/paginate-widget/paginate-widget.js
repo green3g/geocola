@@ -5,12 +5,22 @@ import List from 'can/list/';
 import Component from 'can/component/';
 //import './paginate-widget.css!';
 import template from './template.stache!';
-
+/**
+ * @constructor components/paginate-widget.ViewModel ViewModel
+ * @parent components/paginate-widget
+ * @group components/paginate-widget.ViewModel.props Properties
+ *
+ * @description A `<paginate-widget />` component's ViewModel
+ */
 export let viewModel = CanMap.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
      * The number of pages to show in the widget
-     * @property {Number} list-table.props.pages
+     * @property {Number} components/paginate-widget.ViewModel.props.pages
+     * @parent components/paginate-widget.ViewModel.props
      */
     pages: {
       type: 'number',
@@ -19,6 +29,7 @@ export let viewModel = CanMap.extend({
     /**
      * The active page index
      * @property {Number}
+     * @parent components/paginate-widget.ViewModel.props
      */
     activePageIndex: {
       value: 0,
@@ -26,7 +37,8 @@ export let viewModel = CanMap.extend({
     },
     /**
      * A virtual property used by the template to indicate whether or not there is a next page
-     * @property {Boolean} list-table.props.hasNext
+     * @property {Boolean} components/paginate-widget.ViewModel.props.hasNext
+     * @parent components/paginate-widget.ViewModel.props
      */
     hasNext: {
       get: function() {
@@ -35,13 +47,19 @@ export let viewModel = CanMap.extend({
     },
     /**
      * A virtual property used by the template to indicate whether or not there is a previous page
-     * @property {Boolean} list-table.props.hasPrevious
+     * @property {Boolean} components/paginate-widget.ViewModel.props.hasPrevious
+     * @parent components/paginate-widget.ViewModel.props
      */
     hasPrevious: {
       get: function() {
         return this.attr('activePageIndex') > 0;
       }
     },
+    /**
+     * The array of currently shown pages in the widget
+     * @property {Array<Number>} components/paginate-widget.ViewModel.props.visiblePages
+     * @parent components/paginate-widget.ViewModel.props
+     */
     visiblePages: {
       get: function() {
         var pages = this.attr('pages');

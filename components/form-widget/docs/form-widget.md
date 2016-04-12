@@ -1,11 +1,8 @@
 <!--
 
-@module {can.Component} form-widget
-@parent Home.components
-@group form-widget.types 0 Types
+@module {can.Component} components/form-widget <form-widget />
+@parent geocola.components
 @group form-widget.fields 1 Field Types
-@group form-widget.events 3 Events
-@group form-widget.props 4 Properties
 
 -->
 

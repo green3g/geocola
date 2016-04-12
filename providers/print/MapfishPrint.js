@@ -70,9 +70,9 @@ var encoders = {
   }
 };
 /**
- * @module {can.Map} MapfishPrint 
-**/
-
+ * @constructor providers/print/MapfishPrint MapfishPrint
+ * @parent providers/print/PrintProvider
+ */
 export default Print.extend({
   define: can.extend(Print.prototype.define, {
     /**

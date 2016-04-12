@@ -1,8 +1,7 @@
 <!--
 
-@module measure-widget
-@parent Home.components
-@group measure-widget.props Properties
+@module {can.Component} components/measure-widget <measure-widget />
+@parent geocola.components
 
 -->
 

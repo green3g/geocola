@@ -1,8 +1,7 @@
 <!--
 
-@module tab-container
-@parent Home.components
-@group tab-container.props Properties
+@module {can.Component} components/tab-container <tab-container />
+@parent geocola.components
 
 -->
 

@@ -1,7 +1,7 @@
 /* jshint esnext:true */
 import can from 'can';
 /**
- * @module EsriGeocoder EsriGeocoder
+ * @constructor providers/location/EsriGeocoder EsriGeocoder
  * @parent locationProvider.providers
  * @group EsriGeocoder.props Properties
  * @description
