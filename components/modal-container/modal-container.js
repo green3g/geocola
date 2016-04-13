@@ -17,14 +17,23 @@ export let ViewModel = widgetModel.extend({
   },
   show: function(){
     can.$('#modal-' + this.attr('instanceId')).modal('show');
+    this.dispatch('show');
   },
   hide: function(){
     can.$('#modal-' + this.attr('instanceId')).modal('hide');
+    this.dispatch('hide');
   }
 });
 
 export let ModalContainer = can.Component.extend({
   tag: 'modal-container',
   template: template,
-  viewModel: ViewModel
+  viewModel: ViewModel,
+  events: {
+    inserted: function(){
+      if(this.viewModel.attr('visible')){
+        this.viewModel.show();
+      }
+    }
+  }
 });
