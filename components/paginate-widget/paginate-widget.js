@@ -74,6 +74,14 @@ export let viewModel = CanMap.extend({
     }
     return false;
   },
+  gotoFirst: function(){
+    this.attr('activePageIndex', 0);
+    return false;
+  },
+  gotoLast: function(){
+    this.attr('activePageIndex', this.attr('pages') - 1);
+    return false;
+  },
   gotoPage: function(p) {
     if (p > 0 && p <= this.attr('pages')) {
       this.attr('activePageIndex', p - 1);

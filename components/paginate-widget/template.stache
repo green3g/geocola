@@ -1,7 +1,12 @@
 <div class="paginate-widget">
   <ul class="pagination">
     <li class="{{^hasPrevious}}disabled{{/hasPrevious}}">
-      <a href="#" aria-label="Previous" ($click)="gotoPrevious">
+      <a href="" aria-label="First" ($click)="gotoFirst">
+        <span aria-hidden="true">&laquo;&laquo;</span>
+      </a>
+    </li>
+    <li class="{{^hasPrevious}}disabled{{/hasPrevious}}">
+      <a href="" aria-label="Previous" ($click)="gotoPrevious">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
@@ -11,6 +16,11 @@
     <li class="{{^hasNext}}disabled{{/hasNext}}">
       <a href="" aria-label="Next" ($click)="gotoNext">
         <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    <li class="{{^hasNext}}disabled{{/hasNext}}">
+      <a href="" aria-label="Last" ($click)="gotoLast">
+        <span aria-hidden="true">&raquo;&raquo;</span>
       </a>
     </li>
   </ul>
