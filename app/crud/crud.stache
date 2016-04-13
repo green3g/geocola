@@ -23,11 +23,6 @@
             <crud-manager {(page)}="page" {(view-id)}="objectId" {view}="." {parameters}="parameters"></crud-manager>
           {{/activeView}}
 
-          parameters:
-          {{#each parameters}}
-            {{%key}} - {{.}}
-          {{/each}}
-
           {{#is page 'details'}}
             {{#if activeView.relatedViews}}
               <hr />

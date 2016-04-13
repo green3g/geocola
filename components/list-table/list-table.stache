@@ -1,36 +1,39 @@
 <div class="query-table">
-  <table class="table table-striped table-condensed">
-    <thead>
-      <tr>
-        <th class="tool-buttons">
-          <i ($click)="toggleSelectAll" class="fa fa-{{#_allSelected}}check-{{/_allSelected}}square-o"></i>
-        </th>
-        {{#each objects.0}}
-          {{#if renderField(%key)}}
-            <th {{#is %key parameters.sort}}class="info"{{/is}} ($click)="buttonClick('sort', %key)">
-              <i class="fa fa-sort-desc"></i>
-              {{formatField(%key)}}
-            </th>
-          {{/if}}
-        {{/each}}
-      </tr>
-    </thead>
-    <tbody>
-      {{#each objects}}
-        <tr {{#if isSelected(.)}} class="warning" {{/if}}>
-          <td class="tool-buttons">
-            <i ($click)="toggleSelected(.)" class="fa {{#if isSelected(.)}}fa-check-square-o{{else}}fa-square-o{{/if}}"></i>
-            {{#each buttons}}
-              <i ($click)="buttonClick(eventName, ../.)" title="{{title}}" class="{{iconClass}}"></i>
-            {{/each}}
-          </td>
-          {{#each .}}
+  {{#if objects.length}}
+    <table class="table table-striped table-condensed">
+      <thead>
+        <tr>
+          <th class="tool-buttons">
+            <i ($click)="toggleSelectAll" class="fa fa-{{#_allSelected}}check-{{/_allSelected}}square-o"></i>
+          </th>
+          {{#each objects.0}}
             {{#if renderField(%key)}}
-              <td>{{formatValue(.)}}</td>
+              <th {{#is %key parameters.sort}} class="info" {{/is}} ($click)="buttonClick('sort', %key)">
+                <i class="fa fa-sort-desc"></i> {{formatField(%key)}}
+              </th>
             {{/if}}
           {{/each}}
         </tr>
-      {{/each}}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {{#each objects}}
+          <tr {{#if isSelected(.)}} class="warning" {{/if}}>
+            <td class="tool-buttons">
+              <i ($click)="toggleSelected(.)" class="fa {{#if isSelected(.)}}fa-check-square-o{{else}}fa-square-o{{/if}}"></i>
+              {{#each buttons}}
+                <i ($click)="buttonClick(eventName, ../.)" title="{{title}}" class="{{iconClass}}"></i>
+              {{/each}}
+            </td>
+            {{#each .}}
+              {{#if renderField(%key)}}
+                <td>{{formatValue(.)}}</td>
+              {{/if}}
+            {{/each}}
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    <p>There are currently no items here.</p>
+  {{/if}}
 </div>
