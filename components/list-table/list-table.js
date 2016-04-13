@@ -38,7 +38,13 @@ export const ViewModel = viewModel.extend({
      */
     objects: {
       Value: List,
-      Type: List
+      Type: List,
+      set: function(val) {
+        if (this.attr('_selectedObjects')) {
+          this.attr('_selectedObjects').replace([]);
+        }
+        return val;
+      }
     },
     /**
      * A list of the currently selected objects in the table
