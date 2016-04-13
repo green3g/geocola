@@ -1,0 +1,43 @@
+<script type="text/stache" id="demo" can-autorender>
+  <h1>Form Widget Demo</h1>
+  <form-widget {form-object}="formObject" {fields}="fields" />
+</script>
+<script src="../../node_modules/steal/steal.js" main="@empty" id="demo-source">
+  import 'bootstrap/dist/css/bootstrap.min.css!';
+  import 'bootstrap/dist/css/bootstrap-theme.min.css!';
+  import 'font-awesome/css/font-awesome.min.css';
+  import 'components/form-widget/';
+
+  import can from 'can/view/';
+
+  var frag = can.view('demo', {
+    formObject: new can.Map({
+      field1: 'test-value',
+      field2: 'another value',
+      field3: 1
+    }),
+    fields: ['field1', {
+      name: 'field2',
+      alias: 'A better field name',
+      type: 'text',
+      properties: {
+        textarea: true
+      }
+    }, {
+      name: 'field3',
+      alias: 'A select dropdown',
+      type: 'select',
+      properties: {
+        options: [{
+          value: 1,
+          label: 'Option 1'
+        },{
+          value: 2,
+          label: 'Option 2'
+        }]
+      }
+    }]
+  }, {});
+
+  document.body.appendChild(frag);
+</script>

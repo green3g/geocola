@@ -5,16 +5,23 @@ import ol from 'openlayers';
 import widgetModel from 'components/widget-model';
 import template from './olMap.stache!';
 import './olMap.css!';
-/**
- * @module ol-map
- */
 
+/**
+ * @constructor components/ol-map.ViewModel ViewModel
+ * @parent components/ol-map
+ * @group components/ol-map.ViewModel.props Properties
+ *
+ * @description A `<ol-map />` component's ViewModel
+ */
 export const ViewModel = widgetModel.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
      * Openlayers projection string to use for map. The default is `'EPSG:3857'`
-     * @property {string} ol-map.props.projection
-     * @parent ol-map.props
+     * @property {string} components/ol-map.ViewModel.props.projection
+     * @parent components/ol-map.ViewModel.props
      * @signature `projection="EPSG:3857"` sets the projection value
      */
     projection: {
@@ -23,8 +30,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * The starting x coordinate of the map view. The default is 0.
-     * @property {Number} ol-map.props.x
-     * @parent ol-map.props
+     * @property {Number} components/ol-map.ViewModel.props.x
+     * @parent components/ol-map.ViewModel.props
      * @signature `x="45.2123"` Sets the x value
      */
     x: {
@@ -34,8 +41,8 @@ export const ViewModel = widgetModel.extend({
     /**
      *
      * The starting y coordinate of the map view. The default is 0.
-     * @property {Number} ol-map.props.y
-     * @parent ol-map.props
+     * @property {Number} components/ol-map.ViewModel.props.y
+     * @parent components/ol-map.ViewModel.props
      *
      */
     y: {
@@ -44,8 +51,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * The starting zoom level of the map view. The default is 1.
-     * @property {Number} ol-map.props.zoom
-     * @parent ol-map.props
+     * @property {Number} components/ol-map.ViewModel.props.zoom
+     * @parent components/ol-map.ViewModel.props
      * @signature `zoom="5"` Sets the zoom level
      * @signature `viewModel.attr('zoom', 5)` Sets the zoom level
      *
@@ -57,16 +64,16 @@ export const ViewModel = widgetModel.extend({
     /**
      * The default name of the map click handler to use. If not supplied, it
      * will be set to the first one added.
-     * @property {String} ol-map.props.defaultClick
-     * @parent ol-map.props
+     * @property {String} components/ol-map.ViewModel.props.defaultClick
+     * @parent components/ol-map.ViewModel.props
      */
     defaultClick: {
       type: 'string'
     },
     /**
      * The array of current click handlers in the widget.
-     * @property {can.Map} ol-map.props.clickHandlers
-     * @parent ol-map.props
+     * @property {can.Map} components/ol-map.ViewModel.props.clickHandlers
+     * @parent components/ol-map.ViewModel.props
      */
     clickHandlers: {
       Value: can.Map
@@ -74,8 +81,8 @@ export const ViewModel = widgetModel.extend({
     /**
      * @description
      * The deferred object used to notify listeners when the map is ready
-     * @property {can.Deferred} ol-map.props.deferred
-     * @parent ol-map.props
+     * @property {can.Deferred} components/ol-map.ViewModel.props.deferred
+     * @parent components/ol-map.ViewModel.props
      */
     deferred: {
       value: can.Deferred
@@ -83,24 +90,21 @@ export const ViewModel = widgetModel.extend({
     /**
      * @description
      * Optional map options to override the defaults
-     * @property {object} ol-map.props.mapOptions
-     * @parent ol-map.props
+     * @property {object} components/ol-map.ViewModel.props.mapOptions
+     * @parent components/ol-map.ViewModel.props
      */
     mapOptions: {
       type: '*'
     },
     /**
      * The ol.Map
-     * @property {ol.Map} ol-map.props.mapObject
-     * @parent ol-map.props
+     * @property {ol.Map} components/ol-map.ViewModel.props.mapObject
+     * @parent components/ol-map.ViewModel.props
      */
     mapObject: {
       value: null
     }
   },
-  /**
-   * @prototype
-   */
   /**
    * @description
    * Initializes the map

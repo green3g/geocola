@@ -4,18 +4,8 @@ import can from 'can';
 //import './widget.css!';
 import template from './template.stache!';
 import 'components/list-table/';
-/**
- * @module {can.Map} filter-widget
- */
+import 'components/form-widget/';
 
-/**
- * @typedef {filterObject} filter-widget.types.filterObject FilterObject
- * @parent filter-widget.types
- * @description A filter object consisting of a fieldname, operator, and a value
- * @option {String} name The name of the field
- * @option {String} op The value of the operator
- * @option {String} val The value of the search query. This can be any sql string or expression, for example `%myValue%`
- */
 let Filter = can.Map.extend({
   define: {
     val: {
@@ -36,16 +26,25 @@ let Filter = can.Map.extend({
       value: 'like',
       type: 'string'
     }
-  },
-  save: function() { /* noop to simulate a supermodel */ }
+  }
 });
 
+/**
+ * @constructor components/filter-widget.ViewModel ViewModel
+ * @parent components/filter-widget
+ * @group components/filter-widget.ViewModel.props Properties
+ *
+ * @description A `<filter-widget />` component's ViewModel
+ */
 export let viewModel = can.Map.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
      * A list of filterObjects
-     * @property {Array<filter-widget.types.filterObject>} filter-widget.props.filters
-     * @parent filter-widget.props
+     * @property {Array<geocola.types.filterObject>} components/filter-widget.ViewModel.filters
+     * @parent components/filter-widget.ViewModel.props
      */
     filters: {
       Value: can.List
@@ -53,16 +52,16 @@ export let viewModel = can.Map.extend({
     /**
      * The model-like object to render in the form
      * @link formFieldObject formFieldObject
-     * @property {form-widget.types.formFieldObject} filter-widget.props.formObject
-     * @parent filter-widget.props
+     * @property {form-widget.types.formFieldObject} components/filter-widget.ViewModel.formObject
+     * @parent components/filter-widget.ViewModel.props
      */
     formObject: {
       Value: Filter
     },
     /**
      * The buttonObjects to display in the list table
-     * @property {Array<buttonObject>} filter-widget.props.buttons
-     * @parent filter-widget.props
+     * @property {Array<buttonObject>} components/filter-widget.ViewModel.buttons
+     * @parent components/filter-widget.ViewModel.props
      */
     buttons: {
       value: [{
@@ -73,8 +72,8 @@ export let viewModel = can.Map.extend({
     },
     /**
      * The fields to render in the form
-     * @property {Array.<formFieldObject>} filter-widget.props.fields
-     * @parent filter-widget.props
+     * @property {Array.<formFieldObject>} components/filter-widget.ViewModel.fields
+     * @parent components/filter-widget.ViewModel.props
      */
     fields: {
       get: function() {
@@ -121,14 +120,11 @@ export let viewModel = can.Map.extend({
     }
   },
   /**
-   * @prototype
-   */
-  /**
    * Removes a filter from the list of filters
    * @param  {can.Map} scope The stache scope
    * @param  {event} dom   The dom event
    * @param  {event} event The can event
-   * @param  {filter-widget.types.filterObject} obj   The object to remove. This is the only argument used by the function, the rest may be null.
+   * @param  {geocola.types.filterObject} obj   The object to remove. This is the only argument used by the function, the rest may be null.
    */
   removeFilter: function(scope, dom, event, obj) {
     let index = this.attr('filters').indexOf(obj);

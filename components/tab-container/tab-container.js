@@ -3,24 +3,27 @@ import can from 'can';
 import 'components/panel-container/';
 import template from './tabs.stache!';
 /**
- * @module tab-container
+ * @constructor components/tab-container.ViewModel ViewModel
+ * @parent components/tab-container
+ * @group components/tab-container.ViewModel.props Properties
+ *
+ * @description A `<tab-container />` component's ViewModel
  */
-
 export const ViewModel = can.Map.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
      * the list of panel objects. TThis propert is updated automatically when a panel
      * is inserted inside of a tab-container.
-     * @property {can.List} tab-container.props.panels
-     * @parent tab-container.props
+     * @property {can.List} components/tab-container.ViewModel.props.panels
+     * @parent components/tab-container.ViewModel.props
      */
     panels: {
       Value: can.List
     }
   },
-  /**
-   * @prototype
-   */
   /**
    * @description
    * Adds a new panel to the tab container

@@ -6,23 +6,27 @@ import './olPopup.css!';
 import widgetModel from 'components/widget-model';
 
 /**
- * @module ol-popup
+ * @constructor components/ol-popup.ViewModel ViewModel
+ * @parent components/ol-popup
+ * @group components/ol-popup.ViewModel.props Properties
+ *
+ * @description A `<ol-popup />` component's ViewModel
  */
 export const ViewModel = widgetModel.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
-     * Whether or not the current state of this popup should be a modal dialog instead of a map overlay popup. This can be changed dynamically 
-     * @property {Boolean} ol-popup.props.modal
-     * @parent ol-popup.props
+     * Whether or not the current state of this popup should be a modal dialog instead of a map overlay popup. This can be changed dynamically
+     * @property {Boolean} components/ol-popup.ViewModel.props.modal
+     * @parent components/ol-popup.ViewModel.props
      */
     modal: {
       type: 'boolean',
       value: false
     }
   },
-  /**
-   * @prototype
-   */
   /**
    * Initializes the widget by adding a map click handler and setting up the ol.overlay
    * @param  {can.Map} mapViewModel   The ol-map view model

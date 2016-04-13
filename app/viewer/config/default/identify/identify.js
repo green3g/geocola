@@ -2,13 +2,13 @@
 import statesTemplate from './states.stache!';
 
 export default {
-  'GISDATA\.TOWNS_POLYM': {
-    alias: 'Cities'
-  },
   states: {
+    //these first properties control how the layer overall will display
+    //in the identify-widget
     alias: 'US States',
     template: statesTemplate,
     fieldProperties: {
+      //these properties specify how each field should be displayed
       geometry: {
         exclude: true
       },
@@ -28,5 +28,8 @@ export default {
         }
       }
     }
+  },
+  'GISDATA\.TOWNS_POLYM': {
+    alias: 'Cities'
   }
 };

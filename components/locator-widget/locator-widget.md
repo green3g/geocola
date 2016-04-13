@@ -1,9 +1,7 @@
 <!--
 
-@module locator-widget
-@parent Home.components
-@group locator-widget.props Properties
-@group locator-widget.events Events
+@module {can.Component} components/locator-widget <locator-widget />
+@parent geocola.components
 
 -->
 

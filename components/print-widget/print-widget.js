@@ -2,23 +2,32 @@
 import can from 'can';
 import template from './print.stache!';
 import widgetModel from 'components/widget-model';
+
 /**
- * @module print-widget
+ * @constructor components/print-widget.ViewModel ViewModel
+ * @parent components/print-widget
+ * @group components/print-widget.ViewModel.props Properties
+ *
+ * @description A `<print-widget />` component's ViewModel
  */
 export const ViewModel = widgetModel.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
+     * @property {String} components/print-widget.ViewModel.mapTitle mapTitle
+     * @parent components/print-widget.ViewModel.props
      * The ol-map node selector
-     * @property {String} print-widget.props.mapNode
-     * @parent print-widget.props
      */
     mapNode: {
       type: 'string'
     },
     /**
+     * @property {String} components/print-widget.ViewModel.mapTitle mapTitle
+     * @parent components/print-widget.ViewModel.props
+     *
      * The default map title to send to the print service.
-     * @property {String} print-widget.props.mapTitle
-     * @parent print-widget.props
      */
     mapTitle: {
       type: 'string',
@@ -26,8 +35,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * The default layout to select from the print widget
-     * @property {String} print-widget.props.selectedLayout
-     * @parent print-widget.props
+     * @property {String}  components/print-widget.ViewModel.selectedLayout selectedLayout
+     * @parent components/print-widget.ViewModel.props
      */
     selectedLayout: {
       type: 'string',
@@ -35,8 +44,8 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * The default dpi to select from the print widget
-     * @property {Number} print-widget.props.selectedDpi
-     * @parent print-widget.props
+     * @property {Number}  components/print-widget.ViewModel.selectedDpi selectedDpi
+     * @parent components/print-widget.ViewModel.props
      */
     selectedDpi: {
       type: 'number',
@@ -44,28 +53,25 @@ export const ViewModel = widgetModel.extend({
     },
     /**
      * The current list of print results in the widget
-     * @property {Array} print-widget.props.printResults
-     * @parent print-widget.props
+     * @property {Array<guides.types.PrintResult>} components/print-widget.ViewModel.printResults printResults
+     * @parent components/print-widget.ViewModel.props
      */
     printResults: {
       value: []
     },
     /**
      * The print provider to use for printing
-     * @property {providers.printProvider} print-widget.props.provider
-     * @parent print-widget.props
+     * @property {providers.printProvider} components/print-widget.ViewModel.provider provider
+     * @parent components/print-widget.ViewModel.props
      */
     provider: {
       value: null
     }
   },
   /**
-   * @prototype
-   */
-  /**
-   * [function description]
-   * @param  {[type]} mapViewModel [description]
-   * @return {[type]}              [description]
+   * Initializes the map property and calls `loadCapabilities` on the provider
+   * @signature
+   * @param  {can.Map} mapViewModel The ol-map view model
    */
   initMap: function(mapViewModel) {
     var self = this;
@@ -76,15 +82,13 @@ export const ViewModel = widgetModel.extend({
     });
   },
   /**
-   * [function description]
-   * @return {[type]} [description]
+   * Called when the provider resolves the `loadCapabilities` deferred to handle the refresh of the select inputs
    */
   handlePrintInfo: function() {
     can.$('.print-widget select').trigger('change');
   },
   /**
-   * [function description]
-   * @return {[type]} [description]
+   * Called when the print button is clicked to activate the provider's `print` method.
    */
   printButtonClick: function() {
     if (this.attr('provider') && !this.attr('printing')) {
@@ -98,16 +102,15 @@ export const ViewModel = widgetModel.extend({
     }
   },
   /**
-   * [function description]
+   * Click handler for when the clear button is clicked. Empties out the current list of `printResults`
    * @return {[type]} [description]
    */
   clearButtonClick: function() {
     this.attr('printResults').replace([]);
   },
   /**
-   * [function description]
-   * @param  {[type]} results [description]
-   * @return {[type]}         [description]
+   * Hanlder for when the print deferred returned by the provider resolves to update add the print result to the list of results
+   * @param  {PrintResult} results The result of the printout
    */
   handlePrintout: function(results) {
     this.attr('printing', false);

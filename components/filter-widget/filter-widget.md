@@ -1,8 +1,7 @@
 <!--
 
-@module {can.Map} filter-widget
-@parent Home.components
-@group filter-widget.types Types
+@module {can.Component} components/filter-widget <filter-widget />
+@parent geocola.components
 @group filter-widget.props Properties
 @link http://jsonapi.org/format/#fetching-filtering JSON-API
 
@@ -22,3 +21,7 @@ The filters generated follow the JSON API specification implemented by Flask-Res
 ```html
   <filter-widget />
   ```
+
+## Demo
+
+@demo components/filter-widget/demo.html 500

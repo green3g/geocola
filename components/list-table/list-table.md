@@ -1,9 +1,7 @@
 <!--
 
-@module {can.Component} list-table
-@parent Home.components
-@group list-table.types Types
-@group list-table.props Properties
+@module {can.Component} components/list-table <list-table />
+@parent geocola.components
 
 -->
 

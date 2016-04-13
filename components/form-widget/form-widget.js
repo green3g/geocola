@@ -10,10 +10,6 @@ import './field-components/file-field';
 import './field-components/json-field';
 import './field-components/date-field';
 
-/**
- * @module {can.Component} form-widget
- */
-
 const FIELD_TYPES = {
   text: '<text-field {properties}="." (change)="setField" />',
   select: '<select-field {properties}="." (change)="setField" />',
@@ -23,24 +19,22 @@ const FIELD_TYPES = {
 };
 
 /**
- * @typedef {formFieldObject} form-widget.types.formFieldObject FormFieldObject
- * This can either be a string representing the field name or an object with the properties described below.
- * @parent form-widget.types
- * @option {String} name The name of the field property
- * @option {String} alias A label to display for the field
- * @option {String} placeholder The field placeholder to display when no text is entered
- * @option {String} type The type of field template to use.
- * @option {can.view.renderer} template A template partial which gets passed the formFieldObject. You can create a renderer using `can.stache(template)`, or importing the template with steal. If this is provided, the `type` will be ignored.
- * @option {Object} properties Additional properties to pass to the field template. For example, `options` is a property existing in the select template
- * @option {String} The value stored in the formObject. This is provided by the form-widget internally
+ * @constructor components/form-widget.ViewModel ViewModel
+ * @parent components/form-widget
+ * @group components/form-widget.ViewModel.props Properties
+ * @group components/form-widget.ViewModel.events Events
+ *
+ * @description A `<form-widget />` component's ViewModel
  */
-
 export let viewModel = can.Map.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
      * Whether or not to show the submit/cancel buttons
-     * @property {Boolean} form-widget.props.showButtons
-     * @parent form-widget.props
+     * @property {Boolean} components/form-widget.ViewModel.props.showButtons
+     * @parent components/form-widget.ViewModel.props
      */
     showButtons: {
       type: 'boolean',
@@ -48,8 +42,8 @@ export let viewModel = can.Map.extend({
     },
     /**
      * Whether or not this form should be a bootstrap inline form
-     * @property {Boolean} form-widget.props.inline
-     * @parent form-widget.props
+     * @property {Boolean} components/form-widget.ViewModel.props.inline
+     * @parent components/form-widget.ViewModel.props
      */
     inline: {
       type: 'boolean',
@@ -57,8 +51,8 @@ export let viewModel = can.Map.extend({
     },
     /**
      * The object id of the item to retrieve. If this is provided, a request will be made to the connection object with the specified id.
-     * @property {Number} form-widget.props.objectId
-     * @parent form-widget.props
+     * @property {Number} components/form-widget.ViewModel.props.objectId
+     * @parent components/form-widget.ViewModel.props
      */
     objectId: {
       type: 'number',
@@ -71,14 +65,14 @@ export let viewModel = can.Map.extend({
      * An object representing a can.Map or similar object. This object should have
      * a `save` method like a `can.Model` or `can-connect.superMap`. This object is
      * updated and its `save` method is called when the form is submitted.
-     * @property {can.Map} form-widget.props.formObject
-     * @parent form-widget.props
+     * @property {can.Map} components/form-widget.ViewModel.props.formObject
+     * @parent components/form-widget.ViewModel.props
      */
     formObject: {},
     /**
-     * The list of form fields properties. These can be specified as strings representing the field names or the object properties described in the formFieldObject
-     * @property {Array<String|form-widget.types.formFieldObject>} form-widget.props.fields
-     * @parent form-widget.props
+     * The list of form fields properties. These can be specified as strings representing the field names or the object properties described in the FormFieldObject
+     * @property {Array<String|geocola.types.FormFieldObject>} components/form-widget.ViewModel.props.fields
+     * @parent components/form-widget.ViewModel.props
      */
     fields: {
       get: function(val) {
@@ -96,16 +90,18 @@ export let viewModel = can.Map.extend({
       }
     },
     /**
-     * The connection info for this form's data
-     * @property {connectInfoObject} form-widget.props.connection
-     * @parent form-widget.props
+     * The connection info for this form's data. If this is provided, the object will be fetched using the objectId property
+     * @property {connectInfoObject} components/form-widget.ViewModel.props.connection
+     * @parent components/form-widget.ViewModel.props
      */
     connection: {
       value: null
     },
     /**
      * A virtual object consisting of field names mapped to their properties. This is used by the template to format the field, and by the viewModel to format the data when the form is submitted.
-     * @property {Object} form-widget.props._fieldObjects
+     * @property {Object} components/form-widget.ViewModel.props._fieldObjects
+     * @parent components/form-widget.ViewModel.props
+     * @link geocola.types.FormFieldObject FormFieldObject
      */
     _fieldObjects: {
       get: function(oldValue, setValue) {
@@ -139,9 +135,6 @@ export let viewModel = can.Map.extend({
     }
   },
   /**
-   * @prototype
-   */
-  /**
    * Fetches and replaces the formObject with a new formObject
    * @param  {superMap} con The supermap connection to the api service
    * @param  {Number} id  The id number of the object to fetch
@@ -158,25 +151,13 @@ export let viewModel = can.Map.extend({
     });
   },
   /**
-   * @typedef {can.Event} form-widget.events.formSubmit submit
-   * @parent form-widget.events
-   * An event dispatched when the form is submitted
    * @option {can.Map | Object} formObject The form object that is saved
-   */
-  /**
    * Called when the form is submitted. The object is updated by calling it's `save` method. The event `submit` is dispatched.
    */
   submitForm: function() {
     let formObject = this.attr('formObject');
     this.dispatch('submit', [formObject]);
-
   },
-  /**
-   * @typedef {can.Event} form-widget.events.formFieldChangeEvent fieldChange
-   * An event dispatched when a form field changes. The formObject is passed as an argument
-   * @parent form-widget.events
-   * @option {can.Map} formObject The formObject
-   */
   /**
    * Sets the formObject value when a field changes. This will allow for future
    * functionality where the form is much more responsive to values changing, like

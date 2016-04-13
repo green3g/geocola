@@ -1,8 +1,7 @@
 <!--
 
-@module ol-map
-@parent Home.components
-@group ol-map.props Properties
+@module {can.Component} components/ol-map <ol-map />
+@parent geocola.components
 
 -->
 
@@ -18,23 +17,7 @@ A openlayers map component that provides a wrapper for `ol.Map` along with addit
 </ol-map>`
 ```
 
-```javascript
-//app.js
-//Note: target is automatically supplied by the component
-import template from './app-template.stache!';
-import ol from 'openlayers';
 
-$('#app').html(can.view(template, {
-  mapOptions: {
-    layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })
-      ],
-      view: new ol.View({
-        center: [10, 30],
-        zoom: 13
-      })
-    }
-}));
-```
+## Demo
+
+@demo components/ol-map/demo.html 500

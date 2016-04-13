@@ -7,7 +7,7 @@ function getNextId() {
 }
 
 /**
- * @parent Home.components
+ * @parent geocola.components
  * @module widgetModel
  * @inherits can.Map
  *
