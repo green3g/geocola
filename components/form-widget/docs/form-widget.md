@@ -12,54 +12,9 @@ A configureable form widget to modify data. The form accepts a formObject proper
 ## Usage
 ```html
   <!-- template.stache -->
-  <form-widget {form-object}="formObject" (submit)="resetPage"
-   (cancel)="resetPage" {fields}="formFields" />
+  <form-widget {form-object}="formObject" />
 ```
 
-```javascript
-//javascript
-let Filter = Map.extend({
-  name: null,
-  op: 'like',
-  val: null,
-  save: function() {  } //noop to simulate a supermodel
-});
+## Demo
 
-//...
-fields: {
-  value: [{
-    name: 'name',
-    alias: 'Field name',
-    placeholder: 'Enter a field name'
-  }, {
-    name: 'op',
-    alias: 'is',
-    placeholder: 'Choose a operator',
-    type: 'select',
-    properties: {
-      options: [{
-        label: 'Equal to',
-        value: '=='
-      }, {
-        label: 'Not equal to',
-        value: '!='
-      }, {
-        label: 'Contains',
-        value: 'in'
-      }, {
-        label: 'Does not contain',
-        value: 'not_in'
-      }, {
-        label: 'is like',
-        value: 'like'
-      }]
-    }
-  }, {
-    name: 'val',
-    alias: 'Value',
-    placeholder: 'Enter the filter value'
-  }]
-},
-formObject: {value: Filter}
-//...
-```
+@demo components/form-widget/demo.html 500

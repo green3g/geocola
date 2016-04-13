@@ -18,3 +18,7 @@ and capitalizing the first letter. Additional display options may be provided th
 <property-table object-id="3" {connection}="connection"
  {field-properties}="detailFields" />
 ```
+
+## Demo
+
+@demo components/property-table/demo.html 500

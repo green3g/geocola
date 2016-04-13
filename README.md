@@ -11,7 +11,7 @@ A configureable set of client side web applications built on modular and reuseab
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/roemhildtg/geocola?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-![Overall Image](http://roemhildtg.github.io/geocola/static/img/overall-screenshot.png)
+![Overall Image](http://roemhildtg.github.io/geocola/docs/static/img/overall-screenshot.png)
 
 ## Getting started
 
