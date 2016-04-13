@@ -38,7 +38,7 @@ const PropertiesObject = can.Map.extend({
 
 /**
  *
- * A factory function that creates a new Flask-Restless API connection. 
+ * A factory function that creates a new Flask-Restless API connection.
   * @parent apiProvider.providers
   * @param {apiProvider.types.FlaskConnectOptions} options The factory options
   */
@@ -109,7 +109,7 @@ export function FlaskConnectFactory(options) {
         var data = {};
         //exclude hidden properties
         for (var a in attrs) {
-          if (attrs.hasOwnProperty(a) && a.indexOf('_') !== 0 && attrs[a]) {
+          if (attrs.hasOwnProperty(a) && a.indexOf('_') !== 0 && typeof attrs[a] !== undefined) {
             data[a] = attrs[a];
           }
         }
