@@ -1,7 +1,6 @@
 import widgetModel from 'components/widget-model';
 import can from 'can';
 import template from './text-field.stache!';
-
 /**
  * @module form-widget.fields.text Text
  * @parent form-widget.fields
@@ -28,7 +27,7 @@ export let ViewModel = widgetModel.extend({
   onChange(element) {
     this.dispatch('change', [element.value]);
   }
-})
+});
 
 can.Component.extend({
   tag: 'text-field',

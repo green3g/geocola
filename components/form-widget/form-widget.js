@@ -8,6 +8,7 @@ import './field-components/text-field';
 import './field-components/select-field';
 import './field-components/file-field';
 import './field-components/json-field';
+import './field-components/date-field';
 
 /**
  * @module {can.Component} form-widget
@@ -17,7 +18,8 @@ const FIELD_TYPES = {
   text: '<text-field {properties}="." (change)="setField" />',
   select: '<select-field {properties}="." (change)="setField" />',
   file: '<file-field {properties}="." (change)="setField" />',
-  json: '<json-field {properties}="." (change)="setField" />'
+  json: '<json-field {properties}="." (change)="setField" />',
+  date: '<date-field {properties}="." (change)="setField" />'
 };
 
 /**
@@ -159,7 +161,7 @@ export let viewModel = can.Map.extend({
    * @typedef {can.Event} form-widget.events.formSubmit submit
    * @parent form-widget.events
    * An event dispatched when the form is submitted
-   * @option {can.Map | Object} formObject The form object that is saved 
+   * @option {can.Map | Object} formObject The form object that is saved
    */
   /**
    * Called when the form is submitted. The object is updated by calling it's `save` method. The event `submit` is dispatched.

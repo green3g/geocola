@@ -26,16 +26,8 @@ export let ViewModel = widgetModel.extend({
     properties: {
       Value: can.Map
     },
-    pendingFiles: {
-      Type: can.List
-    },
     currentFiles: {
-      get: function() {
-        var val = this.attr('properties.value');
-        if (val) {
-          return val.split(',');
-        }
-      }
+      Value: can.List
     },
     state: {
       value: {
@@ -47,20 +39,24 @@ export let ViewModel = widgetModel.extend({
       value: 100
     }
   },
-  onChange(element) {
-    if (element.files) {
-      this.attr('pendingFiles', element.files);
+  init: function(){
+    if(this.attr('properties.value')){
+      this.attr('currentFiles').replace(
+        this.attr('properties.value').split(',').filter(function(file){
+          return file !== '';
+        })
+      );
     }
   },
-  uploadFiles() {
-    var files = this.attr('pendingFiles');
+  onChange(element) {
+    if (element.files) {
+      this.uploadFiles(element.files);
+    }
+  },
+  uploadFiles(files) {
     var data = new FormData();
-    files.forEach(function(f, index) {
-      data.append(index, f)
-    });
-    let val = this.attr('properties.value');
-    if (val) {
-      data.append('replace', val);
+    for(var i = 0; i < files.length; i ++){
+      data.append(i, files.item(i));
     }
     var self = this;
     this.attr('state', can.ajax({
@@ -77,19 +73,47 @@ export let ViewModel = widgetModel.extend({
   },
   uploadSuccess(data, textStatus, jqXHR) {
     if (typeof data.error === 'undefined') {
-      this.attr('properties.value', data.url);
-      var fieldValue = data.uploads.join(',');
-      this.dispatch('change', [fieldValue]);
+      this.attr('currentFiles', this.attr('currentFiles').concat(data.uploads));
+      this.updateValue();
     } else {
       // Handle errors here
       console.warn('ERRORS: ', data.error);
     }
-    this.attr('pendingFiles').replace([]);
   },
-  uploadError(jqXHR, textStatus, errorThrown) {
+  updateValue(){
+    if(this.attr('currentFiles').length){
+      this.attr('properties.value', this.attr('currentFiles').join(','));
+    } else {
+      this.attr('properties.value', '');
+    }
+    this.dispatch('change', [this.attr('properties.value')]);
+  },
+  uploadError(response, textStatus, errorThrown) {
     // Handle errors here
-    console.warn('ERRORS: ', textStatus);
+    console.warn('ERRORS: ', response, textStatus, errorThrown);
     // STOP LOADING SPINNER
+  },
+  removeFile(file){
+    this.attr('state', can.ajax({
+      url: this.attr('properties.url'),
+      type: 'DELETE',
+      data: {
+        file: file
+      },
+      success: this.removeSuccess.bind(this, file),
+      error: this.removeError.bind(this, file)
+    }));
+  },
+  removeSuccess(file, response){
+    this.attr('currentFiles').splice(this.attr('currentFiles').indexOf(file), 1);
+    this.updateValue();
+  },
+  removeError(file, response){
+    if(response.status === 404){
+      //file doesn't exist, remove it from this widget
+      this.removeSuccess(file, response);
+    }
+    console.warn('Error: ', response);
   }
 })
 
