@@ -160,12 +160,12 @@ export let viewModel = CanMap.extend({
     this.attr('viewId', 0);
   },
   createObject: function() {
+    this.attr('page', 'add');
+  },
+  getNewObject(){
     //create a new empty object with the defaults provided
     //from the template property which is a map
-    var newObject = this.attr('view.template')();
-
-    this.attr('newObject', newObject);
-    this.attr('page', 'add');
+    return this.attr('view.template')();
   },
   deleteObject: function(scope, dom, event, obj, skipConfirm) {
     if (obj && (skipConfirm || confirm('Are you sure you want to delete this record?'))) {
@@ -211,6 +211,9 @@ export let viewModel = CanMap.extend({
     } else {
       this.attr('filterVisible', !this.attr('filterVisible'));
     }
+  },
+  isListTable(){
+    return this.attr('view.listType') !== 'property-table';
   }
 });
 
