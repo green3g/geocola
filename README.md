@@ -15,7 +15,7 @@ A configureable set of client side web applications built on modular and reuseab
 
 ## Getting started
 
-[Read the full documentation for details](http://roemhildtg.github.io/geocola/)
+[Read the full documentation for details](http://roemhildtg.github.io/geocola/docs)
 
 ### Requirements
 * NodeJS
