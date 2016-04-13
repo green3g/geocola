@@ -12,7 +12,7 @@ import template from './template.stache!';
  */
 export let ViewModel = widgetModel.extend({
   /**
-   * @prototype 
+   * @prototype
    */
   define: {
     /**
@@ -30,6 +30,14 @@ export let ViewModel = widgetModel.extend({
     visible: {
       type: 'boolean',
       value: true
+    },
+    /**
+     * Backdrop option.
+     * @property {Boolean | String<'static'>} components/modal-container.ViewModel.props.backdrop
+     */
+    backdrop: {
+      value: 'static',
+      type: 'string'
     }
   },
   show: function(){
