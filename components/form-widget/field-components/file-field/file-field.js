@@ -1,33 +1,27 @@
-import can from 'can';
+
+import can from 'can/util/';
+import List from 'can/list/';
+import CanMap from 'can/map/';
+import Component from 'can/component/';
+
 import widgetModel from 'components/widget-model';
 
 import template from './file-field.stache!';
 
 /**
- * @module form-widget.fields.text Text
- * @parent form-widget.fields
- * @body
- * A file upload field. It POST's the upload to a special url and returns the url result as text to the form.
+ * @constructor components/form-widget/field-components/file-field.ViewModel ViewModel
+ * @parent components/form-widget/field-components/file-field
+ * @group components/form-widget/field-components/file-field.ViewModel.props Properties
  *
- * `type: 'file'`
+ * @description A `<file-field />` component's ViewModel
  */
-
-/**
- * @typedef {fileFieldProperties} form-widget.types.fileFieldProperties fileFieldProperties
- * @parent form-widget.types
- * @option {String} url The url up post the file upload to
- * @option {Boolean} multiple Whether or not to allow multiple uploads
- * @option {String} accept The type of media to accept
- * @link http://www.w3schools.com/tags/att_input_accept.asp Input Accept Types
- */
-
 export let ViewModel = widgetModel.extend({
   define: {
     properties: {
-      Value: can.Map
+      Value: CanMap
     },
     currentFiles: {
-      Value: can.List
+      Value: List
     },
     state: {
       value: {
@@ -115,9 +109,9 @@ export let ViewModel = widgetModel.extend({
     }
     console.warn('Error: ', response);
   }
-})
+});
 
-can.Component.extend({
+Component.extend({
   tag: 'file-field',
   template: template,
   viewModel: ViewModel

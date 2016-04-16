@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import can from 'can';
 import DefaultTemplate from './Default.stache!';
 

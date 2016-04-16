@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import template from './property-table.stache!';
 // import './property-table.css!';
 import viewModel from '../widget-model';

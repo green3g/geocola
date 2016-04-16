@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import ol from 'openlayers';
 
 var view = {

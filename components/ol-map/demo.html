@@ -1,5 +1,6 @@
-<script type="text/stache" id="demo">
-  <h1>Map Demo</h1>
+<div id="app"></div>
+
+<script type="text/stache" id="demo-html">
   <ol-map default-click="popup" id="main-map" {map-options}="options">
   </ol-map>
 </script>
@@ -7,15 +8,16 @@
   import 'bootstrap/dist/css/bootstrap.min.css!';
   import 'bootstrap/dist/css/bootstrap-theme.min.css!';
   import 'font-awesome/css/font-awesome.min.css';
-  import 'openlayers/dist/ol.css!';
+  import 'node_modules/openlayers/dist/ol.css!';
   import 'components/ol-map/';
 
   import can from 'can/view/';
+  import 'can/util/';
   import mapOptions from 'app/viewer/config/default/map';
 
-  var frag = can.view('demo', {
-    options: mapOptions
-  }, {});
+  var renderer = can.view('demo-html');
 
-  document.body.appendChild(frag);
+  can.$('#app').html(renderer({
+    options: mapOptions
+  }, {}));
 </script>

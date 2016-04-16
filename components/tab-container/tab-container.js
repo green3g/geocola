@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import can from 'can';
 import 'components/panel-container/';
 import template from './tabs.stache!';

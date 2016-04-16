@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import template from './list-table.stache!';
 import './list-table.css!';
 import viewModel from '../widget-model';

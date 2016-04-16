@@ -1,10 +1,12 @@
-/* jshint esnext: true */
+
 
 import can from 'can';
 //import './widget.css!';
 import template from './template.stache!';
 import 'components/list-table/';
 import 'components/form-widget/';
+import 'components/form-widget/field-components/text-field/';
+import 'components/form-widget/field-components/select-field/';
 
 let Filter = can.Map.extend({
   define: {

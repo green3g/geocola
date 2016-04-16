@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import statesTemplate from './states.stache!';
 
 export default {

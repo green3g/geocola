@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import can from 'can';
 
 var count = 1;

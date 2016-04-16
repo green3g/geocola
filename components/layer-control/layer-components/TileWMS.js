@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import can from 'can';
 import baseViewModel from './Default';
 import template from './TileWMS.stache!';

@@ -1,22 +1,28 @@
-/* jshint esnext: true */
 
-import can from 'can';
-//import './widget.css!';
+
+import CanMap from 'can/map/';
+import stache from 'can/view/stache/';
+import Component from 'can/component/';
+
+//provides can.extend
+import can from 'can/util/';
+
 import template from './template.stache!';
 
-import './field-components/text-field';
-import './field-components/select-field';
-import './field-components/file-field';
-import './field-components/json-field';
-import './field-components/date-field';
-
-const FIELD_TYPES = {
+let FIELD_TYPES = {
   text: '<text-field {properties}="." (change)="setField" />',
   select: '<select-field {properties}="." (change)="setField" />',
   file: '<file-field {properties}="." (change)="setField" />',
   json: '<json-field {properties}="." (change)="setField" />',
   date: '<date-field {properties}="." (change)="setField" />'
 };
+
+//precompile templates
+for (var type in FIELD_TYPES) {
+  if (FIELD_TYPES.hasOwnProperty(type)) {
+    FIELD_TYPES[type] = stache(FIELD_TYPES[type]);
+  }
+}
 
 /**
  * @constructor components/form-widget.ViewModel ViewModel
@@ -26,7 +32,7 @@ const FIELD_TYPES = {
  *
  * @description A `<form-widget />` component's ViewModel
  */
-export let viewModel = can.Map.extend({
+export let viewModel = CanMap.extend({
   /**
    * @prototype
    */
@@ -77,7 +83,7 @@ export let viewModel = can.Map.extend({
     fields: {
       get: function(val) {
         if (!val || !val.length) {
-          val = can.Map.keys(this.attr('formObject'));
+          val = CanMap.keys(this.attr('formObject'));
         }
         return val.map(function(field) {
           if (typeof field === 'string') {
@@ -119,13 +125,13 @@ export let viewModel = can.Map.extend({
           this.attr('_fieldObjects', oldValue);
           return oldValue;
         }
-        var objs = new can.Map();
+        var objs = new CanMap();
         fields.forEach(function(field) {
           objs.attr(field.name, can.extend(
             field.properties ? field.properties.attr() : {}, {
               name: field.name,
               alias: field.alias || self.formatField(field.name),
-              template: field.template || can.stache(FIELD_TYPES[field.type || 'text']),
+              template: field.template || FIELD_TYPES[field.type || 'text'],
               value: self.attr(['formObject', field.name].join('.'))
             }));
         });
@@ -151,7 +157,6 @@ export let viewModel = can.Map.extend({
     });
   },
   /**
-   * @option {can.Map | Object} formObject The form object that is saved
    * Called when the form is submitted. The object is updated by calling it's `save` method. The event `submit` is dispatched.
    */
   submitForm: function() {
@@ -206,13 +211,8 @@ export let viewModel = can.Map.extend({
   }
 });
 
-can.Component.extend({
+Component.extend({
   tag: 'form-widget',
   viewModel: viewModel,
-  template: template,
-  events: {
-    inserted: function() {
-      //
-    }
-  }
+  template: template
 });

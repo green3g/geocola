@@ -13,15 +13,6 @@ A widget with several fields that let the user filter a rest response. Uses a li
 
 The filters generated follow the JSON API specification implemented by Flask-Restless
 
-## Usage
-
-  ```javascript
-  import 'components/filter-widget/viewModel';
-  ```
-```html
-  <filter-widget />
-  ```
-
 ## Demo
 
 @demo components/filter-widget/demo.html 500

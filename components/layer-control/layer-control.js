@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import can from 'can';
 import template from './layercontrol.stache!';
 import './layercontrol.css!';

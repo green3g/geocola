@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 
 import CanMap from 'can/map/';
 import List from 'can/list/';
