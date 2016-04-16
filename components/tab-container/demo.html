@@ -1,3 +1,5 @@
+<div id="demo-app"></div>
+
 <script type="text/stache" id="demo">
   <h1>Tab Container Table Demo</h1>
   <tab-container>
@@ -17,9 +19,10 @@
   import 'components/tab-container/';
 
   import can from 'can/view/';
+  import 'can/util/';
   import 'can/map/define/';
 
   var frag = can.view('demo', {}, {});
 
-  document.body.appendChild(frag);
+  can.$('#demo-app').append(frag);
 </script>

@@ -1,3 +1,5 @@
+<div id="demo-app"></div>
+
 <script type="text/stache" id="demo-html" can-autorender>
   <p>Current form values: </p>
   <ul>
@@ -28,6 +30,7 @@
 
   //import canjs stuff
   import can from 'can/view/';
+  import 'can/util/';
   import 'can/util/fixture/';
 
   //this example uses fixtures to catch requests and simulate
@@ -92,5 +95,5 @@
     }]
   }, {});
 
-  document.body.appendChild(frag);
+  can.$('#demo-app').append(frag);
 </script>
