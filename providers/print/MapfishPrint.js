@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import can from 'can';
 import Print from './PrintProvider';
 import color from 'util/color';
