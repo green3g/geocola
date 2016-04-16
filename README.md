@@ -14,6 +14,7 @@ A configureable set of client side web applications built on modular and reuseab
 ![Overall Image](http://roemhildtg.github.io/geocola/docs/static/img/overall-screenshot.png)
 
 ## Getting started
+[See a working demo](http://roemhildtg.github.io/geocola/index.html)
 
 [Read the full documentation for details](http://roemhildtg.github.io/geocola/docs)
 
