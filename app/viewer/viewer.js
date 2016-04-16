@@ -5,8 +5,6 @@ import './components';
 //import the app template
 import template from './viewer.stache!';
 
-import Factory from './LayerFactory';
-
 /**
  * @constructor app/viewer.ViewModel ViewModel
  * @parent start.configure.viewer
@@ -48,8 +46,6 @@ export let AppViewModel = can.Map.extend({
     console.log(arguments);
   },
   startup: function(domNode) {
-    this.attr('mapOptions.layers', this.getLayers(this.attr('mapOptions.layers')));
-    this.attr('mapOptions.view', this.getView(this.attr('mapOptions.view')));
     //render the template with the config
     can.$(domNode).html(can.view(template, this));
 
@@ -66,15 +62,4 @@ export let AppViewModel = can.Map.extend({
       can.viewModel(document.getElementById('identify-popup'), 'modal', width < 500);
     });
   },
-  getLayers: function(layerConf){
-    var layers = [];
-    layerConf.reverse().forEach(function(l){
-      layers.push(Factory.getLayer(l));
-    });
-    return new ol.Collection(layers);
-  },
-  getView: function(viewConf){
-    viewConf.projection = ol.proj.get(viewConf.projection);
-    return new ol.View(viewConf);
-  }
 });

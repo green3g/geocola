@@ -1,10 +1,12 @@
-/* jshint esnext: true */
+
 
 import can from 'can';
 import ol from 'openlayers';
 import widgetModel from 'components/widget-model';
 import template from './olMap.stache!';
 import './olMap.css!';
+
+import Factory from './LayerFactory';
 
 /**
  * @constructor components/ol-map.ViewModel ViewModel
@@ -94,7 +96,7 @@ export const ViewModel = widgetModel.extend({
      * @parent components/ol-map.ViewModel.props
      */
     mapOptions: {
-      type: '*'
+      Value: can.Map
     },
     /**
      * The ol.Map
@@ -112,27 +114,37 @@ export const ViewModel = widgetModel.extend({
    * @param  {domElement} element The dom element to place the map
    */
   initMap: function(element) {
-    var projection = ol.proj.get(this.attr('projection'));
-    var view = new ol.View({
-      zoom: this.attr('zoom'),
-      projection: projection,
-      center: [this.attr('x'), this.attr('y')]
-    });
-    var options = {
-      layers: new ol.Collection([]),
+    this.attr('mapOptions.layers', this.getLayers(this.attr('mapOptions.layers')));
+    this.attr('mapOptions.view', this.getView(this.attr('mapOptions.view')));
+
+    var options = can.extend({
       controls: ol.control.defaults().extend([
         new ol.control.OverviewMap(),
         new ol.control.FullScreen()
       ]),
       target: element,
-      view: view
-    };
+    }, this.attr('mapOptions').attr());
     if (this.attr('mapOptions')) {
       options = can.extend(options, this.attr('mapOptions'));
     }
     //create the map, resolve the deferred
     this.attr('mapObject', this.createMap(options));
     this.attr('deferred').resolve(this.attr('mapObject'));
+  },
+  getLayers: function(layerConf){
+    var layers = [];
+    layerConf.reverse().forEach(function(l){
+      layers.push(Factory.getLayer(l));
+    });
+    return new ol.Collection(layers);
+  },
+  getView: function(viewConf){
+    var projection = ol.proj.get(this.attr('projection'));
+    return new ol.View(can.extend({
+      zoom: this.attr('zoom'),
+      projection: projection,
+      center: [this.attr('x'), this.attr('y')]
+    }, viewConf));
   },
   /**
    * @description
