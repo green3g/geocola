@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import can from 'can';
 
 var count = 1;
@@ -7,7 +7,7 @@ function getNextId() {
 }
 
 /**
- * @parent Home.components
+ * @parent geocola.components
  * @module widgetModel
  * @inherits can.Map
  *

@@ -1,8 +1,7 @@
 <!--
 
-@module print-widget
-@parent Home.components
-@group print-widget.props Properties
+@module {can.Component} components/print-widget <print-widget />
+@parent geocola.components
 
 -->
 

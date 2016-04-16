@@ -35,8 +35,7 @@ export let load = function(app, config) {
     var configPath = [
       app,
       'config/',
-      config || DEFAULT_CONFIG,
-      '/'
+      config || DEFAULT_CONFIG
     ].join('');
 
     //import the modules and start the app

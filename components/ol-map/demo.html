@@ -1,0 +1,23 @@
+<div id="app"></div>
+
+<script type="text/stache" id="demo-html">
+  <ol-map default-click="popup" id="main-map" {map-options}="options">
+  </ol-map>
+</script>
+<script src="../../node_modules/steal/steal.js" main="@empty" id="demo-source">
+  import 'bootstrap/dist/css/bootstrap.min.css!';
+  import 'bootstrap/dist/css/bootstrap-theme.min.css!';
+  import 'font-awesome/css/font-awesome.min.css';
+  import 'node_modules/openlayers/dist/ol.css!';
+  import 'components/ol-map/';
+
+  import can from 'can/view/';
+  import 'can/util/';
+  import mapOptions from 'app/viewer/config/default/map';
+
+  var renderer = can.view('demo-html');
+
+  can.$('#app').html(renderer({
+    options: mapOptions
+  }, {}));
+</script>

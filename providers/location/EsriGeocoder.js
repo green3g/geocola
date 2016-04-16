@@ -1,8 +1,9 @@
 /* jshint esnext:true */
 import can from 'can';
 /**
- * @module providers.EsriGeocoder EsriGeocoder
- * @inherits providers.locationProvider
+ * @constructor providers/location/EsriGeocoder EsriGeocoder
+ * @parent locationProvider.providers
+ * @group EsriGeocoder.props Properties
  * @description
  * Provides abstraction for Esri's ArcGIS Online or ArcGIS for Server geocoders
  */
@@ -10,21 +11,24 @@ export default can.Map.extend({
   define: {
     /**
      * The url of the esri geocoder
-     * @property {String}
+     * @property {String} EsriGeocoder.props.url
+     * @parent EsriGeocoder.props
      */
     url: {
       type: 'string'
     },
     /**
      * The max number of locations to return. The default is 5.
-     * @property {Number}
+     * @property {Number} EsriGeocoder.props.maxLocations
+     * @parent EsriGeocoder.props
      */
     maxLocations: {
       value: 5
     },
     /**
      * An optional point to send to the ArcGIS Geocoder to begin searching from.
-     * @property {Number[]}
+     * @property {Number[]} EsriGeocoder.props.searchPoint
+     * @parent EsriGeocoder.props
      */
     searchPoint: {
       value: null

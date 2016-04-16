@@ -1,0 +1,28 @@
+<div id="demo-app"></div>
+
+<script type="text/stache" id="demo">
+  <h1>Tab Container Table Demo</h1>
+  <tab-container>
+    <panel-container title="Panel 1">
+      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+    </panel-container>
+    <panel-container title="Another Panel">
+      <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
+    </panel-container>
+  </tab-container>
+</script>
+<script src="../../node_modules/steal/steal.js" main="@empty" id="demo-source">
+  import 'bootstrap/dist/css/bootstrap.min.css!';
+  import 'bootstrap/dist/css/bootstrap-theme.min.css!';
+  import 'font-awesome/css/font-awesome.min.css';
+  import 'components/panel-container/';
+  import 'components/tab-container/';
+
+  import can from 'can/view/';
+  import 'can/util/';
+  import 'can/map/define/';
+
+  var frag = can.view('demo', {}, {});
+
+  can.$('#demo-app').append(frag);
+</script>

@@ -1,12 +1,11 @@
 <!--
 
-@module panel-container
-@parent Home.components
-@group panel-container.props Properties
+@module {can.Component} components/panel-container <panel-container />
+@parent geocola.components
 
 -->
 
-A panel container. Works with [tab-container](./tab-container.html) components or as a standalone collapsible panel.
+A bootstrap panel container. Works with [tab-container](./tab-container.html) components or as a standalone collapsible panel.
  * @signature `<panel-container />` Example:
 
  ```html

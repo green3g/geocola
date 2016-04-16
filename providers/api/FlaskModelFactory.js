@@ -10,21 +10,44 @@ function getNextId() {
 
 /**
  * @typedef {connectInfoObject} apiProvider.types.connectInfoObject ConnectInfoObject
-  * @parent providers.apiProvider.types
+  * @parent apiProvider.types
   * @option {can.Model | superMap} connection The data model used to create, update and delete objects.
   * @option {can.Map | object} map The object used to create new objects. This object can be used to specify default values and properties when creating new empty objects.
  *  @option {can.List | Array} list The list used internally by can-connect
   * @option {Object} properties Additional metadata about the api and data
  */
- /**
-  * @function FlaskConnectFactory
+const PropertiesObject = can.Map.extend({
+  define: {
+    totalItems: {
+      type: 'number',
+      value: 0
+    }
+  }
+});
+
+/**
+ * @typedef {FlaskConnectOptions} apiProvider.types.FlaskConnectOptions FlaskConnectOptions
+ * @parent apiProvider.types
+ * @option {can.Map} map The template object to use when creating new objects. This
+ * map can supply default values, getters and setters, and types of properties on an object
+ * @option {String} idProp The proerty to use for the id
+ * @option {String} name The name of the connection to use. This should be unique across the application, and should reference
+ * the data type that flask-restless is serving. Flask Restless defaults to using the tablename as the data type name
+ * @option {String} url The url to the Flask-Restless resource
+ */
+
+/**
+ *
+ * A factory function that creates a new Flask-Restless API connection.
+  * @parent apiProvider.providers
+  * @param {apiProvider.types.FlaskConnectOptions} options The factory options
   */
 export function FlaskConnectFactory(options) {
   //a new list which should hold the objects
   let Objectist = can.List.extend({
     Map: options.map
   });
-  let properties = new can.Map();
+  let properties = new PropertiesObject();
 
   //a default id
   var id = options.idProp || 'id';
@@ -52,9 +75,7 @@ export function FlaskConnectFactory(options) {
         });
         def.then(function(props) {
           //cache the raw data for future use
-          properties.attr({
-            meta: props.meta,
-          });
+          properties.attr('totalItems', props.meta.total);
         });
         return def;
       },
@@ -88,7 +109,7 @@ export function FlaskConnectFactory(options) {
         var data = {};
         //exclude hidden properties
         for (var a in attrs) {
-          if (attrs.hasOwnProperty(a) && a.indexOf('_') !== 0 && attrs[a]) {
+          if (attrs.hasOwnProperty(a) && a.indexOf('_') !== 0 && typeof attrs[a] !== undefined) {
             data[a] = attrs[a];
           }
         }

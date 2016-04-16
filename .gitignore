@@ -24,13 +24,13 @@ build/Release
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
-node_modules
+node_modules/
 
 #steal-tools build output
-dist
 
 #custom apps and modules
 custom/
 
 # virtualenv
 env/
+docs/

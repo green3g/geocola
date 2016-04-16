@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 
 /* contains 4 features, 2 from the states, 2 from the not_states layer*/
 export default {

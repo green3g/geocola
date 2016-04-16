@@ -12,7 +12,7 @@ import 'components/tab-container/';
 
 export let AppViewModel = can.Map.extend({
   define: {
-    models: {
+    views: {
       Type: can.List
     },
     parameters: {
@@ -22,11 +22,11 @@ export let AppViewModel = can.Map.extend({
       type: 'string',
       value: 'all'
     },
-    viewId: {
+    objectId: {
       type: 'number',
       value: 0
     },
-    activeModel: {
+    activeView: {
       value: null
     },
     sidebarHidden: {
@@ -36,53 +36,53 @@ export let AppViewModel = can.Map.extend({
   },
   startup: function(domNode) {
     this.initRoute();
-    this.activateModelById(can.route.attr('model') || this.attr('models')[0].attr('id'));
+    this.activateViewById(can.route.attr('view') || this.attr('views')[0].attr('id'));
     can.$(domNode).html(can.view(template, this));
   },
   initRoute: function() {
-    can.route(':model/:page/:viewId/');
+    can.route(':view/:page/:objectId/');
     can.route.ready();
     this.attr(can.route.attr());
 
     //bind to properties that should update the route
-    this.bind('viewId', this.updateRoute.bind(this, 'viewId'));
+    this.bind('objectId', this.updateRoute.bind(this, 'objectId'));
     this.bind('page', this.updateRoute.bind(this, 'page'));
     can.route.bind('change', this.routeChanged.bind(this));
   },
   routeChanged: function() {
     this.attr(can.route.attr());
-    if (this.attr('activeModel.id') !== can.route.attr('model')) {
-      this.activateModelById(can.route.attr('model'));
+    if (this.attr('activeView.id') !== can.route.attr('view')) {
+      this.activateViewById(can.route.attr('view'));
     }
   },
   toggleMenu: function(e) {
     this.attr('sidebarHidden', !this.attr('sidebarHidden'))
   },
-  activateModelById: function(name) {
+  activateViewById: function(name) {
     var self = this;
-    this.attr('models').forEach(function(model) {
-      if (model.attr('id') === name) {
-        self.activateModel(model);
+    this.attr('views').forEach(function(view) {
+      if (view.attr('id') === name) {
+        self.activateView(view);
       }
     });
   },
-  activateModel: function(model) {
-    this.attr('activeModel', model);
-    if (can.route.attr('model') !== model.attr('id')) {
-      can.route.attr('model', model.attr('id'));
+  activateView: function(view) {
+    this.attr('activeView', view);
+    if (can.route.attr('view') !== view.attr('id')) {
+      can.route.attr('view', view.attr('id'));
     }
   },
-  navigateToModel: function(model) {
+  navigateToView: function(view) {
     this.attr({
       page: 'all',
-      viewId: 0
+      objectId: 0
     });
     this.attr('parameters', {});
-    this.activateModel(model);
+    this.activateView(view);
     return false;
   },
   routeChange: function() {
-    this.activateModelById(can.route.attr('model'));
+    this.activateViewById(can.route.attr('view'));
   },
   updateRoute: function(name, action, value, oldValue) {
     if (!value) {
@@ -90,16 +90,16 @@ export let AppViewModel = can.Map.extend({
     }
     can.route.attr(name, value);
   },
-  getRelatedFilter: function(model, id) {
+  getRelatedFilter: function(view, id) {
     return [{
-      name: model.attr('foreignKey'),
+      name: view.attr('foreignKey'),
       op: '==',
       val: id
     }];
   },
-  getRelatedConnection: function(model, id) {
-    var connection = model.attr('model.connection');
-    var idField = model.attr('foreignKey');
+  getRelatedConnection: function(view, id) {
+    var connection = view.attr('view.connection');
+    var idField = view.attr('foreignKey');
     connection.attr('map').defaults[idField] = id;
     return connection;
   }

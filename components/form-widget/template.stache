@@ -3,6 +3,10 @@
     {{>template}}
   {{/each}}
 
-  <button type="button" class="btn btn-default" ($click)="submitForm">Submit</button>
-  <a class="btn btn-default" ($click)="cancelForm">Cancel</a>
+  {{#if showButtons}}
+    <div class="btn-group" role="group" aria-label="Form Buttons">
+      <button type="button" class="btn btn-success" ($click)="submitForm">Submit</button>
+      <button type="button" class="btn btn-warning" ($click)="cancelForm">Cancel</button>
+    </div>
+  {{/if}}
 </form>

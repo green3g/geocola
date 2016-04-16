@@ -1,4 +1,4 @@
-/* jshint esnext: true */
+
 import can from 'can';
 import template from './layercontrol.stache!';
 import './layercontrol.css!';
@@ -8,46 +8,35 @@ const controlTemplates = {
   'Group': '<layer-control-group {layer}="." />',
   'TileWMS': '<layer-control-tilewms {layer}="." />'
 };
-
 /**
- * @module layer-control
+ * @constructor components/layer-control.ViewModel ViewModel
+ * @parent components/layer-control
+ * @group components/layer-control.ViewModel.props Properties
+ *
+ * @description A `<layer-control />` component's ViewModel
  */
-
-/**
- * @typedef {controlLayerObject} layer-control.types.controlLayerObject controlLayerObject
- * @description Custom objects for rendering layer controls
- * @parent layer-control.types
- * @option {Boolean} exclude Whether or not to exclude from the layer control
- * @option {String} title The layer title
- * @option {Boolean} visible The layers visibility
- * @option {ol.Layer} layer The openlayers layer
- * @option {can.stache} template The template to render the layer with. This is an object provided by can.stache a stache template imported by StealJS.
- */
-
-
-
 export const ViewModel = can.Map.extend({
   define: {
     /**
      * An internal list of layers used by the template
-     * @property {Array<controlLayerObject>} layer-control.props._layers
-     * @parent layer-control.props
+     * @property {Array<geocola.types.ControlLayerObject>} components/layer-control.ViewModel.props._layers
+     * @parent components/layer-control.ViewModel.props
      */
     _layers: {
       Value: can.List
     },
     /**
      * The dom node selector referencing an ol-map component
-     * @property {String} layer-control.props.mapNode
-     * @parent layer-control.props
+     * @property {String} components/layer-control.ViewModel.props.mapNode
+     * @parent components/layer-control.ViewModel.props
      */
     mapNode: {
       type: 'string'
     },
     /**
      * The openlayers map. Instead of providing a reference to ol-map component, you can provide a `ol.Map` object directly.
-     * @property {ol.Map} layer-control.props.map
-     * @parent layer-control.props
+     * @property {ol.Map} components/layer-control.ViewModel.props.map
+     * @parent components/layer-control.ViewModel.props
      */
     map: {
       type: '*',

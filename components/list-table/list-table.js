@@ -1,26 +1,22 @@
-/* jshint esnext: true */
+
 import template from './list-table.stache!';
 import './list-table.css!';
 import viewModel from '../widget-model';
 import List from 'can/list/';
 import Component from 'can/component/';
-/**
- * @module {can.Component} list-table
- */
-/**
- * @typedef {buttonObject} list-table.types.buttonObject buttonObject
- * @parent list-table.types
- * @option {String} title The title to display on the button hover
- * @option {String} iconClass The class to use for the button icon
- * @option {String} eventName The event to dispatch when the button is clicked. This allows developers to bind functions to custom events, like `(eventName)="functionName"`
- */
-
+ /**
+  * @constructor components/list-table.ViewModel ViewModel
+  * @parent components/list-table
+  * @group components/list-table.ViewModel.props Properties
+  *
+  * @description A `<list-table />` component's ViewModel
+  */
 export const ViewModel = viewModel.extend({
   define: {
     /**
      * Optional promise or deferred object that will resolve to an object. Once the promise resolves, the objects list will be replaced with the promise result
-     * @parent list-table.props
-     * @property {can.Deferred | Promise} list-table.props.promise
+     * @parent components/list-table.ViewModel.props
+     * @property {can.Deferred | Promise} components/list-table.ViewModel.props.promise
      */
     promise: {
       set: function(newVal) {
@@ -33,17 +29,23 @@ export const ViewModel = viewModel.extend({
     },
     /**
      * A list of objects to display. These objects should generally be can.Model objects but may be any can.Map or javascript object.
-     * @parent list-table.props
-     * @property {Array.<can.Model | can.Map | Object>} list-table.props.objects
+     * @parent components/list-table.ViewModel.props
+     * @property {Array.<can.Model | can.Map | Object>} components/list-table.ViewModel.props.objects
      */
     objects: {
       Value: List,
-      Type: List
+      Type: List,
+      set: function(val) {
+        if (this.attr('_selectedObjects')) {
+          this.attr('_selectedObjects').replace([]);
+        }
+        return val;
+      }
     },
     /**
      * A list of the currently selected objects in the table
-     * @parent list-table.props
-     * @property {Array.<can.Map>} list-table.props._selectedObjects
+     * @parent components/list-table.ViewModel.props
+     * @property {Array.<can.Map>} components/list-table.ViewModel.props._selectedObjects
      */
     _selectedObjects: {
       Value: List,
@@ -51,8 +53,8 @@ export const ViewModel = viewModel.extend({
     },
     /**
      * A virtual property that helps the template determine whether all objects are selected
-     * @parent list-table.props
-     * @property {Boolean} list-table.props._allSelected
+     * @parent components/list-table.ViewModel.props
+     * @property {Boolean} components/list-table.ViewModel.props._allSelected
      */
     _allSelected: {
       type: 'boolean',
@@ -62,8 +64,8 @@ export const ViewModel = viewModel.extend({
     },
     /**
      * An array of buttonObjects
-     * @parent list-table.props
-     * @property {Array.<list-table.types.buttonObject>} list-table.props.buttons
+     * @parent components/list-table.ViewModel.props
+     * @property {Array.<geocola.types.TableButtonObject>} components/list-table.ViewModel.props.buttons
      */
     buttons: {
       value: List

@@ -1,7 +1,7 @@
 <!--
 
-@module tab-container
-@parent Home.components
+@module {can.Component} components/tab-container <tab-container />
+@parent geocola.components
 
 -->
 
@@ -18,3 +18,7 @@ A basic tab container built on Bootstrap. Works with [panel-container](./panel-c
       </panel-container>
   </tab-container>
 ```
+
+## Demo
+
+@demo components/tab-container/demo.html 500

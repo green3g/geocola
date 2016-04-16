@@ -1,17 +1,15 @@
 <!--
-@page guides Getting Started
-@parent Home
+@page geocola.start Getting Started
+@parent geocola
 @link ./components.html Components
-@group guides.administer Administer
-@group guides.developing Develop
-@group guides.configure Configure
+@group start.administer Administer
+@group start.developing Develop
+@group start.configure Configure
 -->
 
 ## loader.js
 
 This is the loader script. It exports a function, `load`, which accepts two parameters, the path to the app, and an optional name of config to load. `index.html` imports this script and calls this function. This may be customized to load different apps through server side scripting, query string parameters, or simply specifying the name of the app/config to load directly in the `index.html`.
-
-@body
 
 ## Directory Structure
 The project is divided into several folders.

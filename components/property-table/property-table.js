@@ -1,60 +1,17 @@
-/* jshint esnext: true */
+
 import template from './property-table.stache!';
 // import './property-table.css!';
 import viewModel from '../widget-model';
 import List from 'can/list/';
-import Map from 'can/map/';
+import CanMap from 'can/map/';
 import Component from 'can/component/';
-
-/**
- * @module property-table
- */
-
-/**
- * @typedef {tablePropertiesObject} property-table.types.tablePropertiesObject tablePropertiesObject
- * An object consisting of a key representing the field name and the value being properties defining each field's appearance
- * @parent property-table.types
- * @option {String} alias The label to display for this field. The default is replace underscores with spaces
- * and capitalize the first letter
- * @option {Boolean} exclude If set to true, this field will not display in the identify widget
- * @option {function(value, attributes)} formatter An optional formatter function for the field's value that will return a string. This function may accept two arguments, the first being the property value, and the second being an object with all of the objects properties. This is provided in case a developer wants to use other proerties to format a value.
-```
-formatter: function(name, props) {
-   return name + ' is Awesome! and my other prop is' + props.otherProp;
- }
- ```
-
- * @description
-
-## Example
-
-```
-var fieldProps = {
-  bbox: {
-    exclude: true
-  },
-  STATE_NAME: {
-    alias: 'Name',
-    formatter: function(name, properties) {
-      return name + ' is Awesome!</strong>';
-    }
-  }
-};
-```
- */
-
-/**
- * @typedef {tableValuesObject} property-table.types.tableValuesObject tableValuesObject
- * @parent property-table.types
- * An object used by the template to render the fields and their formatted values
- * @option {String} field The unformatted field name
- * @option {String} alias The formatted field name or alias
- * @option {String | Number | Boolean} value The formatted value
- * @option {String | Number | Boolean} rawValue The unformatted value
- *
- */
-
-
+ /**
+  * @constructor components/property-table.ViewModel ViewModel
+  * @parent components/property-table
+  * @group components/property-table.ViewModel.props Properties
+  *
+  * @description A `<property-table />` component's ViewModel
+  */
 export const ViewModel = viewModel.extend({
   define: {
     /**
@@ -83,7 +40,7 @@ export const ViewModel = viewModel.extend({
     objectId: {
       type: 'number',
       set: function(id) {
-        this.fetchObject(this.attr('connection.connection'), id);
+        this.fetchObject(this.attr('connection'), id);
         return id;
       }
     },
@@ -94,7 +51,7 @@ export const ViewModel = viewModel.extend({
      */
     connection: {
       set: function(con) {
-        this.fetchObject(con.attr('connection'), this.attr('objectId'));
+        this.fetchObject(con, this.attr('objectId'));
         return con;
       }
     },
@@ -104,7 +61,7 @@ export const ViewModel = viewModel.extend({
      * @parent property-table.props
      */
     object: {
-      Type: Map
+      Type: CanMap
     },
     /**
      * A configuration object defining exactly how to display the properties fields and values

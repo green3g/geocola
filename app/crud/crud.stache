@@ -6,8 +6,8 @@
   <!-- Sidebar -->
   <div id="sidebar-wrapper">
     <div class="list-group">
-      {{#each models}}
-        <a ($click)="navigateToModel(.)" class="list-group-item {{#is activeModel .}}active{{/is}}" href="">{{title}}</a>
+      {{#each views}}
+        <a ($click)="navigateToView(.)" class="list-group-item {{#is activeView .}}active{{/is}}" href="">{{title}}</a>
       {{/each}}
     </div>
   </div>
@@ -18,24 +18,19 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12">
-          {{#activeModel}}
+          {{#activeView}}
             <h1>{{title}}</h1>
-            <crud-manager {(page)}="page" {(view-id)}="viewId" {(parameters)}="parameters" {connection}="connection" editable="true" {edit-fields}="editFields" {table-fields}="tableFields" {detail-fields}="detailFields"></crud-manager>
-          {{/activeModel}}
-
-          parameters:
-          {{#each parameters}}
-            {{%key}} - {{.}}
-          {{/each}}
+            <crud-manager {(page)}="page" {(view-id)}="objectId" {view}="." {parameters}="parameters"></crud-manager>
+          {{/activeView}}
 
           {{#is page 'details'}}
-            {{#if activeModel.relatedModels}}
+            {{#if activeView.relatedViews}}
               <hr />
               <h2>Related Data</h2>
               <tab-container>
-                {{#each activeModel.relatedModels}}
-                  <panel-container title="{{model.title}}">
-                    <crud-manager {connection}="getRelatedConnection(../, viewId)" editable="true" {query-filters}="getRelatedFilter(../, viewId)" {edit-fields}="../model.editFields" {detail-fields}="../model.detailFields" {table-fields}="../model.tableFields"></crud-manager>
+                {{#each activeView.relatedViews}}
+                  <panel-container title="{{view.title}}">
+                    <crud-manager {view}="view" {query-filters}="getRelatedFilter(../, objectId)" {parameters}="view.parameters"></crud-manager>
                   </panel-container>
                 {{/each}}
               </tab-container>

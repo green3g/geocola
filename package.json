@@ -1,8 +1,8 @@
 {
-  "name": "COAMap",
-  "version": "1.0.0",
+  "name": "GeoCola",
+  "version": "0.2.0",
   "description": "A configureable openlayers mapping and data management app",
-  "repository": "https://github.com/roemhildtg/coamap",
+  "repository": "https://github.com/roemhildtg/geocola",
   "scripts": {
     "test": "test",
     "build": "steal-tools",
@@ -19,12 +19,15 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
-    "can": "^2.3.22",
-    "can-connect": "^0.5.1",
+    "can": "^2.3.23",
+    "can-connect": "^0.5.4",
+    "date-selector": "^2.0.0",
     "font-awesome": "^4.5.0",
+    "jquery": "^2.2.3",
     "openlayers": "^3.14.2",
     "proj4": "^2.3.14",
-    "steal": "^0.15.3"
+    "steal": "^0.15.3",
+    "underscore": "^1.8.3"
   },
   "main": "loader",
   "system": {

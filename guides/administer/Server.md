@@ -1,6 +1,6 @@
 <!--
-@page guides.administer.server Server Setup
-@parent guides.administer
+@page start.administer.server Server Setup
+@parent start.administer
 @link http://geoserver.org/ Geoserver
 -->
 

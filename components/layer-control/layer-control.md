@@ -1,7 +1,7 @@
 <!--
 
-@parent Home.components
-@group layer-control.types Types
+@module components/layer-control <layer-control />
+@parent geocola.components
 @group layer-control.props Properties
 
 -->

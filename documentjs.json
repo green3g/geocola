@@ -5,13 +5,13 @@
   },
   "sites": {
     "docs": {
-      "glob": "**/*.{js,md}",
-      "parent": "Home",
-      "dest": "../cola-docs",
-      "ignore": "{dist,node_modules}/**/*",
+      "glob": {
+        "ignore": "{docs,dist,node_modules}/**/*"
+      },
+      "parent": "geocola",
+      "dest": "./docs",
       "templates": "guides/site/templates",
-      "static": "guides/site/static",
-      "devBuild": true
+      "static": "guides/site/static"
     }
   }
 }

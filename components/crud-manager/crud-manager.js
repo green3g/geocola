@@ -1,8 +1,10 @@
-/* jshint esnext: true */
 
-import Map from 'can/map/';
+
+import CanMap from 'can/map/';
 import List from 'can/list/';
 import Component from 'can/component/';
+import Route from 'can/route/';
+
 //import './widget.css!';
 import template from './template.stache!';
 import {
@@ -14,77 +16,56 @@ import 'components/property-table/';
 import 'components/form-widget/';
 import 'components/filter-widget/';
 import 'components/paginate-widget/';
+import 'components/modal-container/';
 
-export let viewModel = Map.extend({
+const DEFAULT_BUTTONS = [{
+  iconClass: 'fa fa-list-ul',
+  eventName: 'view'
+}];
+const EDIT_BUTTONS = DEFAULT_BUTTONS.concat([{
+  iconClass: 'fa fa-pencil',
+  eventName: 'edit',
+  title: 'Edit Row'
+}, {
+  iconClass: 'fa fa-trash',
+  eventName: 'delete'
+}]);
+
+export let viewModel = CanMap.extend({
   define: {
-    connection: {
-      value: null
-    },
-    editable: {
-      type: 'boolean',
-      value: false
+    view: {
     },
     parameters: {
       set: function(val) {
         return val;
       },
-      Value: Map,
-      Type: Map
+      Value: CanMap,
+      Type: CanMap
     },
     page: {
       value: 'all',
       type: 'string'
     },
-    totalItems: {
-      type: 'number'
-    },
     totalPages: {
       get: function(val, setAttr) {
-        var total = this.attr('connection.properties.meta.total');
-        this.attr('totalItems', total);
         //round up to the nearest integer
-        var pages = Math.ceil(total / this.attr('queryPerPage'));
+        var pages = Math.ceil(this.attr('view.connectionProperties.totalItems') / this.attr('queryPerPage'));
         return pages;
       }
     },
     promise: {
       get: function(prev, setAttr) {
-        return this.attr('connection.connection').getList(this.attr('parameters').attr());
+        return this.attr('view.connection').getList(this.attr('parameters').attr());
       }
     },
     buttons: {
       type: '*',
-      value: [{
-        iconClass: 'fa fa-pencil',
-        eventName: 'edit',
-        title: 'Edit Row'
-      }, {
-        iconClass: 'fa fa-trash',
-        eventName: 'delete'
-      }, {
-        iconClass: 'fa fa-list-ul',
-        eventName: 'view'
-      }]
-    },
-    editFields: {
-      value: null
-    },
-    tableFields: {
-      value: null
-    },
-    detailFields: {
-      value: null
+      get: function() {
+        return this.attr('view.disableEdit') ? DEFAULT_BUTTONS : EDIT_BUTTONS;
+      }
     },
     queryFilters: {
-      Value: List,
-      set: function(filters) {
-        var params = this.attr('parameters');
-        if (!params) {
-          return filters;
-        }
-        this.setFilterParameter(filters);
-        return filters
-      }
+      Value: List
     },
     queryPage: {
       type: 'number',
@@ -113,26 +94,65 @@ export let viewModel = Map.extend({
     viewId: {
       type: 'number',
       value: 0
+    },
+    progress: {
+      type: 'number',
+      value: 100
+    },
+    errors: {
+      Value: List
+    },
+    filterVisible: {
+      type: 'boolean',
+      value: false
     }
   },
   init: function() {
     var params = this.attr('parameters');
+    can.batch.start();
     params.attr('page[size]', this.attr('queryPerPage'));
     params.attr('page[number]', this.attr('queryPerPage'));
     this.setFilterParameter(this.attr('queryFilters'));
+    can.batch.stop();
   },
   editObject: function(scope, dom, event, obj) {
-    this.attr('viewId', this.attr('connection.connection').id(obj));
+    this.attr('viewId', this.attr('view.connection').id(obj));
     this.attr('focusObject', obj);
     this.attr('page', 'edit');
   },
   viewObject: function(scope, dom, event, obj) {
-    this.attr('viewId', this.attr('connection.connection').id(obj));
+    this.attr('viewId', this.attr('view.connection').id(obj));
     this.attr('focusObject', obj);
     this.attr('page', 'details');
   },
-  saveObject: function(){
-    this.attr('page', 'details');
+  saveObject: function(scope, dom, event, obj) {
+    var self = this;
+    this.attr('progress', 100);
+    this.attr('page', 'loading');
+    var deferred = this.attr('view.connection').save(obj);
+    deferred.then(function(result) {
+
+      //reset error messages
+      self.attr('errors').replace([]);
+
+      //update the view id
+      self.attr('viewId', result.attr('id'));
+
+      //set page to the details view by default
+      self.attr('page', 'details');
+    }).fail(function(e) {
+      console.warn(e);
+      self.attr('errors').push({
+        message: 'Saving the object failed',
+        error: e.statusText,
+        level: 'danger'
+      });
+      self.attr('page', 'all');
+    });
+  },
+  removeError: function(e) {
+    var index = this.attr('errors').indexOf(e);
+    this.attr('errors').splice(index, 1);
   },
   resetPage: function() {
     this.attr('page', 'all');
@@ -140,15 +160,16 @@ export let viewModel = Map.extend({
     this.attr('viewId', 0);
   },
   createObject: function() {
-    //create a new empty object with the defaults provided
-    //from the connection.map property which is a special map
-    var newObject = this.attr('connection.map')();
-    this.attr('newObject', newObject);
     this.attr('page', 'add');
+  },
+  getNewObject(){
+    //create a new empty object with the defaults provided
+    //from the template property which is a map
+    return this.attr('view.template')();
   },
   deleteObject: function(scope, dom, event, obj, skipConfirm) {
     if (obj && (skipConfirm || confirm('Are you sure you want to delete this record?'))) {
-      obj.destroy();
+      this.attr('view.connection').destroy(obj);
     }
   },
   deleteMultiple: function() {
@@ -176,18 +197,34 @@ export let viewModel = Map.extend({
     var params = this.attr('parameters');
     //reset the page filter
     this.attr('queryPage', 0);
-    if (filters.length) {
+    if (filters && filters.length) {
       //if there are filters in the list, set the filter parameter
       params.attr('filter[objects]', JSON.stringify(filters.attr()));
     } else {
       //remove the filter parameter
       params.removeAttr('filter[objects]');
     }
+  },
+  toggleFilter: function(val){
+    if(typeof val !== 'undefined'){
+      this.attr('filterVisible', val);
+    } else {
+      this.attr('filterVisible', !this.attr('filterVisible'));
+    }
+  },
+  isListTable(){
+    return this.attr('view.listType') !== 'property-table';
   }
 });
 
 Component.extend({
   tag: 'crud-manager',
   viewModel: viewModel,
-  template: template
+  template: template,
+  events: {
+    //bind to the change event of the entire list
+    '{viewModel.queryFilters} change': function(filters) {
+      this.viewModel.setFilterParameter(filters);
+    }
+  }
 });

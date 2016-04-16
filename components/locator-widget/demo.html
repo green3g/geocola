@@ -1,0 +1,20 @@
+<script type="text/stache" id="demo-html">
+  <locator-widget {provider}="esri" />
+</script>
+<script src="../../node_modules/steal/steal.js" main="@empty" id="demo-source">
+  import 'bootstrap/dist/css/bootstrap.min.css!';
+  import 'bootstrap/dist/css/bootstrap-theme.min.css!';
+  import 'font-awesome/css/font-awesome.min.css';
+  import 'components/locator-widget/';
+  import EsriProvider from 'providers/location/EsriGeocoder';
+
+  import can from 'can/view/';
+
+  var frag = can.view('demo-html', {
+    esri: new EsriProvider({
+      url: 'http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/'
+    })
+  }, {});
+
+  document.body.appendChild(frag);
+</script>

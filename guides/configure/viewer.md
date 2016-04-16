@@ -1,8 +1,7 @@
 <!--
 
-@page viewer Viewer App
-@parent guides.configure
-@group types Types
+@page start.configure.viewer Viewer App
+@parent start.configure
 @outline 2
 
 -->
@@ -75,12 +74,47 @@ See openlayers api
 
 ### view
 
+The view object is essentially an object with parameters that will be passed to an openlayers view. It mainly consists of the information that sets up how the map will look and where it will start.
 
+```javascript
+var view = {
+  zoom: 4,
+  projection: 'EPSG:3857',
+  center: [-10381543.579497037, 4510420.927406358]
+};
+```
 
 ## layerProperties
 
+Layer properties define how each layer should be displayed when results are identified.
 
+This object is extensively documented in the [geocola.types.LayerPropertiesObject]
 
 ## locationProvider
 
+Location providers interact with a service api to provide geocoding and feature locating services to the application. Location providers accept their own parameters and are documented in the [providers/location/LocationProvider] page
+
+```javascript
+import EsriProvider from 'providers/location/EsriGeocoder';
+
+export let printProvider = new MapfishProvider({
+  url: '/proxy/geoserver/pdf',
+  method: 'POST'
+});
+export let locationProvider = new EsriProvider({
+  url: 'http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/'
+});
+```
+
 ## printProvider
+
+Like location providers, print providers provide extra services for the application. In this case, map exports in the form of files like pdf's or png files. Print providers are documented in the [providers/print/printProvider] page.
+
+```javascript
+import MapfishProvider from 'providers/print/MapfishPrint';
+
+export let printProvider = new MapfishProvider({
+  url: '/proxy/geoserver/pdf',
+  method: 'POST'
+});
+```

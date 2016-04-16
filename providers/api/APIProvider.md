@@ -1,8 +1,9 @@
 <!--
 
-@page providers.apiProvider API Provider
-@parent Home.providers
-@group providers.apiProvider.types Types
+@page apiProvider API Provider
+@parent geocola.providers
+@group apiProvider.types Types
+@group apiProvider.providers API Providers
 
 -->
 
