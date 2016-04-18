@@ -96,11 +96,5 @@ export let AppViewModel = can.Map.extend({
       op: '==',
       val: id
     }];
-  },
-  getRelatedConnection: function(view, id) {
-    var connection = view.attr('view.connection');
-    var idField = view.attr('foreignKey');
-    connection.attr('map').defaults[idField] = id;
-    return connection;
   }
 });
