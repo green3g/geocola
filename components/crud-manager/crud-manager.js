@@ -164,8 +164,8 @@ export let viewModel = CanMap.extend({
   },
   getNewObject(){
     //create a new empty object with the defaults provided
-    //from the template property which is a map
-    return this.attr('view.template')();
+    //from the objectTemplate property which is a map
+    return this.attr('view.objectTemplate')();
   },
   deleteObject: function(scope, dom, event, obj, skipConfirm) {
     if (obj && (skipConfirm || confirm('Are you sure you want to delete this record?'))) {
