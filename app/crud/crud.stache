@@ -1,15 +1,22 @@
 <div id="wrapper" class="{{#sidebarHidden}}toggled{{/sidebarHidden}}">
 
-
-  <a ($click)="toggleMenu" title="Toggle Sidebar" class="hidden-print btn btn-default fa {{#if sidebarHidden}}fa-caret-right{{else}}fa-caret-left{{/if}}" id="menu-toggle"></a>
-
   <!-- Sidebar -->
-  <div id="sidebar-wrapper">
+  <div id="sidebar-wrapper" class="hidden-print">
     <div class="list-group">
-      {{#each views}}
-        <a ($click)="navigateToView(.)" class="list-group-item {{#is activeView .}}active{{/is}}" href="">{{title}}</a>
-      {{/each}}
+      <a ($click)="toggleMenu" title="Toggle Sidebar" class="list-group-item" id="menu-toggle" href="">
+        <i class="fa {{#if sidebarHidden}}fa-caret-square-o-right{{else}}fa-caret-square-o-left{{/if}}"></i>
+        <span class="hidden-toggled">Toggle Sidebar</span>
+      </a>
     </div>
+
+      <div class="list-group">
+        {{#each views}}
+          <a ($click)="navigateToView(.)" class="list-group-item {{#is activeView .}}active{{/is}}" title="{{title}}" href="">
+            {{#if iconClass}}<i class="{{iconClass}}"></i>{{/if}}
+            <span class="hidden-toggled">{{title}}</span></a>
+        {{/each}}
+      </div>
+
   </div>
   <!-- /#sidebar-wrapper -->
 

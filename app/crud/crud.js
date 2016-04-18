@@ -56,7 +56,8 @@ export let AppViewModel = can.Map.extend({
     }
   },
   toggleMenu: function(e) {
-    this.attr('sidebarHidden', !this.attr('sidebarHidden'))
+    this.attr('sidebarHidden', !this.attr('sidebarHidden'));
+    return false;
   },
   activateViewById: function(name) {
     var self = this;
