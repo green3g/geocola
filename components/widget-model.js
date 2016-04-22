@@ -1,6 +1,7 @@
 
-import can from 'can';
-
+import CanMap from 'can/map/';
+import CanEvent from 'can/event/';
+import can from 'can/util/';
 var count = 1;
 function getNextId() {
   return count++;
@@ -27,7 +28,7 @@ function getNextId() {
  * });
  * ```
  */
-var widgetModel = can.Map.extend({
+var widgetModel = CanMap.extend({
   define: {
     /**
      * @property {string} instanceId
@@ -39,7 +40,6 @@ var widgetModel = can.Map.extend({
     },
   },
   init: function() {
-    can.Map.prototype.init.apply(this, arguments);
     //assign a unique id to this instanceId value
     if (!this.attr('instanceId')) {
       this.attr('instanceId', 'instance' + getNextId());
@@ -47,5 +47,5 @@ var widgetModel = can.Map.extend({
   }
 });
 
-can.extend(widgetModel.prototype, can.event);
+can.extend(widgetModel.prototype, CanEvent);
 export default widgetModel;
