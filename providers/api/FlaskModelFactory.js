@@ -1,6 +1,8 @@
 /* jshint esnext:true */
-import can from 'can';
+import List from 'can/list/';
+import CanMap from 'can/map/';
 import superMap from 'can-connect/can/super-map/';
+import can from 'can/util/';
 
 var uniqueId = 0;
 
@@ -16,11 +18,14 @@ function getNextId() {
  *  @option {can.List | Array} list The list used internally by can-connect
   * @option {Object} properties Additional metadata about the api and data
  */
-const PropertiesObject = can.Map.extend({
+const PropertiesObject = CanMap.extend({
   define: {
     totalItems: {
       type: 'number',
       value: 0
+    },
+    relationships: {
+      Value: CanMap
     }
   }
 });
@@ -41,18 +46,21 @@ const PropertiesObject = can.Map.extend({
  * A factory function that creates a new Flask-Restless API connection.
   * @parent apiProvider.providers
   * @param {apiProvider.types.FlaskConnectOptions} options The factory options
+  * @return {can-connect/can/super-map}
   */
 export function FlaskConnectFactory(options) {
   //a new list which should hold the objects
-  let Objectist = can.List.extend({
+  let Objectist = List.extend({
     Map: options.map
   });
   let properties = new PropertiesObject();
+  let idProp = options.idProp || 'id';
 
-  //a default id
-  var id = options.idProp || 'id';
-
-  let connection = superMap({
+  //create and return a new supermap
+  return superMap({
+    idProp: idProp,
+    baseURL: options.url,
+    metadata: properties,
     Map: options.map,
     List: options.map.List,
     name: options.name || 'connection' + getNextId(),
@@ -81,7 +89,7 @@ export function FlaskConnectFactory(options) {
       },
       getData: function(data) {
         return can.ajax({
-          url: this.resource + '/' + data.id,
+          url: this.resource + '/' + data[idProp],
           headers: {
             'Accept': 'application/vnd.api+json'
           },
@@ -107,14 +115,14 @@ export function FlaskConnectFactory(options) {
       },
       updateData: function(attrs) {
         var data = {};
-        //exclude hidden properties
+        //exclude relationship properties
         for (var a in attrs) {
-          if (attrs.hasOwnProperty(a) && a.indexOf('_') !== 0 && typeof attrs[a] !== undefined) {
+          if (attrs.hasOwnProperty(a) && !properties.attr('relationships.' + a)) {
             data[a] = attrs[a];
           }
         }
         return can.ajax({
-          url: this.resource + '/' + attrs[id],
+          url: this.resource + '/' + attrs[idProp],
           headers: {
             'Accept': 'application/vnd.api+json',
             'Content-Type': 'application/vnd.api+json'
@@ -123,7 +131,7 @@ export function FlaskConnectFactory(options) {
             data: {
               attributes: data,
               type: options.name,
-              id: attrs.id
+              id: attrs[idProp]
             }
           }),
           method: 'PATCH'
@@ -131,7 +139,7 @@ export function FlaskConnectFactory(options) {
       },
       destroyData: function(attrs) {
         return can.ajax({
-          url: this.resource + '/' + attrs[id],
+          url: this.resource + '/' + attrs[idProp],
           headers: {
             'Accept': 'application/vnd.api+json',
             'Content-Type': 'application/vnd.api+json'
@@ -146,29 +154,23 @@ export function FlaskConnectFactory(options) {
       if (!props) {
         return {};
       }
-      //sometimes props are actually in the data property?
+      //sometimes props are actually in the data property
+      //could be a bug with flask-restless
       if (props.data) {
         props = props.data;
       }
       //build a new object that consists of a combination of the FlaskRestless
       //response object
       var obj = props.attributes;
-      obj.id = props.id;
+      obj.id = props[this.idProp];
       //include the relationship id's
       for (var rel in props.relationships) {
         if (props.relationships.hasOwnProperty(rel)) {
-          obj['_' + rel] = props.relationships[rel].data ? props.relationships[rel].data.id : null;
+          obj[rel] = props.relationships[rel].data || null;
+          properties.attr('relationships.' + rel, true);
         }
       }
       return obj;
-    },
-    idProp: id
+    }
   });
-  //return the object with the necessary list, map, and connection props
-  return {
-    connection: connection,
-    map: options.map,
-    list: options.map.List,
-    properties: properties
-  };
 }
