@@ -1,4 +1,3 @@
-
 import can from 'can/util/';
 import List from 'can/list/';
 import CanMap from 'can/map/';
