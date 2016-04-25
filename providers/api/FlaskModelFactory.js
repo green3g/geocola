@@ -87,14 +87,15 @@ export function FlaskConnectFactory(options) {
         });
         return def;
       },
-      getData: function(data) {
-        return can.ajax({
-          url: this.resource + '/' + data[idProp],
+      getData: function(params) {
+        var def = can.ajax({
+          url: this.resource + '/' + params[idProp],
           headers: {
             'Accept': 'application/vnd.api+json'
           },
           method: 'GET'
         });
+        return def;
       },
       createData: function(attrs) {
         //post attributes to the create url
