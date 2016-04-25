@@ -1,5 +1,3 @@
-
-
 import CanMap from 'can/map/';
 import List from 'can/list/';
 import Component from 'can/component/';
@@ -33,8 +31,7 @@ const EDIT_BUTTONS = DEFAULT_BUTTONS.concat([{
 
 export let viewModel = CanMap.extend({
   define: {
-    view: {
-    },
+    view: {},
     parameters: {
       set: function(val) {
         return val;
@@ -53,9 +50,27 @@ export let viewModel = CanMap.extend({
         return pages;
       }
     },
-    promise: {
+    objects: {
       get: function(prev, setAttr) {
-        return this.attr('view.connection').getList(this.attr('parameters').attr());
+        var promise = this.attr('view.connection').getList(this.attr('parameters').attr());
+        promise.catch(function(err) {
+          console.error('unable to complete objects request', err);
+        });
+        return promise;
+      }
+    },
+    focusObject: {
+      get: function(prev, setAttr) {
+        if (this.attr('viewId')) {
+          var params = {};
+          params[this.attr('view.connection').idProp] = this.attr('viewId');
+          var promise = this.attr('view.connection').get(params);
+          promise.catch(function(err) {
+            console.error('unable to complete focusObject request', err);
+          });
+          return promise;
+        }
+        return null;
       }
     },
     buttons: {
@@ -110,19 +125,19 @@ export let viewModel = CanMap.extend({
   init: function() {
     var params = this.attr('parameters');
     can.batch.start();
-    params.attr('page[size]', this.attr('queryPerPage'));
-    params.attr('page[number]', this.attr('queryPerPage'));
+    params.attr({
+      'page[size]': this.attr('queryPerPage'),
+      'page[number]': this.attr('queryPage')
+    });
     this.setFilterParameter(this.attr('queryFilters'));
     can.batch.stop();
   },
   editObject: function(scope, dom, event, obj) {
     this.attr('viewId', this.attr('view.connection').id(obj));
-    this.attr('focusObject', obj);
     this.attr('page', 'edit');
   },
   viewObject: function(scope, dom, event, obj) {
     this.attr('viewId', this.attr('view.connection').id(obj));
-    this.attr('focusObject', obj);
     this.attr('page', 'details');
   },
   saveObject: function(scope, dom, event, obj) {
@@ -156,13 +171,12 @@ export let viewModel = CanMap.extend({
   },
   resetPage: function() {
     this.attr('page', 'all');
-    this.attr('focusObject', null);
     this.attr('viewId', 0);
   },
   createObject: function() {
     this.attr('page', 'add');
   },
-  getNewObject(){
+  getNewObject() {
     //create a new empty object with the defaults provided
     //from the objectTemplate property which is a map
     return this.attr('view.objectTemplate')();
@@ -205,14 +219,14 @@ export let viewModel = CanMap.extend({
       params.removeAttr('filter[objects]');
     }
   },
-  toggleFilter: function(val){
-    if(typeof val !== 'undefined'){
+  toggleFilter: function(val) {
+    if (typeof val !== 'undefined') {
       this.attr('filterVisible', val);
     } else {
       this.attr('filterVisible', !this.attr('filterVisible'));
     }
   },
-  isListTable(){
+  isListTable() {
     return this.attr('view.listType') !== 'property-table';
   }
 });
