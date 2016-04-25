@@ -123,6 +123,19 @@
           </button>
         {{/unless}}
       </div>
+
+      {{#if view.relatedViews}}
+        <hr />
+        <h2>Related Data</h2>
+        <tab-container>
+          {{#each view.relatedViews}}
+            <panel-container title="{{./view.title}}">
+              <crud-manager {view}="../view" {parameters}="../view.parameters" related-field="{{../referenceKey}}" related-value="{{getRelatedValue(../foreignKey, ../../focusObject.value)}}"></crud-manager>
+            </panel-container>
+          {{/each}}
+        </tab-container>
+      {{/if}}
+
     {{/if}}
   {{/case}}
 

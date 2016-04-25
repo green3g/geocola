@@ -31,17 +31,7 @@
           {{/activeView}}
 
           {{#is page 'details'}}
-            {{#if activeView.relatedViews}}
-              <hr />
-              <h2>Related Data</h2>
-              <tab-container>
-                {{#each activeView.relatedViews}}
-                  <panel-container title="{{view.title}}">
-                    <crud-manager {view}="view" {query-filters}="getRelatedFilter(../, objectId)" {parameters}="view.parameters"></crud-manager>
-                  </panel-container>
-                {{/each}}
-              </tab-container>
-            {{/if}}
+
           {{/is}}
         </div>
       </div>

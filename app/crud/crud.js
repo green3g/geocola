@@ -91,9 +91,12 @@ export let AppViewModel = can.Map.extend({
     }
     can.route.attr(name, value);
   },
-  getRelatedFilter: function(view, id) {
+  getRelatedFilter(relation) {
+    console.log(this.attr('focusObject'))
+    var id = this.attr('focusObject.' + relation.foreignKey);
+    console.log(id, relation);
     return [{
-      name: view.attr('foreignKey'),
+      name: relation.referenceKey,
       op: '==',
       val: id
     }];

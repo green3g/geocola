@@ -129,6 +129,13 @@ export let viewModel = CanMap.extend({
       'page[size]': this.attr('queryPerPage'),
       'page[number]': this.attr('queryPage')
     });
+    if(this.attr('relatedField') && this.attr('relatedValue')){
+      this.attr('queryFilters').push({
+        name: this.attr('relatedField'),
+        op: '==',
+        val: this.attr('relatedValue')
+      });
+    }
     this.setFilterParameter(this.attr('queryFilters'));
     can.batch.stop();
   },
@@ -228,6 +235,9 @@ export let viewModel = CanMap.extend({
   },
   isListTable() {
     return this.attr('view.listType') !== 'property-table';
+  },
+  getRelatedValue(foreignKey, focusObject){
+    return focusObject.attr(foreignKey);
   }
 });
 
@@ -235,6 +245,7 @@ Component.extend({
   tag: 'crud-manager',
   viewModel: viewModel,
   template: template,
+  leakScope: false,
   events: {
     //bind to the change event of the entire list
     '{viewModel.queryFilters} change': function(filters) {
