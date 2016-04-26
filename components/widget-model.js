@@ -1,5 +1,6 @@
 
 import CanMap from 'can/map/';
+import 'can/map/define/';
 import CanEvent from 'can/event/';
 import can from 'can/util/';
 var count = 1;

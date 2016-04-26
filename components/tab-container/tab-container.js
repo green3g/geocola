@@ -4,6 +4,7 @@ import can from 'can/util/';
 import Component from 'can/component/';
 import 'components/panel-container/';
 import template from './tabs.stache!';
+import List from 'can/list/';
 /**
  * @constructor components/tab-container.ViewModel ViewModel
  * @parent components/tab-container
@@ -11,7 +12,7 @@ import template from './tabs.stache!';
  *
  * @description A `<tab-container />` component's ViewModel
  */
-export const ViewModel = can.Map.extend({
+export const ViewModel = CanMap.extend({
   /**
    * @prototype
    */
@@ -23,7 +24,7 @@ export const ViewModel = can.Map.extend({
      * @parent components/tab-container.ViewModel.props
      */
     panels: {
-      Value: can.List
+      Value: List
     }
   },
   /**

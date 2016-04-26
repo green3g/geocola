@@ -1,4 +1,5 @@
 import CanMap from 'can/map/';
+import 'can/map/define/';
 import stache from 'can/view/stache/';
 import Component from 'can/component/';
 

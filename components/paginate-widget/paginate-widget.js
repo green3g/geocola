@@ -1,6 +1,5 @@
-
-
 import CanMap from 'can/map/';
+import 'can/map/define/';
 import List from 'can/list/';
 import Component from 'can/component/';
 //import './paginate-widget.css!';
