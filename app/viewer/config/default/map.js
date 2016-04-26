@@ -1,6 +1,3 @@
-
-import ol from 'openlayers';
-
 var view = {
   zoom: 4,
   projection: 'EPSG:3857',
