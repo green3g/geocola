@@ -5,7 +5,6 @@ import can from 'can';
 
 import {ViewModel} from 'components/ol-map/';
 import 'components/ol-map/';
-import 'components/ol-layer/ol-layer-tilewms';
 import template from './mapTemplate.stache!';
 
 var view = new ol.View({

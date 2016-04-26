@@ -1,4 +1,2 @@
-/*jshint esnext:true */
-import 'test/boilerplate.test';
-import 'components/identify-widget/test/';
-import 'components/ol-map/test/';
+ 
+import 'components/filter-widget/filter-widget.test';
