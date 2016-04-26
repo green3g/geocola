@@ -1,4 +1,5 @@
 import CanMap from 'can/map/';
+import 'can/map/define/';
 import List from 'can/list/';
 import Component from 'can/component/';
 import Route from 'can/route/';
@@ -18,7 +19,8 @@ import 'components/modal-container/';
 
 const DEFAULT_BUTTONS = [{
   iconClass: 'fa fa-list-ul',
-  eventName: 'view'
+  eventName: 'view',
+  title: 'View Row Details'
 }];
 const EDIT_BUTTONS = DEFAULT_BUTTONS.concat([{
   iconClass: 'fa fa-pencil',
@@ -26,7 +28,8 @@ const EDIT_BUTTONS = DEFAULT_BUTTONS.concat([{
   title: 'Edit Row'
 }, {
   iconClass: 'fa fa-trash',
-  eventName: 'delete'
+  eventName: 'delete',
+  title: 'Remove Row'
 }]);
 
 export let viewModel = CanMap.extend({
