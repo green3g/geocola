@@ -117,7 +117,7 @@
     position: relative;
     margin-right: 0;
   }
-  
+
   #wrapper .hidden-toggled {
     display: initial;
   }
@@ -130,7 +130,8 @@
   #wrapper {
     padding-left: 0;
   }
-  #wrapper #sidebar-wrapper {
+  #wrapper #sidebar-wrapper,
+  #wrapper.toggled #sidebar-wrapper {
     width: 0;
   }
   #wrapper #page-content-wrapper {

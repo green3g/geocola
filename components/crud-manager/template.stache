@@ -55,6 +55,10 @@
           <span>Refreshing Data...</span>
         </div>
       </div>
+    {{else}}
+      {{#unless objects.value.length}}
+        <p>There are currently no items here.</p>
+      {{/unless}}
     {{/if}}
 
     {{#if objects.value.length}}
@@ -80,8 +84,6 @@
     {{else}}
       <list-table {objects}="objects.value" {^_selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" (sort)="setSort" {fields}="view.tableFields" {formatters}="view.tableFormatters" {buttons}="buttons" />
       {{/is}}
-    {{else}}
-      <p>There are currently no items here.</p>
     {{/if}}
 
     <hr />
@@ -101,7 +103,9 @@
         {{/if}}
       {{/unless}}
     </div>
-    <paginate-widget {(active-page-index)}="queryPage" {pages}="totalPages" />
+    <div class="hidden-print">
+      <paginate-widget {(active-page-index)}="queryPage" {pages}="totalPages" />
+    </div>
   {{/case}}
 
 
