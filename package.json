@@ -44,6 +44,7 @@
       "openlayers"
     ],
     "paths": {
+      "bootstrap": "node_modules/bootstrap/dist/js/bootstrap.min.js",
       "openlayers": "node_modules/openlayers/dist/ol-debug.js"
     },
     "meta": {
