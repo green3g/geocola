@@ -6,12 +6,10 @@
           <th class="tool-buttons">
             <i ($click)="toggleSelectAll" class="fa fa-{{#if _allSelected}}check-{{/if}}square-o"></i>
           </th>
-          {{#each objects.0}}
-            {{#if renderField(%key)}}
-              <th {{#is %key parameters.sort}} class="info" {{/is}} ($click)="buttonClick('sort', %key)">
-                <i class="fa fa-sort-desc"></i> {{formatField(%key)}}
-              </th>
-            {{/if}}
+          {{#each fields}}
+            <th {{#is . currentSort}} class="info" {{/is}} ($click)="setSort(.)">
+              <i class="fa fa-sort-desc"></i> {{formatField(.)}}
+            </th>
           {{/each}}
         </tr>
       </thead>
@@ -24,10 +22,8 @@
                 <i ($click)="buttonClick(eventName, ../.)" title="{{title}}" class="{{iconClass}}"></i>
               {{/each}}
             </td>
-            {{#each .}}
-              {{#if renderField(%key)}}
-                <td>{{formatValue(.)}}</td>
-              {{/if}}
+            {{#each fields}}
+              <td>{{formatValue(../., .)}}</td>
             {{/each}}
           </tr>
         {{/each}}

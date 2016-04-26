@@ -4,6 +4,9 @@ import './list-table.css!';
 import viewModel from '../widget-model';
 import List from 'can/list/';
 import Component from 'can/component/';
+import CanMap from 'can/map/';
+import 'can/map/define/';
+
  /**
   * @constructor components/list-table.ViewModel ViewModel
   * @parent components/list-table
@@ -12,6 +15,9 @@ import Component from 'can/component/';
   * @description A `<list-table />` component's ViewModel
   */
 export const ViewModel = viewModel.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
      * Optional promise or deferred object that will resolve to an object. Once the promise resolves, the objects list will be replaced with the promise result
@@ -69,11 +75,34 @@ export const ViewModel = viewModel.extend({
      */
     buttons: {
       value: List
+    },
+    /**
+     * An array of fields
+     * @parent components/list-table.ViewModel.props
+     * @property {can.List} components/list-table.ViewModel.props.fields
+     */
+    fields: {
+      Type: List,
+      get: function(val){
+        if(val && val.length){
+          return val;
+        }
+        if(!this.attr('objects').length){
+          return [];
+        }
+        return CanMap.keys(this.attr('objects')[0]);
+      }
+    },
+    /**
+      * The current sort field
+      * @parent components/list-table.ViewModel.props
+      * @property {can.List} components/list-table.ViewModel.props.currentSort
+     */
+    currentSort: {
+      type: 'string',
+      value: null
     }
   },
-  /**
-   * @prototype
-   */
   /**
    * Called when a button is clicked. This dispatches the buttons event.
    * @signature
@@ -82,6 +111,14 @@ export const ViewModel = viewModel.extend({
    */
   buttonClick: function(eventName, object) {
     this.dispatch(eventName, [object]);
+  },
+  /**
+   * Helps the template the currentSort value
+   * @param  {String} field the field to set the sort on
+   */
+  setSort: function(field){
+    this.attr('currentSort', field);
+    this.dispatch('sort', [field]);
   },
   /**
    * Toggles a row as selected or not selected
@@ -117,15 +154,6 @@ export const ViewModel = viewModel.extend({
     return this.attr('_selectedObjects').indexOf(obj) > -1;
   },
   /**
-   * Determines whether or not the field should be rendered by checking wheter or not the field is in the list of fields if the property exists
-   * @signature
-   * @param  {String} fieldName The name of the field to check
-   * @return {Boolean}           Whether or not to render the field
-   */
-  renderField: function(fieldName) {
-    return !this.attr('fields') || this.attr('fields').indexOf(fieldName) > -1;
-  },
-  /**
    * Formats the field into a pretty readable name by removing underscores and capitalizing the first letter
    * @signature
    * @param  {String} fieldName The field name to format
@@ -141,10 +169,11 @@ export const ViewModel = viewModel.extend({
    * @param  {String} value The value to format
    * @return {String}       The formatted value if a formatter exists
    */
-  formatValue: function(value) {
+  formatValue: function(obj, field) {
+    var value = obj.attr(field);
     var f = this.attr('formatters');
     if (f && f[fieldName]) {
-      return f[fieldName](value);
+      return f[fieldName]();
     }
     return value;
   }
