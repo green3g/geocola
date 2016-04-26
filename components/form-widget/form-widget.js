@@ -1,5 +1,3 @@
-
-
 import CanMap from 'can/map/';
 import stache from 'can/view/stache/';
 import Component from 'can/component/';
@@ -74,7 +72,9 @@ export let viewModel = CanMap.extend({
      * @property {can.Map} components/form-widget.ViewModel.props.formObject
      * @parent components/form-widget.ViewModel.props
      */
-    formObject: {},
+    formObject: {
+      Value: CanMap
+    },
     /**
      * The list of form fields properties. These can be specified as strings representing the field names or the object properties described in the FormFieldObject
      * @property {Array<String|geocola.types.FormFieldObject>} components/form-widget.ViewModel.props.fields
@@ -120,7 +120,9 @@ export let viewModel = CanMap.extend({
         if (oldValue) {
           fields.forEach(function(field) {
             var newVal = self.attr(['formObject', field.name].join('.'));
-            oldValue.attr([field.name, 'value'].join('.'), newVal);
+            if (newVal) {
+              oldValue.attr([field.name, 'value'].join('.'), newVal);
+            }
           });
           this.attr('_fieldObjects', oldValue);
           return oldValue;

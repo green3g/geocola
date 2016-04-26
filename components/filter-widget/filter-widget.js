@@ -1,6 +1,8 @@
 
-
-import can from 'can';
+import List from 'can/list/';
+import CanMap from 'can/map/';
+import can from 'can/util/';
+import Component from 'can/component/';
 //import './widget.css!';
 import template from './template.stache!';
 import 'components/list-table/';
@@ -38,7 +40,7 @@ export let Filter = can.Map.extend({
  *
  * @description A `<filter-widget />` component's ViewModel
  */
-export let ViewModel = can.Map.extend({
+export let viewModel = CanMap.extend({
   /**
    * @prototype
    */
@@ -49,7 +51,7 @@ export let ViewModel = can.Map.extend({
      * @parent components/filter-widget.ViewModel.props
      */
     filters: {
-      Value: can.List
+      Value: List
     },
     /**
      * The model-like object to render in the form
@@ -145,7 +147,7 @@ export let ViewModel = can.Map.extend({
   }
 });
 
-can.Component.extend({
+Component.extend({
   tag: 'filter-widget',
   viewModel: ViewModel,
   template: template,

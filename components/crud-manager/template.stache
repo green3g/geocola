@@ -7,22 +7,28 @@
   {{/each}}
 </div>
 
-{{#if promise.isPending}}
-  <div class="progress">
-    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-      <span>Refreshing Data...</span>
-    </div>
-  </div>
-{{/if}}
+
 
 {{#switch page}}
+
+
+
+
   {{#case 'edit'}}
     {{#if view.disableEdit}}
       <p>You do not have permission to edit this data.</p>
     {{else}}
-      <form-widget {object-id}="viewId" {connection}="view.connection" (submit)="saveObject" (cancel)="resetPage" {fields}="view.editFields" />
+      {{#if focusObject.isResolved}}
+        <form-widget {form-object}="focusObject.value" (submit)="saveObject" (cancel)="resetPage" {fields}="view.editFields" />
+      {{/if}}
     {{/if}}
   {{/case}}
+
+
+
+
+
+
   {{#case 'add'}}
     {{#if view.disableEdit}}
       <p>You do not have permission to add this data.</p>
@@ -30,47 +36,66 @@
       <form-widget {form-object}="getNewObject()" (submit)="saveObject" (cancel)="resetPage" {fields}="view.editFields" />
     {{/if}}
   {{/case}}
+
+
+
+
+
   {{#case 'all'}}
+
     {{#if filterVisible}}
       <modal-container title="Search" (hide)="toggleFilter(false)">
         <filter-widget {(filters)}="queryFilters" {field-options}="filterFields" />
       </modal-container>
     {{/if}}
-    {{#if isListTable()}}
-      <list-table {promise}="promise" {^_selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" (sort)="setSort" {fields}="view.tableFields" {formatters}="view.tableFormatters" {buttons}="buttons" />
-    {{else}}
-      {{#if promise.value.length}}
-        {{#each promise.value}}
-          <div class="btn-group hidden-print" role="group" aria-label="Management Buttons">
+
+    {{#if objects.isPending}}
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+          <span>Refreshing Data...</span>
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if objects.value.length}}
+      {{#is view.listType 'property-table'}}
+
+        {{#each objects.value}}
+          <div class="btn btn-group hidden-print" role="group" aria-label="Management Buttons">
+
             {{#unless view.disableEdit}}
-              <button class="btn btn-warning" ($click)="editObject(null, null null, .)">
+              <button class="btn btn-default" ($click)="editObject(null, null null, .)">
                 <i class="fa fa-wrench"></i> Edit
               </button>
-              <button class="btn btn-danger" ($click)="deleteObject(null, null, null, .)">
+              <button class="btn btn-default" ($click)="deleteObject(null, null, null, .)">
                 <i class="fa fa-trash"></i> Remove
               </button>
             {{/unless}}
+
           </div>
 
           <property-table {object}="." {connection}="view.connection" {field-properties}="view.detailFields" />
         {{/each}}
-      {{else}}
-        <p>There are currently no items here.</p>
-      {{/if}}
+
+    {{else}}
+      <list-table {objects}="objects.value" {^_selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" (sort)="setSort" {fields}="view.tableFields" {formatters}="view.tableFormatters" {buttons}="buttons" />
+      {{/is}}
+    {{else}}
+      <p>There are currently no items here.</p>
     {{/if}}
 
     <hr />
 
-    <div class="btn-group" role="group" aria-label="Management Buttons">
-      <button class="btn btn-primary" ($click)="toggleFilter">
-        <i class="fa fa-search"></i> Search
+    <div class="btn btn-group" role="group" aria-label="Management Buttons">
+      <button class="btn btn-default" ($click)="toggleFilter">
+        <i class="fa fa-search"></i> Search ({{queryFilters.length}})
       </button>
       {{#unless view.disableEdit}}
-        <button class="btn btn-success" ($click)="createObject">
+        <button class="btn btn-default" ($click)="createObject">
           <i class="fa fa-plus"></i> Add New
         </button>
         {{#if selectedObjects.length}}
-          <button class="btn btn-danger" ($click)="deleteMultiple">
+          <button class="btn btn-default" ($click)="deleteMultiple">
             <i class="fa fa-trash"></i> Remove Selected
           </button>
         {{/if}}
@@ -79,19 +104,46 @@
     <paginate-widget {(active-page-index)}="queryPage" {pages}="totalPages" />
   {{/case}}
 
+
+
+
+
+
+
   {{#case 'details'}}
-    <property-table {object-id}="viewId" {^object}="focusObject" {connection}="view.connection" {field-properties}="view.detailFields" />
-    <div class="btn-group hidden-print" role="group" aria-label="Management Buttons">
-      <button class="btn btn-primary" ($click)="resetPage">
-        <i class="fa fa-arrow-left"></i> Back
-      </button>
-      {{#unless view.disableEdit}}
-        <button class="btn btn-warning" ($click)="editObject(null, null null, focusObject)">
-          <i class="fa fa-wrench"></i> Edit
+    {{#if focusObject.isResolved}}
+      <property-table {object}="focusObject.value" {field-properties}="view.detailFields" />
+      <div class="btn btn-group hidden-print" role="group" aria-label="Management Buttons">
+        <button class="btn btn-default" ($click)="resetPage">
+          <i class="fa fa-arrow-left"></i> Back
         </button>
-      {{/unless}}
-    </div>
+        {{#unless view.disableEdit}}
+          <button class="btn btn-default" ($click)="editObject(null, null null, focusObject.value)">
+            <i class="fa fa-wrench"></i> Edit
+          </button>
+        {{/unless}}
+      </div>
+
+      {{#if view.relatedViews}}
+        <hr />
+        <h2>Related Data</h2>
+        <tab-container>
+          {{#each view.relatedViews}}
+            <panel-container title="{{./view.title}}">
+              <crud-manager {view}="../view" {parameters}="../view.parameters" related-field="{{../referenceKey}}" related-value="{{getRelatedValue(../foreignKey, ../../focusObject.value)}}"></crud-manager>
+            </panel-container>
+          {{/each}}
+        </tab-container>
+      {{/if}}
+
+    {{/if}}
   {{/case}}
+
+
+
+
+
+
   {{#case 'loading'}}
     <div class="progress">
       <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">

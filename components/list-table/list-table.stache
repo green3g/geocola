@@ -4,7 +4,7 @@
       <thead>
         <tr>
           <th class="tool-buttons">
-            <i ($click)="toggleSelectAll" class="fa fa-{{#_allSelected}}check-{{/_allSelected}}square-o"></i>
+            <i ($click)="toggleSelectAll" class="fa fa-{{#if _allSelected}}check-{{/if}}square-o"></i>
           </th>
           {{#each objects.0}}
             {{#if renderField(%key)}}
