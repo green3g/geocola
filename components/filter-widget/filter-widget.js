@@ -2,6 +2,7 @@
 import List from 'can/list/';
 import CanMap from 'can/map/';
 import can from 'can/util/';
+import 'can/map/define/';
 import Component from 'can/component/';
 //import './widget.css!';
 import template from './template.stache!';
@@ -40,7 +41,7 @@ export let Filter = can.Map.extend({
  *
  * @description A `<filter-widget />` component's ViewModel
  */
-export let viewModel = CanMap.extend({
+export let ViewModel = CanMap.extend({
   /**
    * @prototype
    */
