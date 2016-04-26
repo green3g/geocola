@@ -47,7 +47,14 @@ export let ViewModel = widgetModel.extend({
   },
   onChange(element) {
     if (element.files) {
-      this.uploadFiles(element.files);
+      if (!this.attr('properties.multiple') && this.attr('currentFiles').length) {
+        let self = this;
+        this.removeFile(this.attr('currentFiles')[0]).then(function() {
+          self.uploadFiles(element.files);
+        });
+      } else {
+        this.uploadFiles(element.files);
+      }
     }
   },
   uploadFiles(files) {
@@ -100,6 +107,7 @@ export let ViewModel = widgetModel.extend({
       success: this.removeSuccess.bind(this, file),
       error: this.removeError.bind(this, file)
     }));
+    return this.attr('state');
   },
   removeSuccess(file, response) {
     this.attr('currentFiles').splice(this.attr('currentFiles').indexOf(file), 1);
