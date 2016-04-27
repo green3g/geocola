@@ -1,6 +1,5 @@
-/* jshint esnext:true */
-import can from 'can';
 import widgetModel from 'components/widget-model';
+import Component from 'can/component/';
 /**
  * @module panel-container
  */
@@ -95,7 +94,7 @@ export const ViewModel = widgetModel.extend({
   }
 });
 
-export default can.Component.extend({
+export default Component.extend({
   tag: 'panel-container',
   template: template,
   viewModel: ViewModel,

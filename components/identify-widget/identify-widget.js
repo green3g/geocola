@@ -1,5 +1,9 @@
 /*jshint esnext: true */
-import can from 'can';
+import CanMap from 'can/map/';
+import Component from 'can/component/';
+import List from 'can/list/';
+import can from 'can/util/';
+import 'can/map/define/';
 import ol from 'openlayers';
 import featureTemplate from './featureTemplate.stache!';
 import template from './template.stache!';
@@ -14,7 +18,7 @@ import 'components/property-table/';
   *
   * @description A `<identify-widget />` component's ViewModel
   */
-export const ViewModel = can.Map.extend({
+export const ViewModel = CanMap.extend({
   /**
    * @prototype
    */
@@ -63,7 +67,7 @@ export const ViewModel = can.Map.extend({
      * @property {geocola.types.LayerPropertiesObject} components/identify-widget.ViewModel.props.layerProperties
      */
     layerProperties: {
-      Value: can.Map
+      Value: CanMap
     },
     /**
      * The map click key to assign to this widget. When the map is clicked, and this key is the set as the current map click, it will trigger an identify.
@@ -80,7 +84,7 @@ export const ViewModel = can.Map.extend({
      * @property {Array<ol.Feature>} components/identify-widget.ViewModel.props._features
      */
     _features: {
-      Value: can.List
+      Value: List
     },
     /**
      * Whether or not all identifies have completed. This is used internally by the template.
@@ -100,7 +104,7 @@ export const ViewModel = can.Map.extend({
      * @property {Array<can.Deferred>} components/identify-widget.ViewModel.props._deferreds
      */
     _deferreds: {
-      Value: can.List,
+      Value: List,
     },
     /**
      * The currently selected feature index
@@ -539,7 +543,7 @@ export const ViewModel = can.Map.extend({
   }
 });
 
-export default can.Component.extend({
+export default Component.extend({
   tag: 'identify-widget',
   template: template,
   viewModel: ViewModel,

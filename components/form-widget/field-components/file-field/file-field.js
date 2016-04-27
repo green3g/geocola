@@ -1,4 +1,3 @@
-
 import can from 'can/util/';
 import List from 'can/list/';
 import CanMap from 'can/map/';
@@ -21,7 +20,20 @@ export let ViewModel = widgetModel.extend({
       Value: CanMap
     },
     currentFiles: {
-      Value: List
+      get: function initCurrentFiles(val, set) {
+        if (!val) {
+          if (this.attr('properties.value')) {
+            val = new List().concat(this.attr('properties.value').split(',').filter(function(file) {
+              return file !== '';
+            }));
+          } else {
+            val = new List();
+          }
+        }
+
+        set(val);
+        return val;
+      }
     },
     state: {
       value: {
@@ -33,23 +45,21 @@ export let ViewModel = widgetModel.extend({
       value: 100
     }
   },
-  init: function(){
-    if(this.attr('properties.value')){
-      this.attr('currentFiles').replace(
-        this.attr('properties.value').split(',').filter(function(file){
-          return file !== '';
-        })
-      );
-    }
-  },
   onChange(element) {
     if (element.files) {
-      this.uploadFiles(element.files);
+      if (!this.attr('properties.multiple') && this.attr('currentFiles').length) {
+        let self = this;
+        this.removeFile(this.attr('currentFiles')[0]).then(function() {
+          self.uploadFiles(element.files);
+        });
+      } else {
+        this.uploadFiles(element.files);
+      }
     }
   },
   uploadFiles(files) {
     var data = new FormData();
-    for(var i = 0; i < files.length; i ++){
+    for (var i = 0; i < files.length; i++) {
       data.append(i, files.item(i));
     }
     var self = this;
@@ -74,8 +84,8 @@ export let ViewModel = widgetModel.extend({
       console.warn('ERRORS: ', data.error);
     }
   },
-  updateValue(){
-    if(this.attr('currentFiles').length){
+  updateValue() {
+    if (this.attr('currentFiles').length) {
       this.attr('properties.value', this.attr('currentFiles').join(','));
     } else {
       this.attr('properties.value', '');
@@ -87,7 +97,7 @@ export let ViewModel = widgetModel.extend({
     console.warn('ERRORS: ', response, textStatus, errorThrown);
     // STOP LOADING SPINNER
   },
-  removeFile(file){
+  removeFile(file) {
     this.attr('state', can.ajax({
       url: this.attr('properties.url'),
       type: 'DELETE',
@@ -97,13 +107,14 @@ export let ViewModel = widgetModel.extend({
       success: this.removeSuccess.bind(this, file),
       error: this.removeError.bind(this, file)
     }));
+    return this.attr('state');
   },
-  removeSuccess(file, response){
+  removeSuccess(file, response) {
     this.attr('currentFiles').splice(this.attr('currentFiles').indexOf(file), 1);
     this.updateValue();
   },
-  removeError(file, response){
-    if(response.status === 404){
+  removeError(file, response) {
+    if (response.status === 404) {
       //file doesn't exist, remove it from this widget
       this.removeSuccess(file, response);
     }

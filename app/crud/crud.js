@@ -56,7 +56,8 @@ export let AppViewModel = can.Map.extend({
     }
   },
   toggleMenu: function(e) {
-    this.attr('sidebarHidden', !this.attr('sidebarHidden'))
+    this.attr('sidebarHidden', !this.attr('sidebarHidden'));
+    return false;
   },
   activateViewById: function(name) {
     var self = this;
@@ -90,17 +91,14 @@ export let AppViewModel = can.Map.extend({
     }
     can.route.attr(name, value);
   },
-  getRelatedFilter: function(view, id) {
+  getRelatedFilter(relation) {
+    console.log(this.attr('focusObject'))
+    var id = this.attr('focusObject.' + relation.foreignKey);
+    console.log(id, relation);
     return [{
-      name: view.attr('foreignKey'),
+      name: relation.referenceKey,
       op: '==',
       val: id
     }];
-  },
-  getRelatedConnection: function(view, id) {
-    var connection = view.attr('view.connection');
-    var idField = view.attr('foreignKey');
-    connection.attr('map').defaults[idField] = id;
-    return connection;
   }
 });

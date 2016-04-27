@@ -1,7 +1,8 @@
 /* jshint esnext:true */
 
 import widgetModel from 'components/widget-model';
-import can from 'can';
+import can from 'can/util/';
+import Component from 'can/component/';
 import template from './template.stache!';
 /**
  * @constructor components/modal-container.ViewModel ViewModel
@@ -50,7 +51,7 @@ export let ViewModel = widgetModel.extend({
   }
 });
 
-export let ModalContainer = can.Component.extend({
+export let ModalContainer = Component.extend({
   tag: 'modal-container',
   template: template,
   viewModel: ViewModel,

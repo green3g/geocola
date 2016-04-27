@@ -1,21 +1,26 @@
 {
   "name": "GeoCola",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A configureable openlayers mapping and data management app",
   "repository": "https://github.com/roemhildtg/geocola",
+  "watch": {
+    "test": "components/**/*.js"
+  },
   "scripts": {
-    "test": "test",
+    "test": "testee test/index.html --reporter Spec",
     "build": "steal-tools",
     "watch": "steal-tools --watch",
     "docs": "documentjs --watch -d",
-    "export": "node build.js"
+    "export": "node build.js",
+    "watch": "npm-watch"
   },
   "author": "roemhildtg",
   "license": "MIT",
   "devDependencies": {
     "documentjs": "^0.4.2",
     "steal-qunit": "^0.1.1",
-    "steal-tools": "^0.15.0"
+    "steal-tools": "^0.15.0",
+    "testee": "^0.2.5"
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
@@ -39,6 +44,7 @@
       "openlayers"
     ],
     "paths": {
+      "bootstrap": "node_modules/bootstrap/dist/js/bootstrap.min.js",
       "openlayers": "node_modules/openlayers/dist/ol-debug.js"
     },
     "meta": {

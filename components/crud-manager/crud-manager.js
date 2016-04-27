@@ -1,10 +1,9 @@
-
-
 import CanMap from 'can/map/';
+import 'can/map/define/';
 import List from 'can/list/';
 import Component from 'can/component/';
 import Route from 'can/route/';
-
+import can from 'can/util/';
 //import './widget.css!';
 import template from './template.stache!';
 import {
@@ -20,7 +19,8 @@ import 'components/modal-container/';
 
 const DEFAULT_BUTTONS = [{
   iconClass: 'fa fa-list-ul',
-  eventName: 'view'
+  eventName: 'view',
+  title: 'View Row Details'
 }];
 const EDIT_BUTTONS = DEFAULT_BUTTONS.concat([{
   iconClass: 'fa fa-pencil',
@@ -28,13 +28,13 @@ const EDIT_BUTTONS = DEFAULT_BUTTONS.concat([{
   title: 'Edit Row'
 }, {
   iconClass: 'fa fa-trash',
-  eventName: 'delete'
+  eventName: 'delete',
+  title: 'Remove Row'
 }]);
 
 export let viewModel = CanMap.extend({
   define: {
-    view: {
-    },
+    view: {},
     parameters: {
       set: function(val) {
         return val;
@@ -53,9 +53,27 @@ export let viewModel = CanMap.extend({
         return pages;
       }
     },
-    promise: {
+    objects: {
       get: function(prev, setAttr) {
-        return this.attr('view.connection').getList(this.attr('parameters').attr());
+        var promise = this.attr('view.connection').getList(this.attr('parameters').attr());
+        promise.catch(function(err) {
+          console.error('unable to complete objects request', err);
+        });
+        return promise;
+      }
+    },
+    focusObject: {
+      get: function(prev, setAttr) {
+        if (this.attr('viewId')) {
+          var params = {};
+          params[this.attr('view.connection').idProp] = this.attr('viewId');
+          var promise = this.attr('view.connection').get(params);
+          promise.catch(function(err) {
+            console.error('unable to complete focusObject request', err);
+          });
+          return promise;
+        }
+        return null;
       }
     },
     buttons: {
@@ -79,6 +97,11 @@ export let viewModel = CanMap.extend({
         return page;
       }
     },
+    queryPageNumber: {
+      get: function(){
+        return this.attr('queryPage') + 1;
+      }
+    },
     queryPerPage: {
       type: 'number',
       value: 10,
@@ -90,6 +113,9 @@ export let viewModel = CanMap.extend({
         params.attr('page[size]', perPage);
         return perPage;
       }
+    },
+    sort: {
+      Value: CanMap
     },
     viewId: {
       type: 'number',
@@ -110,19 +136,26 @@ export let viewModel = CanMap.extend({
   init: function() {
     var params = this.attr('parameters');
     can.batch.start();
-    params.attr('page[size]', this.attr('queryPerPage'));
-    params.attr('page[number]', this.attr('queryPerPage'));
+    params.attr({
+      'page[size]': this.attr('queryPerPage'),
+      'page[number]': this.attr('queryPage')
+    });
+    if (this.attr('relatedField') && this.attr('relatedValue')) {
+      this.attr('queryFilters').push({
+        name: this.attr('relatedField'),
+        op: '==',
+        val: this.attr('relatedValue')
+      });
+    }
     this.setFilterParameter(this.attr('queryFilters'));
     can.batch.stop();
   },
   editObject: function(scope, dom, event, obj) {
     this.attr('viewId', this.attr('view.connection').id(obj));
-    this.attr('focusObject', obj);
     this.attr('page', 'edit');
   },
   viewObject: function(scope, dom, event, obj) {
     this.attr('viewId', this.attr('view.connection').id(obj));
-    this.attr('focusObject', obj);
     this.attr('page', 'details');
   },
   saveObject: function(scope, dom, event, obj) {
@@ -156,16 +189,15 @@ export let viewModel = CanMap.extend({
   },
   resetPage: function() {
     this.attr('page', 'all');
-    this.attr('focusObject', null);
     this.attr('viewId', 0);
   },
   createObject: function() {
     this.attr('page', 'add');
   },
-  getNewObject(){
+  getNewObject() {
     //create a new empty object with the defaults provided
-    //from the template property which is a map
-    return this.attr('view.template')();
+    //from the objectTemplate property which is a map
+    return this.attr('view.objectTemplate')();
   },
   deleteObject: function(scope, dom, event, obj, skipConfirm) {
     if (obj && (skipConfirm || confirm('Are you sure you want to delete this record?'))) {
@@ -181,18 +213,6 @@ export let viewModel = CanMap.extend({
       this.attr('selectedObjects').replace([]);
     }
   },
-  setSort: function(scope, dom, event, fieldName) {
-    var sort = this.attr('parameters.sort');
-    if (sort && sort.indexOf(fieldName) !== -1) {
-      if (sort.indexOf('-') > 0) {
-        this.attr('parameters.sort', fieldName);
-      } else {
-        this.attr('parameters.sort', '-' + fieldName);
-      }
-    } else {
-      this.attr('parameters.sort', fieldName);
-    }
-  },
   setFilterParameter: function(filters) {
     var params = this.attr('parameters');
     //reset the page filter
@@ -205,15 +225,26 @@ export let viewModel = CanMap.extend({
       params.removeAttr('filter[objects]');
     }
   },
-  toggleFilter: function(val){
-    if(typeof val !== 'undefined'){
+  setSortParameter: function(sort){
+    var params = this.attr('parameters');
+    if(!sort.attr('fieldName')){
+      params.removeAttr('sort');
+      return sort;
+    }
+    this.attr('parameters.sort', sort.type === 'asc' ? sort.fieldName : '-' + sort.fieldName);
+  },
+  toggleFilter: function(val) {
+    if (typeof val !== 'undefined') {
       this.attr('filterVisible', val);
     } else {
       this.attr('filterVisible', !this.attr('filterVisible'));
     }
   },
-  isListTable(){
+  isListTable() {
     return this.attr('view.listType') !== 'property-table';
+  },
+  getRelatedValue(foreignKey, focusObject) {
+    return focusObject.attr(foreignKey);
   }
 });
 
@@ -221,10 +252,15 @@ Component.extend({
   tag: 'crud-manager',
   viewModel: viewModel,
   template: template,
+  leakScope: false,
   events: {
     //bind to the change event of the entire list
     '{viewModel.queryFilters} change': function(filters) {
       this.viewModel.setFilterParameter(filters);
+    },
+    //bind to the change event of the entire map
+    '{viewModel.sort} change': function(sort) {
+      this.viewModel.setSortParameter(sort);
     }
   }
 });

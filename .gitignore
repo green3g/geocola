@@ -33,4 +33,6 @@ custom/
 
 # virtualenv
 env/
+
+node_modules/
 docs/

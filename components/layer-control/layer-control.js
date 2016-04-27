@@ -1,5 +1,9 @@
-
-import can from 'can';
+import CanMap from 'can/map/';
+import 'can/map/define/';
+import List from 'can/list/';
+import Stache from 'can/view/stache/';
+import Component from 'can/component/';
+import can from 'can/util/';
 import template from './layercontrol.stache!';
 import './layercontrol.css!';
 
@@ -15,7 +19,7 @@ const controlTemplates = {
  *
  * @description A `<layer-control />` component's ViewModel
  */
-export const ViewModel = can.Map.extend({
+export const ViewModel = CanMap.extend({
   define: {
     /**
      * An internal list of layers used by the template
@@ -23,7 +27,7 @@ export const ViewModel = can.Map.extend({
      * @parent components/layer-control.ViewModel.props
      */
     _layers: {
-      Value: can.List
+      Value: List
     },
     /**
      * The dom node selector referencing an ol-map component
@@ -132,10 +136,10 @@ export const ViewModel = can.Map.extend({
         if (controlTemplates.hasOwnProperty(template) &&
           ol.layer[template] &&
           layer instanceof ol.layer[template]) {
-          return can.stache(controlTemplates[template]);
+          return Stache(controlTemplates[template]);
         }
       }
-      return can.stache(controlTemplates['default']);
+      return Stache(controlTemplates['default']);
     }
     //handle layer sources for more specific
     //layer types
@@ -144,14 +148,14 @@ export const ViewModel = can.Map.extend({
       if (controlTemplates.hasOwnProperty(template) &&
         ol.source[template] &&
         layerSource instanceof ol.source[template]) {
-        return can.stache(controlTemplates[template]);
+        return Stache(controlTemplates[template]);
       }
     }
-    return can.stache(controlTemplates['default']);
+    return Stache(controlTemplates['default']);
   }
 });
 
-export default can.Component.extend({
+export default Component.extend({
   tag: 'layer-control',
   viewModel: ViewModel,
   template: template,

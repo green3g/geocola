@@ -19,9 +19,12 @@ export let ViewModel = widgetModel.extend({
     jsonFormObject: {
       get: function() {
         var props = this.attr('properties');
-        return new props.template(props.value ? JSON.parse(
-          props.value
-        ) : {});
+        if (props && props.objectTemplate) {
+          return new props.objectTemplate(props.value ? JSON.parse(
+            props.value
+          ) : {});
+        }
+        return null;
       }
     }
   },

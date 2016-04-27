@@ -22,7 +22,7 @@ export let ViewModel = widgetModel.extend({
     this.dispatch('change', [value]);
   },
   isSelected(value){
-    return value == this.attr('properties').value;
+    return value == this.attr('properties.value');
   }
 });
 

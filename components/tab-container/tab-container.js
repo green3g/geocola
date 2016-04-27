@@ -1,7 +1,10 @@
 
-import can from 'can';
+import CanMap from 'can/map/';
+import can from 'can/util/';
+import Component from 'can/component/';
 import 'components/panel-container/';
 import template from './tabs.stache!';
+import List from 'can/list/';
 /**
  * @constructor components/tab-container.ViewModel ViewModel
  * @parent components/tab-container
@@ -9,7 +12,7 @@ import template from './tabs.stache!';
  *
  * @description A `<tab-container />` component's ViewModel
  */
-export const ViewModel = can.Map.extend({
+export const ViewModel = CanMap.extend({
   /**
    * @prototype
    */
@@ -21,7 +24,7 @@ export const ViewModel = can.Map.extend({
      * @parent components/tab-container.ViewModel.props
      */
     panels: {
-      Value: can.List
+      Value: List
     }
   },
   /**
@@ -53,7 +56,7 @@ export const ViewModel = can.Map.extend({
     var index = panels.indexOf(panel);
     panels.splice(index, 1);
     if (this.attr('active') === panel) {
-      panels.attr('length') ? this.activate(panels[0]) : this.attr('active', null);
+      let dummy = panels.attr('length') ? this.activate(panels[0]) : this.attr('active', null);
     }
     return this;
   },
@@ -66,7 +69,7 @@ export const ViewModel = can.Map.extend({
     can.batch.start();
     var active = this.attr('active');
     if (active !== panel) {
-      active && active.hide();
+      let dummy = active && active.hide();
       this.attr('active', panel.show());
     }
     can.batch.stop();
@@ -74,7 +77,7 @@ export const ViewModel = can.Map.extend({
   }
 });
 
-export default can.Component.extend({
+export default Component.extend({
   tag: 'tab-container',
   viewModel: ViewModel,
   template: template

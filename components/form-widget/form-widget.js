@@ -1,11 +1,11 @@
-
-
 import CanMap from 'can/map/';
+import 'can/map/define/';
 import stache from 'can/view/stache/';
 import Component from 'can/component/';
 
 //provides can.extend
 import can from 'can/util/';
+import 'can/util/string/';
 
 import template from './template.stache!';
 
@@ -32,7 +32,7 @@ for (var type in FIELD_TYPES) {
  *
  * @description A `<form-widget />` component's ViewModel
  */
-export let viewModel = CanMap.extend({
+export let ViewModel = CanMap.extend({
   /**
    * @prototype
    */
@@ -56,6 +56,14 @@ export let viewModel = CanMap.extend({
       value: false
     },
     /**
+     * The connection info for this form's data. If this is provided, the object will be fetched using the objectId property
+     * @property {connectInfoObject} components/form-widget.ViewModel.props.connection
+     * @parent components/form-widget.ViewModel.props
+     */
+    connection: {
+      value: null
+    },
+    /**
      * The object id of the item to retrieve. If this is provided, a request will be made to the connection object with the specified id.
      * @property {Number} components/form-widget.ViewModel.props.objectId
      * @parent components/form-widget.ViewModel.props
@@ -63,9 +71,18 @@ export let viewModel = CanMap.extend({
     objectId: {
       type: 'number',
       set: function(id) {
-        this.fetchObject(this.attr('connection'), id);
+        let promise = this.fetchObject(this.attr('connection'), id);
+        this.attr('promise', promise);
         return id;
       }
+    },
+    /**
+     * The pending promise if the object is being retrieved or null
+     * @property {Promise}  components/form-widget.ViewModel.props.promise
+     * @parent components/form-widget.ViewModel.props
+     */
+    promise: {
+      value: null
     },
     /**
      * An object representing a can.Map or similar object. This object should have
@@ -74,7 +91,9 @@ export let viewModel = CanMap.extend({
      * @property {can.Map} components/form-widget.ViewModel.props.formObject
      * @parent components/form-widget.ViewModel.props
      */
-    formObject: {},
+    formObject: {
+      Value: CanMap
+    },
     /**
      * The list of form fields properties. These can be specified as strings representing the field names or the object properties described in the FormFieldObject
      * @property {Array<String|geocola.types.FormFieldObject>} components/form-widget.ViewModel.props.fields
@@ -96,15 +115,7 @@ export let viewModel = CanMap.extend({
       }
     },
     /**
-     * The connection info for this form's data. If this is provided, the object will be fetched using the objectId property
-     * @property {connectInfoObject} components/form-widget.ViewModel.props.connection
-     * @parent components/form-widget.ViewModel.props
-     */
-    connection: {
-      value: null
-    },
-    /**
-     * A virtual object consisting of field names mapped to their properties. This is used by the template to format the field, and by the viewModel to format the data when the form is submitted.
+     * A virtual object consisting of field names mapped to their properties. This is used by the template to format the field, and by the ViewModel to format the data when the form is submitted.
      * @property {Object} components/form-widget.ViewModel.props._fieldObjects
      * @parent components/form-widget.ViewModel.props
      * @link geocola.types.FormFieldObject FormFieldObject
@@ -120,7 +131,9 @@ export let viewModel = CanMap.extend({
         if (oldValue) {
           fields.forEach(function(field) {
             var newVal = self.attr(['formObject', field.name].join('.'));
-            oldValue.attr([field.name, 'value'].join('.'), newVal);
+            if (newVal) {
+              oldValue.attr([field.name, 'value'].join('.'), newVal);
+            }
           });
           this.attr('_fieldObjects', oldValue);
           return oldValue;
@@ -145,21 +158,23 @@ export let viewModel = CanMap.extend({
    * @param  {superMap} con The supermap connection to the api service
    * @param  {Number} id  The id number of the object to fetch
    */
-  fetchObject: function(con, id) {
+  fetchObject(con, id) {
     if (!con || !id) {
       return;
     }
     var self = this;
-    return con.get({
+    var promise = con.get({
       id: id
-    }).then(function(obj) {
+    });
+    promise.then(function(obj) {
       self.attr('formObject', obj);
     });
+    return promise;
   },
   /**
    * Called when the form is submitted. The object is updated by calling it's `save` method. The event `submit` is dispatched.
    */
-  submitForm: function() {
+  submitForm() {
     let formObject = this.attr('formObject');
     this.dispatch('submit', [formObject]);
   },
@@ -172,7 +187,7 @@ export let viewModel = CanMap.extend({
    * @param  {Event} event  The event object and type
    * @param  {Object | Number | String} value  The value that was passed from the field component
    */
-  setField: function(field, domElement, event, value) {
+  setField(field, domElement, event, value) {
     var obj = this.attr('formObject');
     obj.attr(field.name, value);
     this.dispatch('fieldChange', [obj]);
@@ -186,18 +201,8 @@ export let viewModel = CanMap.extend({
    * Called when the form cancel button is clicked. Dispatches the `cancel` event.
    * @signature
    */
-  cancelForm: function() {
+  cancelForm() {
     this.dispatch('cancel');
-  },
-  /**
-   * Determines whether this field should be rendered
-   * @signature
-   * @param  {String} fieldName The fieldname
-   * @return {Boolean} True if the field is in the list of fields, false if otherwise
-   */
-  renderField: function(fieldName) {
-    var fields = this.attr('fields');
-    return true;
   },
   /**
    * Formats the field by replacing underscores with spaces and capitalizing the first letter
@@ -205,14 +210,18 @@ export let viewModel = CanMap.extend({
    * @param  {String} fieldName The name of the field
    * @return {String} The formatted field string. Example: `my_field_name` will become `My field name`.
    */
-  formatField: function(fieldName) {
+  formatField(fieldName) {
     fieldName = String(fieldName);
-    return [fieldName.substring(0, 1).toUpperCase(), fieldName.substring(1, fieldName.length).replace(/_/g, " ")].join('');
+    return can.capitalize(can.trim(
+      fieldName.split('_')
+      .join(' ')
+      .toLowerCase()
+    ));
   }
 });
 
 Component.extend({
   tag: 'form-widget',
-  viewModel: viewModel,
+  viewModel: ViewModel,
   template: template
 });
