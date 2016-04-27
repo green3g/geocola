@@ -62,6 +62,9 @@
     {{/if}}
 
     {{#if objects.value.length}}
+
+      <p><small>{{view.connection.metadata.totalItems}} rows found. Page {{queryPageNumber}} of {{totalPages}}</small></p>
+
       {{#is view.listType 'property-table'}}
 
         {{#each objects.value}}

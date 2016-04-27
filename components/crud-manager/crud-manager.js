@@ -97,6 +97,11 @@ export let viewModel = CanMap.extend({
         return page;
       }
     },
+    queryPageNumber: {
+      get: function(){
+        return this.attr('queryPage') + 1;
+      }
+    },
     queryPerPage: {
       type: 'number',
       value: 10,
