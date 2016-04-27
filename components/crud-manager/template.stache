@@ -82,7 +82,7 @@
         {{/each}}
 
     {{else}}
-      <list-table {objects}="objects.value" {^_selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" (sort)="setSort" {fields}="view.tableFields" {formatters}="view.tableFormatters" {buttons}="buttons" />
+      <list-table {objects}="objects.value" {^_selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" {(current-sort)}="sort" {fields}="view.tableFields" {formatters}="view.tableFormatters" {buttons}="buttons" />
       {{/is}}
     {{/if}}
 

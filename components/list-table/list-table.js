@@ -1,11 +1,12 @@
 
 import template from './list-table.stache!';
-import './list-table.css!';
+import './list-table.less!';
 import viewModel from '../widget-model';
 import List from 'can/list/';
 import Component from 'can/component/';
 import CanMap from 'can/map/';
 import 'can/map/define/';
+import can from 'can/util/';
 
  /**
   * @constructor components/list-table.ViewModel ViewModel
@@ -99,8 +100,12 @@ export const ViewModel = viewModel.extend({
       * @property {can.List} components/list-table.ViewModel.props.currentSort
      */
     currentSort: {
-      type: 'string',
-      value: null
+      value: function(){
+        return new CanMap({
+          fieldName: null,
+          type: 'asc'
+        });
+      }
     }
   },
   /**
@@ -117,8 +122,12 @@ export const ViewModel = viewModel.extend({
    * @param  {String} field the field to set the sort on
    */
   setSort: function(field){
-    this.attr('currentSort', field);
-    this.dispatch('sort', [field]);
+    can.batch.start();
+    this.attr('currentSort.type', this.attr('currentSort.type') === 'asc' ? 'desc': 'asc');
+    if(this.attr('currentSort.fieldName') !== field){
+      this.attr('currentSort.fieldName', field);
+    }
+    can.batch.stop();
   },
   /**
    * Toggles a row as selected or not selected

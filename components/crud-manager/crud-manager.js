@@ -109,6 +109,9 @@ export let viewModel = CanMap.extend({
         return perPage;
       }
     },
+    sort: {
+      Value: CanMap
+    },
     viewId: {
       type: 'number',
       value: 0
@@ -132,7 +135,7 @@ export let viewModel = CanMap.extend({
       'page[size]': this.attr('queryPerPage'),
       'page[number]': this.attr('queryPage')
     });
-    if(this.attr('relatedField') && this.attr('relatedValue')){
+    if (this.attr('relatedField') && this.attr('relatedValue')) {
       this.attr('queryFilters').push({
         name: this.attr('relatedField'),
         op: '==',
@@ -205,18 +208,6 @@ export let viewModel = CanMap.extend({
       this.attr('selectedObjects').replace([]);
     }
   },
-  setSort: function(scope, dom, event, fieldName) {
-    var sort = this.attr('parameters.sort');
-    if (sort && sort.indexOf(fieldName) !== -1) {
-      if (sort.indexOf('-') > 0) {
-        this.attr('parameters.sort', fieldName);
-      } else {
-        this.attr('parameters.sort', '-' + fieldName);
-      }
-    } else {
-      this.attr('parameters.sort', fieldName);
-    }
-  },
   setFilterParameter: function(filters) {
     var params = this.attr('parameters');
     //reset the page filter
@@ -229,6 +220,14 @@ export let viewModel = CanMap.extend({
       params.removeAttr('filter[objects]');
     }
   },
+  setSortParameter: function(sort){
+    var params = this.attr('parameters');
+    if(!sort.attr('fieldName')){
+      params.removeAttr('sort');
+      return sort;
+    }
+    this.attr('parameters.sort', sort.type === 'asc' ? sort.fieldName : '-' + sort.fieldName);
+  },
   toggleFilter: function(val) {
     if (typeof val !== 'undefined') {
       this.attr('filterVisible', val);
@@ -239,7 +238,7 @@ export let viewModel = CanMap.extend({
   isListTable() {
     return this.attr('view.listType') !== 'property-table';
   },
-  getRelatedValue(foreignKey, focusObject){
+  getRelatedValue(foreignKey, focusObject) {
     return focusObject.attr(foreignKey);
   }
 });
@@ -253,6 +252,10 @@ Component.extend({
     //bind to the change event of the entire list
     '{viewModel.queryFilters} change': function(filters) {
       this.viewModel.setFilterParameter(filters);
+    },
+    //bind to the change event of the entire map
+    '{viewModel.sort} change': function(sort) {
+      this.viewModel.setSortParameter(sort);
     }
   }
 });
