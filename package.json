@@ -7,7 +7,7 @@
     "test": "components/**/*.js"
   },
   "scripts": {
-    "test": "testee test/index.html --reporter Spec",
+    "test": "testee test/index.html --reporter Spec --browsers firefox",
     "build": "steal-tools",
     "watch": "steal-tools --watch",
     "docs": "documentjs --watch -d",
