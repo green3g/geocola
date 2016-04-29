@@ -1,5 +1,4 @@
 /*jshint esnext:true */
-import template from './crud.stache!';
 import can from 'can/util/';
 import CanMap from 'can/map/';
 import List from 'can/List/';
@@ -11,6 +10,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css!';
 import '../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css!';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 import './crud.css!';
+import template from './crud.stache!';
 import 'components/crud-manager/';
 
 
