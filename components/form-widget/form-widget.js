@@ -5,7 +5,7 @@ import Component from 'can/component/';
 
 //provides can.extend
 import can from 'can/util/';
-import 'can/util/string/';
+import {makeSentenceCase} from 'util/string';
 
 import template from './template.stache!';
 
@@ -204,20 +204,7 @@ export let ViewModel = CanMap.extend({
   cancelForm() {
     this.dispatch('cancel');
   },
-  /**
-   * Formats the field by replacing underscores with spaces and capitalizing the first letter
-   * @signature
-   * @param  {String} fieldName The name of the field
-   * @return {String} The formatted field string. Example: `my_field_name` will become `My field name`.
-   */
-  formatField(fieldName) {
-    fieldName = String(fieldName);
-    return can.capitalize(can.trim(
-      fieldName.split('_')
-      .join(' ')
-      .toLowerCase()
-    ));
-  }
+  formatField: makeSentenceCase
 });
 
 Component.extend({
