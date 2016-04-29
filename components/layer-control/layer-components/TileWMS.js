@@ -17,7 +17,7 @@ var ViewModel = baseViewModel.extend({
       get: function() {
         var separator;
         if (this.attr(''))
-          return
+          return;
       }
     }
   },
