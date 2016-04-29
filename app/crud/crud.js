@@ -94,5 +94,12 @@ export let AppViewModel = can.Map.extend({
       route.attr(name, '');
     }
     route.attr(name, value);
+  },
+  getViewUrl(view){
+    return route.url({
+      page: 'all',
+      view: view.attr('id'),
+      objectId: 0
+    });
   }
 });
