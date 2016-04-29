@@ -1,9 +1,9 @@
+import can from 'can/util/';
 import CanMap from 'can/map/';
 import 'can/map/define/';
 import List from 'can/list/';
 import Component from 'can/component/';
 import Route from 'can/route/';
-import can from 'can/util/';
 //import './widget.css!';
 import template from './template.stache!';
 import {

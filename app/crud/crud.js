@@ -1,13 +1,17 @@
 /*jshint esnext:true */
-import template from './crud.stache!';
-import can from 'can';
+import can from 'can/util/';
+import CanMap from 'can/map/';
+import List from 'can/List/';
+import route from 'can/route/';
+import 'can/view/stache/';
+import 'can/map/define/';
 import 'bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css!';
 import '../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css!';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 import './crud.css!';
+import template from './crud.stache!';
 import 'components/crud-manager/';
-import 'components/tab-container/';
 
 
 export let AppViewModel = can.Map.extend({
@@ -36,23 +40,23 @@ export let AppViewModel = can.Map.extend({
   },
   startup: function(domNode) {
     this.initRoute();
-    this.activateViewById(can.route.attr('view') || this.attr('views')[0].attr('id'));
+    this.activateViewById(route.attr('view') || this.attr('views')[0].attr('id'));
     can.$(domNode).html(can.view(template, this));
   },
   initRoute: function() {
-    can.route(':view/:page/:objectId/');
-    can.route.ready();
-    this.attr(can.route.attr());
+    route(':view/:page/:objectId/');
+    route.ready();
+    this.attr(route.attr());
 
     //bind to properties that should update the route
     this.bind('objectId', this.updateRoute.bind(this, 'objectId'));
     this.bind('page', this.updateRoute.bind(this, 'page'));
-    can.route.bind('change', this.routeChanged.bind(this));
+    route.bind('change', this.routeChanged.bind(this));
   },
   routeChanged: function() {
-    this.attr(can.route.attr());
-    if (this.attr('activeView.id') !== can.route.attr('view')) {
-      this.activateViewById(can.route.attr('view'));
+    this.attr(route.attr());
+    if (this.attr('activeView.id') !== route.attr('view')) {
+      this.activateViewById(route.attr('view'));
     }
   },
   toggleMenu: function(e) {
@@ -69,8 +73,8 @@ export let AppViewModel = can.Map.extend({
   },
   activateView: function(view) {
     this.attr('activeView', view);
-    if (can.route.attr('view') !== view.attr('id')) {
-      can.route.attr('view', view.attr('id'));
+    if (route.attr('view') !== view.attr('id')) {
+      route.attr('view', view.attr('id'));
     }
   },
   navigateToView: function(view) {
@@ -83,22 +87,19 @@ export let AppViewModel = can.Map.extend({
     return false;
   },
   routeChange: function() {
-    this.activateViewById(can.route.attr('view'));
+    this.activateViewById(route.attr('view'));
   },
   updateRoute: function(name, action, value, oldValue) {
     if (!value) {
-      can.route.attr(name, '');
+      route.attr(name, '');
     }
-    can.route.attr(name, value);
+    route.attr(name, value);
   },
-  getRelatedFilter(relation) {
-    console.log(this.attr('focusObject'))
-    var id = this.attr('focusObject.' + relation.foreignKey);
-    console.log(id, relation);
-    return [{
-      name: relation.referenceKey,
-      op: '==',
-      val: id
-    }];
+  getViewUrl(view){
+    return route.url({
+      page: 'all',
+      view: view.attr('id'),
+      objectId: 0
+    });
   }
 });

@@ -86,9 +86,10 @@ export const ViewModel = viewModel.extend({
         var props = obj.attr();
         var attributes = {};
         var fieldProperties = this.attr('fieldProperties');
+        var prop;
         if (fieldProperties) {
           //build a new attribute list
-          for (var prop in props) {
+          for (prop in props) {
             if (props.hasOwnProperty(prop) &&
               //if we don't have field properties for this layer or we do
               //and the exclude property is false or undefined, show this field
@@ -114,7 +115,7 @@ export const ViewModel = viewModel.extend({
           }
         } else {
           //if we don't have a fieldProperties, build a generic list
-          for (var prop in props) {
+          for (prop in props) {
             if (props.hasOwnProperty(prop)) {
               attributes[prop] = {
                 field: prop,

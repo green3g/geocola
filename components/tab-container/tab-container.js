@@ -1,10 +1,9 @@
-
-import CanMap from 'can/map/';
 import can from 'can/util/';
-import Component from 'can/component/';
-import 'components/panel-container/';
-import template from './tabs.stache!';
 import List from 'can/list/';
+import CanMap from 'can/map/';
+import 'can/map/define/';
+import Component from 'can/component/';
+import template from './tabs.stache!';
 /**
  * @constructor components/tab-container.ViewModel ViewModel
  * @parent components/tab-container
@@ -73,7 +72,7 @@ export const ViewModel = CanMap.extend({
       this.attr('active', panel.show());
     }
     can.batch.stop();
-    return this;
+    return false;
   }
 });
 

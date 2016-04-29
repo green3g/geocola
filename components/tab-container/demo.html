@@ -1,13 +1,18 @@
 <div id="demo-app"></div>
 
 <script type="text/stache" id="demo">
-  <h1>Tab Container Table Demo</h1>
+  <h1>Tab Container Demo</h1>
   <tab-container>
-    <panel-container title="Panel 1">
-      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+    {{#each tabs}}
+      <panel-container title="{{title}}">
+        <p>{{body}}</p>
+      </panel-container>
+    {{/each}}
+    <panel-container title="Static Tab">
+      <p>In a tabs content.</p>
     </panel-container>
-    <panel-container title="Another Panel">
-      <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
+    <panel-container title="Another Static Tab">
+      <p>Im a tabs content.</p>
     </panel-container>
   </tab-container>
 </script>
@@ -18,11 +23,18 @@
   import 'components/panel-container/';
   import 'components/tab-container/';
 
-  import can from 'can/view/';
-  import 'can/util/';
-  import 'can/map/define/';
+  import can from 'can/util/';
+  import stache from 'can/view/stache/';
 
-  var frag = can.view('demo', {}, {});
+  var frag = can.view('demo', {
+    tabs: [{
+      title: 'Dynamic Example',
+      body: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+    }, {
+      title: 'Dynamic Example 2',
+      body: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+    }]
+  });
 
   can.$('#demo-app').append(frag);
 </script>

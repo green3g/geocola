@@ -4,20 +4,24 @@
   "description": "A configureable openlayers mapping and data management app",
   "repository": "https://github.com/roemhildtg/geocola",
   "watch": {
-    "test": "components/**/*.js"
+    "lint": "**/*.js",
+    "test": "**/*.js"
   },
   "scripts": {
     "test": "testee test/index.html --reporter Spec --browsers firefox",
     "build": "steal-tools",
-    "watch": "steal-tools --watch",
+    "watch": "npm-watch",
     "docs": "documentjs --watch -d",
     "export": "node build.js",
-    "watch": "npm-watch"
+    "lint": "jshint .",
+
+    "pretest": "npm run lint"
   },
   "author": "roemhildtg",
   "license": "MIT",
   "devDependencies": {
     "documentjs": "^0.4.2",
+    "jshint": "latest",
     "steal-qunit": "^0.1.1",
     "steal-tools": "^0.15.0",
     "testee": "^0.2.5"

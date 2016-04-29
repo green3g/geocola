@@ -9,33 +9,22 @@
       </a>
     </div>
 
-      <div class="list-group">
-        {{#each views}}
-          <a ($click)="navigateToView(.)" class="list-group-item {{#is activeView .}}active{{/is}}" title="{{title}}" href="">
+    <div class="list-group">
+      {{#each views}}
+        <a class="list-group-item {{#is activeView .}}active{{/is}}" title="{{title}}" href="{{getViewUrl(.)}}">
             {{#if iconClass}}<i class="{{iconClass}}"></i>{{/if}}
             <span class="hidden-toggled">{{title}}</span></a>
-        {{/each}}
-      </div>
-
+      {{/each}}
+    </div>
   </div>
   <!-- /#sidebar-wrapper -->
 
   <!-- Page Content -->
   <div id="page-content-wrapper">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12">
-          {{#activeView}}
-            <h1>{{title}}</h1>
-            <crud-manager {(page)}="page" {(view-id)}="objectId" {view}="." {parameters}="parameters" {query-filters}="queryFilters"></crud-manager>
-          {{/activeView}}
-
-          {{#is page 'details'}}
-
-          {{/is}}
-        </div>
-      </div>
-    </div>
+    {{#activeView}}
+      <h1>{{title}}</h1>
+      <crud-manager {(page)}="page" {(view-id)}="objectId" {view}="." {parameters}="parameters" {query-filters}="queryFilters" />
+    {{/activeView}}
   </div>
   <!-- /#page-content-wrapper -->
 
