@@ -5,6 +5,7 @@ import viewModel from '../widget-model';
 import List from 'can/list/';
 import CanMap from 'can/map/';
 import Component from 'can/component/';
+import {makeSentenceCase} from 'util/string';
  /**
   * @constructor components/property-table.ViewModel ViewModel
   * @parent components/property-table
@@ -144,10 +145,7 @@ export const ViewModel = viewModel.extend({
   renderField: function(fieldName) {
     return !this.attr('fields') ? fieldName : this.attr('fields').indexOf(fieldName) > -1;
   },
-  formatField: function(fieldName) {
-    fieldName = fieldName.replace(/_/g, " ");
-    return [fieldName.substring(0, 1).toUpperCase(), fieldName.substring(1, fieldName.length)].join('');
-  },
+  formatField: makeSentenceCase,
   formatValue: function(value) {
     var f = this.attr('formatters');
     if (f && f[fieldName]) {

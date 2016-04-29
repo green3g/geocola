@@ -7,6 +7,7 @@ import Component from 'can/component/';
 import CanMap from 'can/map/';
 import 'can/map/define/';
 import can from 'can/util/';
+import {makeSentenceCase} from 'util/string';
 
  /**
   * @constructor components/list-table.ViewModel ViewModel
@@ -163,15 +164,9 @@ export const ViewModel = viewModel.extend({
     return this.attr('_selectedObjects').indexOf(obj) > -1;
   },
   /**
-   * Formats the field into a pretty readable name by removing underscores and capitalizing the first letter
-   * @signature
-   * @param  {String} fieldName The field name to format
-   * @return {String}           The pretty title
+   * formats field using utility helper
    */
-  formatField: function(fieldName) {
-    fieldName = fieldName.replace(/_/g, ' ');
-    return [fieldName.substring(0, 1).toUpperCase(), fieldName.substring(1, fieldName.length)].join('');
-  },
+  formatField: makeSentenceCase,
   /**
    * Formats the field value using the `formatters` object property if provided
    * @signature
