@@ -17,10 +17,7 @@ import 'components/crud-manager/';
 export let AppViewModel = can.Map.extend({
   define: {
     views: {
-      Type: can.List
-    },
-    parameters: {
-      Value: can.Map
+      Type: List
     },
     page: {
       type: 'string',
