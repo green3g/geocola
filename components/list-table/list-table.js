@@ -1,4 +1,3 @@
-
 import template from './list-table.stache!';
 import './list-table.less!';
 import viewModel from '../widget-model';
@@ -7,15 +6,17 @@ import Component from 'can/component/';
 import CanMap from 'can/map/';
 import 'can/map/define/';
 import can from 'can/util/';
-import {makeSentenceCase} from 'util/string';
+import {
+  makeSentenceCase
+} from 'util/string';
 
- /**
-  * @constructor components/list-table.ViewModel ViewModel
-  * @parent components/list-table
-  * @group components/list-table.ViewModel.props Properties
-  *
-  * @description A `<list-table />` component's ViewModel
-  */
+/**
+ * @constructor components/list-table.ViewModel ViewModel
+ * @parent components/list-table
+ * @group components/list-table.ViewModel.props Properties
+ *
+ * @description A `<list-table />` component's ViewModel
+ */
 export const ViewModel = viewModel.extend({
   /**
    * @prototype
@@ -85,23 +86,23 @@ export const ViewModel = viewModel.extend({
      */
     fields: {
       Type: List,
-      get: function(val){
-        if(val && val.length){
+      get: function(val) {
+        if (val && val.length) {
           return val;
         }
-        if(!this.attr('objects').length){
+        if (!this.attr('objects').length) {
           return [];
         }
         return CanMap.keys(this.attr('objects')[0]);
       }
     },
     /**
-      * The current sort field
-      * @parent components/list-table.ViewModel.props
-      * @property {can.List} components/list-table.ViewModel.props.currentSort
+     * The current sort field
+     * @parent components/list-table.ViewModel.props
+     * @property {can.List} components/list-table.ViewModel.props.currentSort
      */
     currentSort: {
-      value: function(){
+      value: function() {
         return new CanMap({
           fieldName: null,
           type: 'asc'
@@ -122,11 +123,13 @@ export const ViewModel = viewModel.extend({
    * Helps the template the currentSort value
    * @param  {String} field the field to set the sort on
    */
-  setSort: function(field){
+  setSort: function(field) {
     can.batch.start();
-    this.attr('currentSort.type', this.attr('currentSort.type') === 'asc' ? 'desc': 'asc');
-    if(this.attr('currentSort.fieldName') !== field){
+    if (this.attr('currentSort.fieldName') !== field) {
       this.attr('currentSort.fieldName', field);
+      this.attr('currentSort.type', 'asc');
+    } else {
+      this.attr('currentSort.type', this.attr('currentSort.type') === 'asc' ? 'desc' : 'asc');
     }
     can.batch.stop();
   },

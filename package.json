@@ -14,7 +14,6 @@
     "docs": "documentjs --watch -d",
     "export": "node build.js",
     "lint": "jshint .",
-
     "pretest": "npm run lint"
   },
   "author": "roemhildtg",
@@ -30,6 +29,7 @@
     "bootstrap": "^3.3.6",
     "can": "^2.3.23",
     "can-connect": "^0.5.4",
+    "can-set": "^0.6.0-pre.3",
     "date-selector": "^2.0.0",
     "font-awesome": "^4.5.0",
     "jquery": "^2.2.3",

@@ -143,7 +143,7 @@ export let ViewModel = CanMap.extend({
           objs.attr(field.name, can.extend(
             field.properties ? field.properties.attr() : {}, {
               name: field.name,
-              alias: field.alias || self.formatField(field.name),
+              alias: field.alias || makeSentenceCase(field.name),
               template: field.template || FIELD_TYPES[field.type || 'text'],
               value: self.attr(['formObject', field.name].join('.'))
             }));
@@ -177,6 +177,7 @@ export let ViewModel = CanMap.extend({
   submitForm() {
     let formObject = this.attr('formObject');
     this.dispatch('submit', [formObject]);
+    return false;
   },
   /**
    * Sets the formObject value when a field changes. This will allow for future
@@ -203,8 +204,7 @@ export let ViewModel = CanMap.extend({
    */
   cancelForm() {
     this.dispatch('cancel');
-  },
-  formatField: makeSentenceCase
+  }
 });
 
 Component.extend({
