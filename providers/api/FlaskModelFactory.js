@@ -3,6 +3,7 @@ import List from 'can/list/';
 import CanMap from 'can/map/';
 import superMap from 'can-connect/can/super-map/';
 import can from 'can/util/';
+import set from 'can-set';
 
 var uniqueId = 0;
 
@@ -56,9 +57,20 @@ export function FlaskConnectFactory(options) {
   let properties = new PropertiesObject();
   let idProp = options.idProp || 'id';
 
+  //create a flask-restless set algebra
+  let algebra = new set.Algebra(
+    //unique id
+    set.comparators.id(idProp),
+    //pagination
+    set.comparators.rangeInclusive('page[number]'),
+    //sorting
+    set.comparators.sort('sort')
+  );
+
   //create and return a new supermap
   return superMap({
     idProp: idProp,
+    algebra: algebra,
     baseURL: options.url,
     metadata: properties,
     Map: options.map,
