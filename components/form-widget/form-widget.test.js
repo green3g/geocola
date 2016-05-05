@@ -97,20 +97,3 @@ test('cancelForm()', assert => {
   });
   vm.cancelForm();
 });
-
-test('formatField(fieldName)', assert => {
-  let fields = [{
-    field: 'a_b_c',
-    expected: 'A b c'
-  }, {
-    field: '_some_field_Name',
-    expected: 'Some field name'
-  }, {
-    field: '_____test____',
-    expected: 'Test'
-  }];
-
-  fields.forEach(function(f){
-    assert.equal(vm.formatField(f.field), f.expected, 'field should be formatted correctly');
-  });
-});
