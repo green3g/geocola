@@ -67,7 +67,7 @@ export const ViewModel = viewModel.extend({
      */
     _allSelected: {
       type: 'boolean',
-      get: function() {
+      get() {
         return this.attr('_selectedObjects').length === this.attr('objects').length;
       }
     },
@@ -116,18 +116,20 @@ export const ViewModel = viewModel.extend({
    * @param  {String} eventName The name of the event to dispatch
    * @param  {can.Map} object  The row data
    */
-  buttonClick: function(eventName, object) {
+  buttonClick(eventName, object) {
     this.dispatch(eventName, [object]);
   },
   /**
    * Helps the template the currentSort value
    * @param  {String} field the field to set the sort on
    */
-  setSort: function(field) {
+  setSort(field) {
     can.batch.start();
     if (this.attr('currentSort.fieldName') !== field) {
-      this.attr('currentSort.fieldName', field);
-      this.attr('currentSort.type', 'asc');
+      this.attr('currentSort').attr({
+        fieldName: field,
+        type: 'asc'
+      });
     } else {
       this.attr('currentSort.type', this.attr('currentSort.type') === 'asc' ? 'desc' : 'asc');
     }
@@ -138,7 +140,7 @@ export const ViewModel = viewModel.extend({
    * @signature
    * @param  {can.Map} obj The row to toggle
    */
-  toggleSelected: function(obj) {
+  toggleSelected(obj) {
     var index = this.attr('_selectedObjects').indexOf(obj);
     if (index > -1) {
       this.attr('_selectedObjects').splice(index, 1);
@@ -150,7 +152,7 @@ export const ViewModel = viewModel.extend({
    * Selects or unselects all of the objects in the table
    * @signature
    */
-  toggleSelectAll: function() {
+  toggleSelectAll() {
     if (this.attr('_selectedObjects').length < this.attr('objects').length) {
       this.attr('_selectedObjects').replace(this.attr('objects'));
     } else {
@@ -163,11 +165,12 @@ export const ViewModel = viewModel.extend({
    * @param  {can.Map | Object} obj The object to check if is selected
    * @return {Boolean}     Whether or not it is selected
    */
-  isSelected: function(obj) {
+  isSelected(obj) {
     return this.attr('_selectedObjects').indexOf(obj) > -1;
   },
   /**
    * formats field using utility helper
+   * TODO: Replace with can.capitalize
    */
   formatField: makeSentenceCase,
   /**
@@ -176,11 +179,11 @@ export const ViewModel = viewModel.extend({
    * @param  {String} value The value to format
    * @return {String}       The formatted value if a formatter exists
    */
-  formatValue: function(obj, field) {
+  formatValue(obj, field) {
     var value = obj.attr(field);
     var f = this.attr('formatters');
-    if (f && f[fieldName]) {
-      return f[fieldName]();
+    if (f && f[field]) {
+      return f[field]();
     }
     return value;
   }
