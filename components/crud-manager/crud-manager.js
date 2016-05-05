@@ -36,9 +36,6 @@ export let viewModel = CanMap.extend({
   define: {
     view: {},
     parameters: {
-      set: function(val) {
-        return val;
-      },
       Value: CanMap,
       Type: CanMap
     },
@@ -98,7 +95,7 @@ export let viewModel = CanMap.extend({
       }
     },
     queryPageNumber: {
-      get: function(){
+      get: function() {
         return this.attr('queryPage') + 1;
       }
     },
@@ -225,9 +222,9 @@ export let viewModel = CanMap.extend({
       params.removeAttr('filter[objects]');
     }
   },
-  setSortParameter: function(sort){
+  setSortParameter: function(sort) {
     var params = this.attr('parameters');
-    if(!sort.attr('fieldName')){
+    if (!sort.attr('fieldName')) {
       params.removeAttr('sort');
       return sort;
     }

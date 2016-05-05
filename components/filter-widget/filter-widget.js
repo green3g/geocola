@@ -1,9 +1,11 @@
-
 import List from 'can/list/';
 import CanMap from 'can/map/';
 import can from 'can/util/';
 import 'can/map/define/';
 import Component from 'can/component/';
+import {
+  makeSentenceCase
+} from 'util/string';
 //import './widget.css!';
 import template from './template.stache!';
 import 'components/list-table/';
@@ -11,14 +13,68 @@ import 'components/form-widget/';
 import 'components/form-widget/field-components/text-field/';
 import 'components/form-widget/field-components/select-field/';
 
+
+export let FilterOptions = [{
+  label: 'Equal to',
+  operator: 'equals',
+  value: 'equals',
+  types: ['string', 'number', 'boolean', 'date']
+}, {
+  label: 'Not equal to',
+  operator: 'not_equal_to',
+  value: 'not_equal_to',
+  types: ['string', 'number', 'boolean', 'date']
+}, {
+  label: 'Contains',
+  operator: 'like',
+  value: 'like',
+  types: ['string']
+}, {
+  label: 'Does not contain',
+  operator: 'not_like',
+  value: 'not_like',
+  types: ['string']
+}, {
+  label: 'Greater Than',
+  operator: '>',
+  value: 'greater_than',
+  types: ['number']
+}, {
+  label: 'Less Than',
+  operator: '<',
+  value: 'less_than',
+  types: ['number']
+}, {
+  label: 'Before',
+  operator: '<',
+  value: 'before',
+  types: ['date']
+}, {
+  label: 'After',
+  operator: '>',
+  value: 'after',
+  types: ['date']
+}];
+
 export let Filter = can.Map.extend({
   define: {
     val: {
       set: function(val) {
-        var operator = this.attr('op');
-        switch (operator) {
+        switch (this.attr('op')) {
           case 'like':
-            return '%' + val + '%';
+            if (val.indexOf('%') === -1) {
+              val = '%' + val + '%';
+            }
+            return val;
+          case '>':
+          case '<':
+            try {
+              return parseFloat(val);
+            } catch (e) {
+              console.warn(e);
+              return val;
+            }
+            break;
           default:
             return val;
         }
@@ -29,7 +85,12 @@ export let Filter = can.Map.extend({
     },
     op: {
       value: 'like',
-      type: 'string'
+      type: 'string',
+      set(val) {
+        return FilterOptions.filter(function(o) {
+          return o.value === val;
+        })[0].operator;
+      }
     }
   }
 });
@@ -76,51 +137,92 @@ export let ViewModel = CanMap.extend({
       }]
     },
     /**
+     * An optional object template to derive field options from. If it is provided,
+     * filter-widget will extract the field names and the field types and use that to create
+     * filter options.
+     * @property {can.Map} components/filter-widget.ViewModel.objectTemplate
+     * @parent components/filter-widget.ViewModel.props
+     */
+    objectTemplate: {
+      value: null
+    },
+    /**
      * The fields to render in the form
      * @property {Array.<formFieldObject>} components/filter-widget.ViewModel.fields
      * @parent components/filter-widget.ViewModel.props
      */
     fields: {
-      get: function() {
-        var nameField = can.extend(this.attr('fieldOptions') ? {
+      get: function(fields) {
+        let nameField = this.attr('fieldOptions') ? {
+          name: 'name',
+          alias: 'Field Name',
           type: 'select',
           properties: {
             options: this.attr('fieldOptions')
           }
-        } : {}, {
+        } : {
           name: 'name',
           alias: 'Field Name',
           placeholder: 'Enter lowercase fieldname'
-        });
-        var fields = new can.List();
-        return [nameField, {
+        };
+        return new List([nameField, {
           name: 'op',
           alias: 'is',
           placeholder: 'Choose a operator',
           type: 'select',
           properties: {
-            options: [{
-              label: 'Equal to',
-              value: '=='
-            }, {
-              label: 'Not equal to',
-              value: '!='
-            }, {
-              label: 'Contains',
-              value: 'in'
-            }, {
-              label: 'Does not contain',
-              value: 'not_in'
-            }, {
-              label: 'Like',
-              value: 'like'
-            }]
+            options: FilterOptions
           }
         }, {
           name: 'val',
           alias: 'Value',
           placeholder: 'Enter the filter value'
-        }];
+        }]);
+      }
+    },
+    /**
+     * A getter for the filter operators that changes based on the selected field and
+     * the selected field's type
+     * @property {Array<geocola.types.SelectOptionProperty>} components/filter-widget.ViewModel.filterOptions
+     * @parent components/filter-widget.ViewModel.props
+     */
+    filterOptions: {
+      get: function() {
+        let selectedField = this.attr('formObject.name');
+        if (!(selectedField && (this.attr('fieldOptions') || this.attr('objectTemplate')))) {
+          return FilterOptions;
+        }
+        let selectedOption = this.attr('fieldOptions').filter(function(f){
+          return f.value === selectedField;
+        })[0];
+        let type = selectedOption.type ||
+          ((this.attr('objectTemplate') &&
+          this.attr('objectTemplate').prototype.define &&
+          this.attr('objectTemplate').prototype.define.hasOwnProperty(selectedField)) ?  this.attr('objectTemplate').prototype.define[selectedField].type : null);
+
+        if (!type) {
+          return FilterOptions;
+        }
+
+        return FilterOptions.filter(function(f) {
+          return f.types.indexOf(type) > -1;
+        });
+      }
+    },
+    /**
+     * An array of field options to display for the field selection dropdown. If not provided, the
+     * @property {Array<geocola.types.SelectOptionProperty>} components/filter-widget.ViewModel.fieldOptions
+     * @parent components/filter-widget.ViewModel.props
+     */
+    fieldOptions: {
+      value: null,
+      get: function(val){
+        return val || (this.attr('objectTemplate') ? CanMap.keys(this.attr('objectTemplate')()).map(function(key) {
+          return {
+            value: key,
+            label: makeSentenceCase(key)
+          };
+        }) : null);
       }
     }
   },
@@ -140,11 +242,11 @@ export let ViewModel = CanMap.extend({
    * @param  {can.Map} scope The stache scope
    * @param  {event} dom   The dom event
    * @param  {event} event The can event
-   * @param  {filterObject} obj   The object to add. This is the only argument used by the function, the rest may be null.
+   * @param  {filterObject} obj The object to add. This is the only argument used by the function, the rest may be null.
    */
   addFilter: function(scope, dom, event, obj) {
     this.attr('filters').push(obj);
-    this.attr('formObject', new Filter());
+    this.attr('formObject', new Filter({}));
   }
 });
 
