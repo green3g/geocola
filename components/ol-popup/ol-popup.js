@@ -1,6 +1,5 @@
-/*jshint esnext: true */
-import can from 'can';
-
+import can from 'can/util/';
+import Component from 'can/component/';
 import template from './olPopup.stache!';
 import './olPopup.css!';
 import widgetModel from 'components/widget-model';
@@ -98,7 +97,7 @@ export const ViewModel = widgetModel.extend({
   }
 });
 
-export default can.Component.extend({
+export default Component.extend({
   tag: 'ol-popup',
   template: template,
   viewModel: ViewModel,

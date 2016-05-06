@@ -1,4 +1,4 @@
-import {FlaskConnectFactory} from 'providers/api/FlaskModelFactory';
+import { FlaskConnectFactory } from 'providers/api/FlaskModelFactory';
 import Map from 'can/map/';
 
 export let Task = {

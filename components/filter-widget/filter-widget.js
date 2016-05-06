@@ -3,9 +3,7 @@ import CanMap from 'can/map/';
 import can from 'can/util/';
 import 'can/map/define/';
 import Component from 'can/component/';
-import {
-  makeSentenceCase
-} from 'util/string';
+import { makeSentenceCase } from 'util/string';
 //import './widget.css!';
 import template from './template.stache!';
 import 'components/list-table/';
@@ -192,13 +190,13 @@ export let ViewModel = CanMap.extend({
         if (!(selectedField && (this.attr('fieldOptions') || this.attr('objectTemplate')))) {
           return FilterOptions;
         }
-        let selectedOption = this.attr('fieldOptions').filter(function(f){
+        let selectedOption = this.attr('fieldOptions').filter(function(f) {
           return f.value === selectedField;
         })[0];
         let type = selectedOption.type ||
           ((this.attr('objectTemplate') &&
-          this.attr('objectTemplate').prototype.define &&
-          this.attr('objectTemplate').prototype.define.hasOwnProperty(selectedField)) ?  this.attr('objectTemplate').prototype.define[selectedField].type : null);
+            this.attr('objectTemplate').prototype.define &&
+            this.attr('objectTemplate').prototype.define.hasOwnProperty(selectedField)) ? this.attr('objectTemplate').prototype.define[selectedField].type : null);
 
         if (!type) {
           return FilterOptions;
@@ -216,7 +214,7 @@ export let ViewModel = CanMap.extend({
      */
     fieldOptions: {
       value: null,
-      get: function(val){
+      get: function(val) {
         return val || (this.attr('objectTemplate') ? CanMap.keys(this.attr('objectTemplate')()).map(function(key) {
           return {
             value: key,

@@ -6,9 +6,7 @@ import Component from 'can/component/';
 import CanMap from 'can/map/';
 import 'can/map/define/';
 import can from 'can/util/';
-import {
-  makeSentenceCase
-} from 'util/string';
+import { makeSentenceCase } from 'util/string';
 
 /**
  * @constructor components/list-table.ViewModel ViewModel

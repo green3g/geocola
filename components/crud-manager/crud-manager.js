@@ -6,9 +6,6 @@ import Component from 'can/component/';
 import Route from 'can/route/';
 //import './widget.css!';
 import template from './template.stache!';
-import {
-  FlaskConnectFactory
-} from 'providers/api/FlaskModelFactory';
 
 import 'components/list-table/';
 import 'components/property-table/';

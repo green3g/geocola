@@ -1,5 +1,8 @@
-/*jshint esnext: true */
-import can from 'can';
+import can from 'can/util/';
+import List from 'can/list/';
+import CanMap from 'can/map/';
+import 'can/map/define/';
+import Component from 'can/compoent/';
 
 import template from './locator.stache!';
 import './locator.css!';
@@ -64,7 +67,7 @@ export const ViewModel = widgetModel.extend({
      * @parent components/locator-widget.ViewModel.props
      */
     suggestions: {
-      Value: can.List
+      Value: List
     },
     /**
      * the current location found by the widget
@@ -72,7 +75,7 @@ export const ViewModel = widgetModel.extend({
      * @parent components/locator-widget.ViewModel.props
      */
     location: {
-      Value: can.Map
+      Value: CanMap
     },
     /**
      * A deferred representing the current _loading state
@@ -251,7 +254,7 @@ export const ViewModel = widgetModel.extend({
   }
 });
 
-export default can.Component.extend({
+export default Component.extend({
   viewModel: ViewModel,
   template: template,
   tag: 'locator-widget',

@@ -1,6 +1,8 @@
-/*jshint esnext: true */
-
-import can from 'can';
+import can from 'can/util/';
+import List from 'can/list/';
+import CanMap from 'can/map/';
+import 'can/map/define/';
+import Component from 'can/component/';
 import ol from 'openlayers';
 import template from './measure.stache!';
 import './measure.css!';
@@ -14,7 +16,7 @@ import overlayManager from './modules/overlayManager';
  *
  * @description A `<measure-widget />` component's ViewModel
  */
-export const ViewModel = can.Map.extend({
+export const ViewModel = CanMap.extend({
   define: {
     /**
      * The selector to the `ol-map` component
@@ -101,7 +103,6 @@ export const ViewModel = can.Map.extend({
       });
       this.attr('mapWidget').setCurrentClickHandler(this.attr('clickHandler'));
       this.attr('overlayManager').activate(measureTool);
-      //can.$('.unitsDropdown').trigger('change');
       this.attr('unitsDropdown', measureTool.attr('units')[0].attr('value'));
       this.attr('overlayManager').changeUnits(this.attr('unitsDropdown'));
     } else {
@@ -150,7 +151,7 @@ export const ViewModel = can.Map.extend({
   }
 });
 
-export default can.Component.extend({
+export default Component.extend({
   tag: 'measure-widget',
   template: template,
   viewModel: ViewModel,

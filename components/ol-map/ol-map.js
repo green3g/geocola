@@ -1,6 +1,7 @@
-
-
-import can from 'can';
+import can from 'can/util/';
+import CanMap from 'can/map/';
+import 'can/map/define/';
+import Component from 'can/component/';
 import ol from 'openlayers';
 import widgetModel from 'components/widget-model';
 import template from './olMap.stache!';
@@ -78,7 +79,7 @@ export const ViewModel = widgetModel.extend({
      * @parent components/ol-map.ViewModel.props
      */
     clickHandlers: {
-      Value: can.Map
+      Value: CanMap
     },
     /**
      * @description
@@ -96,7 +97,7 @@ export const ViewModel = widgetModel.extend({
      * @parent components/ol-map.ViewModel.props
      */
     mapOptions: {
-      Value: can.Map
+      Value: CanMap
     },
     /**
      * The ol.Map
@@ -292,7 +293,7 @@ export const ViewModel = widgetModel.extend({
   }
 });
 
-export default can.Component.extend({
+export default Component.extend({
   tag: 'ol-map',
   viewModel: ViewModel,
   template: template,

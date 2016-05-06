@@ -1,18 +1,17 @@
-
 import template from './property-table.stache!';
 // import './property-table.css!';
 import viewModel from '../widget-model';
 import List from 'can/list/';
 import CanMap from 'can/map/';
 import Component from 'can/component/';
-import {makeSentenceCase} from 'util/string';
- /**
-  * @constructor components/property-table.ViewModel ViewModel
-  * @parent components/property-table
-  * @group components/property-table.ViewModel.props Properties
-  *
-  * @description A `<property-table />` component's ViewModel
-  */
+import { makeSentenceCase } from 'util/string';
+/**
+ * @constructor components/property-table.ViewModel ViewModel
+ * @parent components/property-table
+ * @group components/property-table.ViewModel.props Properties
+ *
+ * @description A `<property-table />` component's ViewModel
+ */
 export const ViewModel = viewModel.extend({
   define: {
     /**
@@ -94,7 +93,7 @@ export const ViewModel = viewModel.extend({
             if (props.hasOwnProperty(prop) &&
               //if we don't have field properties for this layer or we do
               //and the exclude property is false or undefined, show this field
-               !fieldProperties.attr([prop, 'exclude'].join('.'))) {
+              !fieldProperties.attr([prop, 'exclude'].join('.'))) {
 
               //add a new property
               attributes[prop] = {
