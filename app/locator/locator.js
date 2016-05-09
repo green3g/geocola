@@ -1,15 +1,16 @@
-/*jshint esnext: true */
-import can from 'can';
+import can from 'can/util/';
+import Route from 'can/route/';
+import CanMap from 'can/map/';
 import ol from 'openlayers';
 import 'components/locator-widget/';
 import 'components/modal-container/';
 import 'components/ol-map/';
 import 'components/tab-container/';
 import 'bootstrap';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css!';
-import '../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css!';
-import '../../node_modules/font-awesome/css/font-awesome.min.css!';
-import 'node_modules/openlayers/dist/ol.css!';
+import 'bootstrap/dist/css/bootstrap.min.css!';
+import 'bootstrap/dist/css/bootstrap-theme.min.css!';
+import 'font-awesome/css/font-awesome.min.css!';
+import 'openlayers/dist/ol.css!';
 import './locator_app.css!';
 
 import template from './locator_app.stache!';
@@ -22,10 +23,10 @@ var locationProvider = new esriProvider({
   ]
 });
 
-export let AppViewModel = can.Map.extend({
+export let AppViewModel = CanMap.extend({
   define: {
     address: {
-      Value: can.Map
+      Value: CanMap
     },
     apikey: {
       value: 'AIzaSyC_WpfGhW9h6HikAqOE9d8148hNG55gjTs'
@@ -57,10 +58,10 @@ export let AppViewModel = can.Map.extend({
     can.viewModel('#locator').on('suggestions-found ', this.handleSuggestions.bind(this));
 
     //set up routing
-    can.route(':location/:x/:y');
-    can.route.ready();
-    can.route.bind('change', this.routeChange.bind(this));
-    this.attr('address', can.route.attr());
+    Route(':location/:x/:y');
+    Route.ready();
+    Route.bind('change', this.routeChange.bind(this));
+    this.attr('address', Route.attr());
 
     //fix an issue with map stretching when steal builds the app
     setTimeout(function() {
@@ -72,12 +73,12 @@ export let AppViewModel = can.Map.extend({
     }, 500);
   },
   handleLocation: function(event, results) {
-    can.route.attr(results, true);
+    Route.attr(results, true);
     this.attr('address', results);
     can.$('title').text(this.attr('address.location'));
   },
   routeChange: function() {
-    this.attr('address', can.route.attr());
+    this.attr('address', Route.attr());
     can.$('title').text(this.attr('address.location'));
   },
   handleSuggestions: function() {
