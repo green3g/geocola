@@ -23,7 +23,7 @@
     "jshint": "latest",
     "npm-watch": "^0.1.4",
     "steal-qunit": "^0.1.1",
-    "steal-tools": "^0.15.0",
+    "steal-tools": "^0.16.2",
     "testee": "^0.2.5"
   },
   "dependencies": {
@@ -36,7 +36,7 @@
     "jquery": "^2.2.3",
     "openlayers": "^3.15.1",
     "proj4": "^2.3.14",
-    "steal": "^0.15.3",
+    "steal": "^0.16.4",
     "underscore": "^1.8.3"
   },
   "main": "loader",
