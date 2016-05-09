@@ -19,7 +19,7 @@ export const ViewModel = CanMap.extend({
     /**
      * the list of panel objects. TThis propert is updated automatically when a panel
      * is inserted inside of a tab-container.
-     * @property {can.List} components/tab-container.ViewModel.props.panels
+     * @property {can.List<components/panel-container.ViewModel>} components/tab-container.ViewModel.props.panels
      * @parent components/tab-container.ViewModel.props
      */
     panels: {
@@ -38,11 +38,13 @@ export const ViewModel = CanMap.extend({
     if (panels.indexOf(panel) !== -1) {
       return this;
     }
+    can.batch.start();
     panels.push(panel);
     panel.hide();
     if (panels.attr('length') === 1) {
       this.activate(panel);
     }
+    can.batch.stop();
     return this;
   },
   /**
@@ -53,10 +55,12 @@ export const ViewModel = CanMap.extend({
   removePanel: function(panel) {
     var panels = this.attr('panels');
     var index = panels.indexOf(panel);
+    can.batch.start();
     panels.splice(index, 1);
     if (this.attr('active') === panel) {
       let dummy = panels.attr('length') ? this.activate(panels[0]) : this.attr('active', null);
     }
+    can.batch.stop();
     return this;
   },
   /**
@@ -65,13 +69,11 @@ export const ViewModel = CanMap.extend({
    * @return {can.Map} Returns this object
    */
   activate: function(panel) {
-    can.batch.start();
     var active = this.attr('active');
     if (active !== panel) {
       let dummy = active && active.hide();
       this.attr('active', panel.show());
     }
-    can.batch.stop();
     return false;
   }
 });
