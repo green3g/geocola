@@ -166,16 +166,15 @@ export const ViewModel = viewModel.extend({
   isSelected(obj) {
     return this.attr('_selectedObjects').indexOf(obj) > -1;
   },
-  /**
+  /*
    * formats field using utility helper
-   * TODO: Replace with can.capitalize
    */
   formatField: makeSentenceCase,
   /**
    * Formats the field value using the `formatters` object property if provided
    * @signature
    * @param  {String} value The value to format
-   * @return {String}       The formatted value if a formatter exists
+   * @return {String} The formatted value if a formatter exists
    */
   formatValue(obj, field) {
     var value = obj.attr(field);

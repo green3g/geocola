@@ -1,5 +1,6 @@
-/*jshint esnext:true */
-import can from 'can';
+import can from 'can/util/';
+import CanMap from 'can/map/';
+import 'can/map/define/';
 //import components and css to include
 import './components';
 //import the app template
@@ -10,22 +11,22 @@ import template from './viewer.stache!';
  * @parent start.configure.viewer
  * @group app/viewer.ViewModel.props Properties
  *
- * @description A `<form-widget />` component's ViewModel
+ * @description The viewer app App View Model
  */
-export let AppViewModel = can.Map.extend({
+export let AppViewModel = CanMap.extend({
   /**
    * @prototype
    */
   define: {
     /**
-     * The openlayers map options
-     * @property {Object} app/viewer.ViewModel.props.mapOptions
+     * The openlayers map options passed to the `ol-map` component
+     * @property {geocola.types.MapOptions} app/viewer.ViewModel.props.mapOptions
      * @parent app/viewer.ViewModel.props
      */
     mapOptions: {},
     /**
-     * The layers and their configurations
-     * @property {Object} app/viewer.ViewModel.props.layerProperties
+     * The layers and their configurations which are used by several layer components
+     * @property {geocola.types.LayerPropertiesObject} app/viewer.ViewModel.props.layerProperties
      * @parent app/viewer.ViewModel.props
      */
     layerProperties: {},
@@ -33,18 +34,25 @@ export let AppViewModel = can.Map.extend({
      * The location provider for geocoding location names
      * @property {Object} app/viewer.ViewModel.props.locationProvider
      * @parent app/viewer.ViewModel.props
+     * @link providers__location__LocationProvider.html Location Providers
      */
     locationProvider: {},
     /**
      * The print service provider for generating output file maps
      * @property {Object} app/viewer.ViewModel.props.printProvider
      * @parent app/viewer.ViewModel.props
+     * @link providers__print__printProvider.html Print Providers
      */
     printProvider: {}
   },
   onDrag: function(){
     console.log(arguments);
   },
+  /**
+   * Starts the app
+   * @signature
+   * @param  {String} domNode The dom node to render the app
+   */
   startup: function(domNode) {
     //render the template with the config
     can.$(domNode).html(can.view(template, this));

@@ -36,3 +36,4 @@ env/
 
 node_modules/
 docs/
+./dist/
