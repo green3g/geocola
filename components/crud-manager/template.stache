@@ -135,11 +135,13 @@
         <hr />
         <h2>Related Data</h2>
         <!--TODO find out why tab-container isn't working here -->
+        <tab-container>
           {{#each view.relatedViews}}
-            <panel-container title="{{./view.title}}" heading="{{./view.title}}" collapsible="true">
+            <panel-container title="{{./view.title}}" heading="{{./view.title}}" collapsible="false">
               <crud-manager {view}="../view" {parameters}="../view.parameters" related-field="{{../referenceKey}}" related-value="{{getRelatedValue(../foreignKey, ../../focusObject.value)}}" />
             </panel-container>
           {{/each}}
+        </tab-container>
       {{/if}}
 
     {{/if}}

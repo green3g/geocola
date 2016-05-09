@@ -1,14 +1,14 @@
 /*jshint esnext:true */
 import can from 'can/util/';
 import CanMap from 'can/map/';
-import List from 'can/List/';
+import List from 'can/list/';
 import route from 'can/route/';
 import 'can/view/stache/';
 import 'can/map/define/';
 import 'bootstrap';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css!';
-import '../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css!';
-import '../../node_modules/font-awesome/css/font-awesome.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css!';
+import 'bootstrap/dist/css/bootstrap-theme.min.css!';
+import 'font-awesome/css/font-awesome.min.css';
 import './crud.css!';
 import template from './crud.stache!';
 import 'components/crud-manager/';
