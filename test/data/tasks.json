@@ -1,0 +1,29 @@
+[{
+  "id": 1,
+  "name": "Trash",
+  "description": "Take out the trash"
+},{
+  "id": 2,
+  "name": "Dishes",
+  "description": "Do the dishes"
+},{
+  "id": 3,
+  "name": "Cat",
+  "description": "Clean the litter box and feed the cat"
+},{
+  "id": 4,
+  "name": "Vaccum",
+  "description": "Vaccum the basement"
+},{
+  "id": 6,
+  "name": "Groceries",
+  "description": "Stock up on groceries"
+},{
+  "id": 11,
+  "name": "Programming",
+  "description": "Write some code"
+},{
+  "id": 12,
+  "name": "Clothes",
+  "description": "Wash and dry laundry"
+}]
