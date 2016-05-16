@@ -16,6 +16,7 @@ export const ViewModel = viewModel.extend({
   define: {
     /**
      * A flag to allow editing (Not yet implemented)
+     * TODO: implement editing
      * @property {Boolean} property-table.props.edit
      * @parent property-table.props
      */
@@ -25,6 +26,7 @@ export const ViewModel = viewModel.extend({
     },
     /**
      * A flag to allow deleting (Not yet implemented)
+     * TODO: implement deleting
      * @property {Boolean} property-table.props.delete
      * @parent property-table.props
      */
@@ -39,7 +41,7 @@ export const ViewModel = viewModel.extend({
      */
     objectId: {
       type: 'number',
-      set: function(id) {
+      set(id) {
         this.fetchObject(this.attr('connection'), id);
         return id;
       }
@@ -50,7 +52,7 @@ export const ViewModel = viewModel.extend({
      * @parent property-table.props
      */
     connection: {
-      set: function(con) {
+      set(con) {
         this.fetchObject(con, this.attr('objectId'));
         return con;
       }
@@ -63,6 +65,12 @@ export const ViewModel = viewModel.extend({
     object: {
       Type: CanMap
     },
+    /**
+     * A promise that resolves to the object. Used to determine state of current fetching operations
+     * @property {Promise | `null`}  property-table.props.objectPromise
+     * @parent property-table.props
+     */
+    objectPromise: {},
     /**
      * A configuration object defining exactly how to display the properties fields and values
      * @property {property-table.types.tablePropertiesObject} property-table.props.fieldProperties
@@ -77,7 +85,7 @@ export const ViewModel = viewModel.extend({
      * @property {property-table.types.tableValuesObject} property-table.props.attributes
      */
     attributes: {
-      get: function() {
+      get() {
         var obj = this.attr('object');
         if (!obj) {
           return {};
@@ -119,38 +127,31 @@ export const ViewModel = viewModel.extend({
             if (props.hasOwnProperty(prop)) {
               attributes[prop] = {
                 field: prop,
-                alias: this.formatField(prop),
+                alias: makeSentenceCase(prop),
                 value: props[prop],
                 rawValue: props[prop]
               };
             }
           }
         }
-        return attributes;
+        return new CanMap(attributes);
       }
     }
   },
-  fetchObject: function(con, id) {
+  fetchObject(con, id) {
     if (!con || !id) {
       return;
     }
-    var self = this;
-    return con.get({
+    let self = this;
+    let def = con.get({
       id: id
-    }).then(function(obj) {
+    });
+    def.then(obj => {
       self.attr('object', obj);
     });
-  },
-  renderField: function(fieldName) {
-    return !this.attr('fields') ? fieldName : this.attr('fields').indexOf(fieldName) > -1;
-  },
-  formatField: makeSentenceCase,
-  formatValue: function(value) {
-    var f = this.attr('formatters');
-    if (f && f[fieldName]) {
-      return f[fieldName](value);
-    }
-    return value;
+
+    this.attr('objectPromise', def);
+    return def;
   }
 });
 

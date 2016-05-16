@@ -33,7 +33,7 @@ export const ViewModel = CanMap.extend({
    * @param  {can.Map} panel The panel view model to add
    * @return {can.Map} Returns this object
    */
-  addPanel: function(panel) {
+  addPanel(panel) {
     var panels = this.attr('panels');
     if (panels.indexOf(panel) !== -1) {
       return this;
@@ -52,7 +52,7 @@ export const ViewModel = CanMap.extend({
    * @param  {can.Map} panel The panel view model to remove
    * @return {can.Map} Returns this object
    */
-  removePanel: function(panel) {
+  removePanel(panel) {
     var panels = this.attr('panels');
     var index = panels.indexOf(panel);
     can.batch.start();
@@ -68,7 +68,8 @@ export const ViewModel = CanMap.extend({
    * @param  {can.Map} panel The panel view model to activate
    * @return {can.Map} Returns this object
    */
-  activate: function(panel) {
+  activate(panel) {
+    can.batch.start();
     var active = this.attr('active');
     if (active !== panel) {
       let dummy = active && active.hide();
