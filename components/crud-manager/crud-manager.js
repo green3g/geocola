@@ -121,7 +121,7 @@ export let viewModel = CanMap.extend({
       type: 'number',
       value: 100
     },
-    errors: {
+    messages: {
       Value: List
     },
     filterVisible: {
@@ -155,33 +155,37 @@ export let viewModel = CanMap.extend({
     this.attr('page', 'details');
   },
   saveObject: function(scope, dom, event, obj) {
-    var self = this;
     this.attr('progress', 100);
     this.attr('page', 'loading');
     var deferred = this.attr('view.connection').save(obj);
-    deferred.then(function(result) {
+    deferred.then(result => {
 
       //reset error messages
-      self.attr('errors').replace([]);
+      this.attr('messages').replace([{
+        message: this.attr('view.saveMessage') || this.attr('saveMessage'),
+        level: 'success'
+      }]);
 
       //update the view id
-      self.attr('viewId', result.attr('id'));
+      this.attr('viewId', result.attr('id'));
 
       //set page to the details view by default
-      self.attr('page', 'details');
-    }).fail(function(e) {
+      this.attr('page', 'details');
+
+    }).fail(e => {
       console.warn(e);
-      self.attr('errors').push({
+      this.attr('messages').push({
         message: 'Saving the object failed',
-        error: e.statusText,
+        detail: e.statusText,
         level: 'danger'
       });
-      self.attr('page', 'all');
+      this.attr('page', 'all');
     });
+    return deferred;
   },
   removeError: function(e) {
-    var index = this.attr('errors').indexOf(e);
-    this.attr('errors').splice(index, 1);
+    var index = this.attr('messages').indexOf(e);
+    this.attr('messages').splice(index, 1);
   },
   resetPage: function() {
     this.attr('page', 'all');

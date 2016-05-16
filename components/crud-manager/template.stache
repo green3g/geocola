@@ -1,8 +1,8 @@
 <div class="error-alerts">
-  {{#each errors}}
+  {{#each messages}}
     <div ($click)="removeError(.)" class="alert alert-{{level}}  alert-dismissible" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      {{message}}: {{error}}
+      {{message}}: {{detail}}
     </div>
   {{/each}}
 </div>
