@@ -110,7 +110,7 @@ export const ViewModel = viewModel.extend({
                 field: prop,
 
                 //alias defaults to the formatted property name if not provided
-                alias: fieldProperties.attr([prop, 'alias'].join('.')) || this.formatField(prop),
+                alias: fieldProperties.attr([prop, 'alias'].join('.')) || makeSentenceCase(prop),
 
                 //value gets formatted if there's a formatter function
                 value: typeof fieldProperties.attr([prop, 'formatter'].join('.')) === 'function' ?
