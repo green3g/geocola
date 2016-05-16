@@ -3,7 +3,7 @@ import 'can/map/define/';
 import List from 'can/list/';
 import Stache from 'can/view/stache/';
 import Component from 'can/component/';
-import can from 'can/util/';
+import can from 'can/util/library';
 import template from './layercontrol.stache!';
 import './layercontrol.css!';
 

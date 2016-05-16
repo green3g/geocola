@@ -5,7 +5,7 @@ import List from 'can/list/';
 import Component from 'can/component/';
 import CanMap from 'can/map/';
 import 'can/map/define/';
-import can from 'can/util/';
+import can from 'can/util/library';
 import { makeSentenceCase } from 'util/string';
 
 /**

@@ -1,4 +1,4 @@
-import can from 'can/util/';
+import can from 'can/util/library';
 import Component from 'can/component/';
 import template from './olPopup.stache!';
 import './olPopup.css!';

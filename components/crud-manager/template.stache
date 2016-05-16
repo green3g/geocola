@@ -134,7 +134,6 @@
       {{#if view.relatedViews}}
         <hr />
         <h2>Related Data</h2>
-        <!--TODO find out why tab-container isn't working here -->
         <tab-container>
           {{#each view.relatedViews}}
             <panel-container title="{{./view.title}}" heading="{{./view.title}}" collapsible="false">

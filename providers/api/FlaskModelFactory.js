@@ -2,7 +2,7 @@
 import List from 'can/list/';
 import CanMap from 'can/map/';
 import superMap from 'can-connect/can/super-map/';
-import can from 'can/util/';
+import can from 'can/util/library';
 import set from 'can-set';
 
 var uniqueId = 0;

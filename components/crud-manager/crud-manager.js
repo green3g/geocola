@@ -1,4 +1,4 @@
-import can from 'can/util/';
+import can from 'can/util/library';
 import CanMap from 'can/map/';
 import 'can/map/define/';
 import List from 'can/list/';

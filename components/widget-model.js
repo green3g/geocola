@@ -2,7 +2,7 @@
 import CanMap from 'can/map/';
 import 'can/map/define/';
 import CanEvent from 'can/event/';
-import can from 'can/util/';
+import can from 'can/util/library';
 var count = 1;
 function getNextId() {
   return count++;

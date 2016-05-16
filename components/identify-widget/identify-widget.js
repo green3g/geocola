@@ -2,7 +2,7 @@
 import CanMap from 'can/map/';
 import Component from 'can/component/';
 import List from 'can/list/';
-import can from 'can/util/';
+import can from 'can/util/library';
 import 'can/map/define/';
 import ol from 'openlayers';
 import featureTemplate from './featureTemplate.stache!';

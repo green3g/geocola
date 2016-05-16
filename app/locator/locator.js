@@ -1,4 +1,4 @@
-import can from 'can/util/';
+import can from 'can/util/library';
 import Route from 'can/route/';
 import CanMap from 'can/map/';
 import ol from 'openlayers';

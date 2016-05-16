@@ -1,6 +1,6 @@
 import List from 'can/list/';
 import CanMap from 'can/map/';
-import can from 'can/util/';
+import can from 'can/util/library';
 import 'can/map/define/';
 import Component from 'can/component/';
 import { makeSentenceCase } from 'util/string';

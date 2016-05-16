@@ -4,7 +4,7 @@ import stache from 'can/view/stache/';
 import Component from 'can/component/';
 
 //provides can.extend
-import can from 'can/util/';
+import can from 'can/util/library';
 import { makeSentenceCase } from 'util/string';
 
 import template from './template.stache!';
