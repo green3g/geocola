@@ -1,7 +1,7 @@
 import can from 'can/util/library';
 import Component from 'can/component/';
 import template from './print.stache!';
-import widgetModel from 'components/widget-model';
+import widgetModel from '../widget-model';
 
 /**
  * @constructor components/print-widget.ViewModel ViewModel

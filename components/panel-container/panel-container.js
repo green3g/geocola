@@ -1,4 +1,4 @@
-import widgetModel from 'components/widget-model';
+import widgetModel from '../widget-model';
 import Component from 'can/component/';
 /**
  * @module panel-container

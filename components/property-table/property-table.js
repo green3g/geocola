@@ -4,7 +4,7 @@ import viewModel from '../widget-model';
 import List from 'can/list/';
 import CanMap from 'can/map/';
 import Component from 'can/component/';
-import { makeSentenceCase } from 'util/string';
+import { makeSentenceCase } from '../../util/string';
 /**
  * @constructor components/property-table.ViewModel ViewModel
  * @parent components/property-table

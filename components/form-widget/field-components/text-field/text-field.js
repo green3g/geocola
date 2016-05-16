@@ -1,6 +1,6 @@
 import Component from 'can/component/';
 
-import widgetModel from 'components/widget-model';
+import widgetModel from '../../../widget-model';
 import template from './text-field.stache!';
 /**
  * @constructor components/form-widget/field-components/text-field.ViewModel ViewModel

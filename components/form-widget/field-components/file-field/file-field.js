@@ -3,8 +3,7 @@ import List from 'can/list/';
 import CanMap from 'can/map/';
 import Component from 'can/component/';
 
-import widgetModel from 'components/widget-model';
-
+import widgetModel from '../../../widget-model';
 import template from './file-field.stache!';
 
 /**

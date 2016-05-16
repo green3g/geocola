@@ -11,16 +11,16 @@ import 'bootstrap/dist/js/bootstrap.min';
 
 //import components used by this app
 //TODO: these may be converted into <can-import> tags eventually
-import 'components/measure-widget/measure-widget';
-import 'components/ol-map/ol-map';
-import 'components/panel-container/panel-container';
-import 'components/tab-container/tab-container';
-import 'components/identify-widget/identify-widget';
-import 'components/ol-popup/ol-popup';
-import 'components/locator-widget/locator-widget';
-import 'components/print-widget/print-widget';
-import 'components/layer-control/layer-control';
-import 'components/crud-manager/crud-manager';
-import 'components/layer-control/layer-components/Default';
-import 'components/layer-control/layer-components/Group';
-import 'components/layer-control/layer-components/TileWMS';
+import '../../measure-widget/measure-widget';
+import '../../ol-map/ol-map';
+import '../../panel-container/panel-container';
+import '../../tab-container/tab-container';
+import '../../identify-widget/identify-widget';
+import '../../ol-popup/ol-popup';
+import '../../locator-widget/locator-widget';
+import '../../print-widget/print-widget';
+import '../../layer-control/layer-control';
+import '../../crud-manager/crud-manager';
+import '../../layer-control/layer-components/Default';
+import '../../layer-control/layer-components/Group';
+import '../../layer--control/layer-components/TileWMS';

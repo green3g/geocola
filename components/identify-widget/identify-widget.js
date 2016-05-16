@@ -9,7 +9,7 @@ import featureTemplate from './featureTemplate.stache!';
 import template from './template.stache!';
 import './styles.css!';
 
-import 'components/property-table/';
+import '../property-table/';
 
  /**
   * @constructor components/identify-widget.ViewModel ViewModel

@@ -2,7 +2,7 @@ import can from 'can/util/library';
 import Component from 'can/component/';
 import template from './olPopup.stache!';
 import './olPopup.css!';
-import widgetModel from 'components/widget-model';
+import widgetModel from '../widget-model';
 
 /**
  * @constructor components/ol-popup.ViewModel ViewModel

@@ -3,13 +3,13 @@ import CanMap from 'can/map/';
 import can from 'can/util/library';
 import 'can/map/define/';
 import Component from 'can/component/';
-import { makeSentenceCase } from 'util/string';
+import { makeSentenceCase } from '../../util/string';
 //import './widget.css!';
 import template from './template.stache!';
-import 'components/list-table/';
-import 'components/form-widget/';
-import 'components/form-widget/field-components/text-field/';
-import 'components/form-widget/field-components/select-field/';
+import '../list-table/';
+import '../form-widget/';
+import '../form-widget/field-components/text-field/';
+import '../form-widget/field-components/select-field/';
 
 
 export let FilterOptions = [{

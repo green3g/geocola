@@ -6,7 +6,7 @@ import Component from 'can/component/';
 
 import template from './locator.stache!';
 import './locator.css!';
-import widgetModel from 'components/widget-model';
+import widgetModel from '../widget-model';
 import icon from './icon';
 
 /**

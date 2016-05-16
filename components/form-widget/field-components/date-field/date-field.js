@@ -2,7 +2,7 @@
 import Component from 'can/component/';
 import CanMap from 'can/map/';
 
-import widgetModel from 'components/widget-model';
+import widgetModel from '../../../widget-model';
 import template from './date-field.stache!';
 import 'date-selector/less/datepicker.less!';
 import dateSelector from 'date-selector';

@@ -7,12 +7,14 @@ import Route from 'can/route/';
 //import './widget.css!';
 import template from './template.stache!';
 
-import 'components/list-table/';
-import 'components/property-table/';
-import 'components/form-widget/';
-import 'components/filter-widget/';
-import 'components/paginate-widget/';
-import 'components/modal-container/';
+import '../list-table/';
+import '../property-table/';
+import '../form-widget/';
+import '../filter-widget/';
+import '../paginate-widget/';
+import '../modal-container/';
+import '../tab-container/';
+import '../panel-container/';
 
 const DEFAULT_BUTTONS = [{
   iconClass: 'fa fa-list-ul',
