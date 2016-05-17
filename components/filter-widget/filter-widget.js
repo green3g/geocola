@@ -129,7 +129,7 @@ export let ViewModel = CanMap.extend({
      */
     buttons: {
       value: [{
-        iconClass: 'fa fa-trash',
+        iconClass: 'fa fa-times',
         eventName: 'delete',
         title: 'Remove Filter'
       }]

@@ -1,4 +1,3 @@
-/*jshint esnext:true*/
 
 //import the css used in this app and config items for optimized build
 import 'node_modules/openlayers/dist/ol.css!';

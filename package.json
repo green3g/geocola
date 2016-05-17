@@ -43,8 +43,10 @@
   "main": "loader",
   "system": {
     "bundle": [
-      "app/viewer/",
-      "app/viewer/config/default/"
+      "app/viewer/viewer",
+      "app/viewer/config/default/default",
+      "app/crud/crud",
+      "app/crud/config/default/default"
     ],
     "npmIgnore": [
       "openlayers"
