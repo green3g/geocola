@@ -1,4 +1,3 @@
-/*jshint esnext:true */
 import can from 'can/util/library';
 import CanMap from 'can/map/';
 import List from 'can/list/';

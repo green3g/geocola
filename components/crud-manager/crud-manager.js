@@ -45,8 +45,8 @@ export let viewModel = CanMap.extend({
     totalPages: {
       get: function(val, setAttr) {
         //round up to the nearest integer
-        var pages = Math.ceil(this.attr('view.connectionProperties.totalItems') / this.attr('queryPerPage'));
-        return pages;
+        return Math.ceil(this.attr('view.connectionProperties.totalItems') /
+          this.attr('queryPerPage'));
       }
     },
     objects: {
