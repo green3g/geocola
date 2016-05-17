@@ -175,8 +175,9 @@ export let viewModel = CanMap.extend({
       console.warn(e);
       PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
         message:  this.attr('view.saveFailMessage'),
-        detail: e.statusText,
-        level: 'danger'
+        detail: e.statusText + ' : <small>'  + e.responseText + '</small>',
+        level: 'danger',
+        timeout: 20000
       }));
       this.attr('page', 'all');
     });
@@ -209,8 +210,9 @@ export let viewModel = CanMap.extend({
         //add a message
         PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
           message: this.attr('view.deleteFailMessage'),
-          detail: result.statusText,
-          level: 'danger'
+          detail: result.statusText +  ' : <small>'  + result.responseText + '</small>',
+          level: 'danger',
+          timeout: 20000
         }));
       });
       return deferred;
