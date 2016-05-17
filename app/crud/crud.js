@@ -11,6 +11,9 @@ import 'font-awesome/css/font-awesome.min.css';
 import './crud.css!';
 import template from './crud.stache!';
 import 'components/crud-manager/';
+import 'components/alert-widget/';
+import PubSub from 'pubsub-js';
+import {ADD_MESSSAGE_TOPIC, CLEAR_MESSAGES_TOPIC} from '../../util/topics';
 
 
 export let AppViewModel = can.Map.extend({
@@ -32,10 +35,14 @@ export let AppViewModel = can.Map.extend({
     sidebarHidden: {
       type: 'boolean',
       value: false
+    },
+    messages: {
+      Value: List
     }
   },
   startup: function(domNode) {
     this.initRoute();
+    this.initPubSub();
     this.activateViewById(route.attr('view') || this.attr('views')[0].attr('id'));
     can.$(domNode).html(can.view(template, this));
   },
@@ -48,6 +55,20 @@ export let AppViewModel = can.Map.extend({
     this.bind('objectId', this.updateRoute.bind(this, 'objectId'));
     this.bind('page', this.updateRoute.bind(this, 'page'));
     route.bind('change', this.routeChanged.bind(this));
+  },
+  initPubSub: function() {
+    PubSub.subscribe(ADD_MESSSAGE_TOPIC, (topic, message) => {
+      this.attr('messages').push(message);
+      if (message.autoHide) {
+        setTimeout(() => {
+          this.removeMessage(message);
+        }, message.timeout);
+      }
+    });
+
+    PubSub.subscribe(CLEAR_MESSAGES_TOPIC, (topic, data) => {
+      this.attr('messages').replace([]);
+    });
   },
   routeChanged: function() {
     this.attr(route.attr());
@@ -91,11 +112,15 @@ export let AppViewModel = can.Map.extend({
     }
     route.attr(name, value);
   },
-  getViewUrl(view){
+  getViewUrl(view) {
     return route.url({
       page: 'all',
       view: view.attr('id'),
       objectId: 0
     });
+  },
+  removeMessage: function(e) {
+    var index = this.attr('messages').indexOf(e);
+    var dummy = index !== -1 && this.attr('messages').splice(index, 1);
   }
 });

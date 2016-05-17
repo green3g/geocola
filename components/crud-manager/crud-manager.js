@@ -16,6 +16,9 @@ import '../modal-container/';
 import '../tab-container/';
 import '../panel-container/';
 
+import { ADD_MESSSAGE_TOPIC, CLEAR_MESSAGES_TOPIC } from '../../util/topics';
+import { Message } from '../../util/message';
+import PubSub from 'pubsub-js';
 const DEFAULT_BUTTONS = [{
   iconClass: 'fa fa-list-ul',
   eventName: 'view',
@@ -121,9 +124,6 @@ export let viewModel = CanMap.extend({
       type: 'number',
       value: 100
     },
-    messages: {
-      Value: List
-    },
     filterVisible: {
       type: 'boolean',
       value: false
@@ -159,12 +159,11 @@ export let viewModel = CanMap.extend({
     this.attr('page', 'loading');
     var deferred = this.attr('view.connection').save(obj);
     deferred.then(result => {
-
-      //reset error messages
-      this.attr('messages').replace([{
-        message: this.attr('view.saveMessage') || this.attr('saveMessage'),
-        level: 'success'
-      }]);
+      //add a message
+      PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
+        message: this.attr('view.saveSuccessMessage'),
+        detail: 'ID: ' + this.attr('view.connection').id(result)
+      }));
 
       //update the view id
       this.attr('viewId', result.attr('id'));
@@ -174,18 +173,14 @@ export let viewModel = CanMap.extend({
 
     }).fail(e => {
       console.warn(e);
-      this.attr('messages').push({
-        message: 'Saving the object failed',
+      PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
+        message:  this.attr('view.saveFailMessage'),
         detail: e.statusText,
         level: 'danger'
-      });
+      }));
       this.attr('page', 'all');
     });
     return deferred;
-  },
-  removeError: function(e) {
-    var index = this.attr('messages').indexOf(e);
-    this.attr('messages').splice(index, 1);
   },
   resetPage: function() {
     this.attr('page', 'all');
@@ -201,14 +196,30 @@ export let viewModel = CanMap.extend({
   },
   deleteObject: function(scope, dom, event, obj, skipConfirm) {
     if (obj && (skipConfirm || confirm('Are you sure you want to delete this record?'))) {
-      this.attr('view.connection').destroy(obj);
+      let deferred = this.attr('view.connection').destroy(obj);
+      deferred.then(result => {
+        //add a message
+        PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
+          message: this.attr('view.deleteSuccessMessage'),
+          detail: 'ID: ' + this.attr('view.connection').id(result)
+        }));
+      });
+
+      deferred.fail(result => {
+        //add a message
+        PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
+          message: this.attr('view.deleteFailMessage'),
+          detail: result.statusText,
+          level: 'danger'
+        }));
+      });
+      return deferred;
     }
   },
   deleteMultiple: function() {
-    var self = this;
     if (confirm('Are you sure you want to delete the selected records?')) {
-      this.attr('selectedObjects').forEach(function(obj) {
-        self.deleteObject(null, null, null, obj, true);
+      this.attr('selectedObjects').forEach((obj) => {
+        this.deleteObject(null, null, null, obj, true);
       });
       this.attr('selectedObjects').replace([]);
     }

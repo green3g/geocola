@@ -26,6 +26,9 @@
         <div class="col-lg-12">
           {{#activeView}}
             <h1>{{title}}</h1>
+
+            <alert-widget {(messages)}="messages" />
+
             <crud-manager {(page)}="page" {(view-id)}="objectId" {view}="." {query-filters}="queryFilters" {parameters}="parameters" />
           {{/if}}
         </div>

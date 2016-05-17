@@ -4,6 +4,8 @@ import CanMap from 'can/map/';
  * A generic view object to inherit from.
  */
 export const ViewMap = CanMap.extend({
-  saveMessage: 'Object saved',
-  deleteMessage: 'Object removed'
+  saveSuccessMessage: 'Object saved.',
+  saveFailMessage: 'Object could not be saved.',
+  deleteSuccessMessage: 'Object removed.',
+  deleteFailMessage: 'Object could not be removed.'
 });
