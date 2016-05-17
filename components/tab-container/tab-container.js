@@ -69,7 +69,6 @@ export const ViewModel = CanMap.extend({
    * @return {can.Map} Returns this object
    */
   activate(panel) {
-    can.batch.start();
     var active = this.attr('active');
     if (active !== panel) {
       let dummy = active && active.hide();
