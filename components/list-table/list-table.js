@@ -159,6 +159,13 @@ export const ViewModel = viewModel.extend({
   isSelected(obj) {
     return this.attr('_selectedObjects').indexOf(obj) > -1;
   },
+  /**
+   * Returns an objects formatted value for the template
+   * @param  {field} field The field object. This field object has a property
+   * called  `getFormattedValue` which formats and returns a string 
+   * @param  {can.Map} obj   The object to retrieve the property from
+   * @return {String}       The formatted value
+   */
   getFieldValue(field, obj){
     return field.getFormattedValue(obj);
   }

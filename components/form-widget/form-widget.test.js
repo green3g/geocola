@@ -2,6 +2,7 @@ import { ViewModel } from './form-widget';
 import q from 'steal-qunit';
 
 import { Connection } from 'test/data/connection';
+import {Field} from '../../util/field';
 
 let vm;
 
@@ -25,6 +26,11 @@ test('objectId set()', assert => {
     assert.equal(vm.attr('formObject.id'), id, 'formObject should be retrieved correctly');
     done();
   });
+});
+
+test('fields get()', assert => {
+  vm.attr('fields', ['yes', {excludeForm: true, name: 'no'}]);
+  assert.equal(vm.attr('fields').length, 1, 'fields with excludeForm:true should not be included');
 });
 
 test('fetchObject(con, id)', assert => {
@@ -65,4 +71,13 @@ test('cancelForm()', assert => {
     done();
   });
   vm.cancelForm();
+});
+
+test('getFieldValue(field)', assert => {
+    let field = new Field({name: 'label'});
+    vm.attr('formObject', {
+      label: 'test'
+    });
+
+    assert.equal(vm.getFieldValue(field), 'test', 'field value should be equal to the property value');
 });

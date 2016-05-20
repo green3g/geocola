@@ -88,6 +88,13 @@ export const ViewModel = viewModel.extend({
       }
     }
   },
+  /**
+   * Asynchronously fetches an object using a can-connect model and an id
+   * @param  {can-connect.model} con The connection object to an api resource
+   * @param  {Number} id  The id number of the object to retrieve
+   * @return {can.Deferred}     A deferred object that is resolved once the object is retreived
+   * @link https://connect.canjs.com/ can-connect
+   */
   fetchObject(con, id) {
     if (!con || !id) {
       return;
@@ -103,6 +110,11 @@ export const ViewModel = viewModel.extend({
     this.attr('objectPromise', def);
     return def;
   },
+  /**
+   * A helper for the template that gets an object's property using the field
+   * @param  {field} field The field object
+   * @return {string}       The formatted string 
+   */
   getValue(field) {
     return field.getFormattedValue(this.attr('object'));
   }

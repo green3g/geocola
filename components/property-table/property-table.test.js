@@ -3,6 +3,7 @@ import can from 'can';
 import { Connection } from 'test/data/connection';
 import { ViewModel } from './property-table';
 import CanMap from 'can/map/';
+import {Field} from '../../util/field';
 
 let vm;
 
@@ -37,4 +38,12 @@ test('objectId set(id)', assert => {
     assert.equal(vm.attr('object.id'), id, 'objects id should match the id that was set');
     done();
   });
+});
+
+test('getValue(field)', assert => {
+  let field = new Field({name: 'test'});
+  let obj = new CanMap({test: 'value'});
+
+  vm.attr('object', obj);
+  assert.equal(vm.getValue(field), 'value', 'result should match the value of the object');
 });
