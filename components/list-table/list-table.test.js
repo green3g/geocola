@@ -75,15 +75,3 @@ test('toggleSelectAll(), _allSelected', assert => {
   });
   assert.ok(vm.attr('_allSelected'), '_allSelected should be truthy');
 });
-
-test('formatValue(obj, field)',assert => {
-  let newValue = 'newValue',
-  formatter = value => {
-    return newValue;
-  };
-  vm.attr('formatters', {
-    name: formatter
-  });
-  let formatted = vm.formatValue(vm.attr('objects')[0], 'name');
-  assert.equal(formatted, newValue, 'Value should equal formatted value');
-});
