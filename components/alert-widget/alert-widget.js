@@ -11,8 +11,11 @@ export const ViewModel = CanMap.extend({
       Value: List
     }
   },
-  removeMessage: function(e) {
-    var index = this.attr('messages').indexOf(e);
+  addMessage(message){
+    this.attr('messages').push(message);
+  },
+  removeMessage: function(message) {
+    var index = this.attr('messages').indexOf(message);
     this.attr('messages').splice(index, 1);
   }
 });
