@@ -8,12 +8,12 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css!';
 import 'bootstrap/dist/css/bootstrap-theme.min.css!';
 import 'font-awesome/css/font-awesome.min.css';
-import './crud.css!';
+import './crud.less!';
 import template from './crud.stache!';
 import 'components/crud-manager/';
 import 'components/alert-widget/';
 import PubSub from 'pubsub-js';
-import {ADD_MESSSAGE_TOPIC, CLEAR_MESSAGES_TOPIC} from '../../util/topics';
+import { ADD_MESSSAGE_TOPIC, CLEAR_MESSAGES_TOPIC } from '../../util/topics';
 
 
 export let AppViewModel = can.Map.extend({
@@ -38,13 +38,18 @@ export let AppViewModel = can.Map.extend({
     },
     messages: {
       Value: List
+    },
+    deferreds: {
+      Value: List
     }
   },
   startup: function(domNode) {
     this.initRoute();
     this.initPubSub();
-    this.activateViewById(route.attr('view') || this.attr('views')[0].attr('id'));
-    can.$(domNode).html(can.view(template, this));
+    Promise.all(this.attr('deferreds')).then(() => {
+      this.activateViewById(route.attr('view') || this.attr('views')[0].attr('id'));
+      can.$(domNode).html(can.view(template, this));
+    });
   },
   initRoute: function() {
     route(':view/:page/:objectId/');
