@@ -4,7 +4,6 @@ import 'can/map/define/';
 import List from 'can/list/';
 import Component from 'can/component/';
 import Route from 'can/route/';
-//import './widget.css!';
 import template from './template.stache!';
 
 import '../list-table/';
@@ -17,8 +16,9 @@ import '../tab-container/';
 import '../panel-container/';
 
 import { ADD_MESSSAGE_TOPIC, CLEAR_MESSAGES_TOPIC } from '../../util/topics';
-import { Message } from '../../util/message';
+import { Message } from '../alert-widget/message';
 import PubSub from 'pubsub-js';
+
 const DEFAULT_BUTTONS = [{
   iconClass: 'fa fa-list-ul',
   eventName: 'view',
