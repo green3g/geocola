@@ -7,9 +7,9 @@
             <i ($click)="toggleSelectAll" class="fa fa-{{#if _allSelected}}check-{{/if}}square-o"></i>
           </th>
           {{#each fields}}
-            <th {{#is . currentSort.fieldName}} class="info" {{/is}} ($click)="setSort(.)">
-              {{formatField(.)}}
-              {{#is . currentSort.fieldName}}<i class="sort-icon fa fa-sort-{{#is currentSort.type 'desc'}}desc{{else}}asc{{/is}}"></i>{{/is}}
+            <th {{#is name currentSort.fieldName}} class="info" {{/is}} ($click)="setSort(name)">
+              {{alias}}
+              {{#is name currentSort.fieldName}}<i class="sort-icon fa fa-sort-{{#is currentSort.type 'desc'}}desc{{else}}asc{{/is}}"></i>{{/is}}
             </th>
           {{/each}}
         </tr>
@@ -24,7 +24,8 @@
               {{/each}}
             </td>
             {{#each fields}}
-              <td>{{formatValue(../., .)}}</td>
+              {{! this passes the field name and the current object to getFieldValue }}
+              <td>{{{getFieldValue(., ../.)}}}</td>
             {{/each}}
           </tr>
         {{/each}}

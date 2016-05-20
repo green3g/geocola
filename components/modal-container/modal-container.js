@@ -30,7 +30,11 @@ export let ViewModel = widgetModel.extend({
      */
     visible: {
       type: 'boolean',
-      value: true
+      value: true,
+      set: function(visible){
+        let dummy = visible ? this.show() : this.hide();
+        return visible;
+      }
     },
     /**
      * Backdrop option.

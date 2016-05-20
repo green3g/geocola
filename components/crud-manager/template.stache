@@ -6,7 +6,7 @@
       <p>You do not have permission to edit this data.</p>
     {{else}}
       {{#if focusObject.isResolved}}
-        <form-widget {form-object}="focusObject.value" (submit)="saveObject" (cancel)="resetPage" {fields}="view.editFields" />
+        <form-widget {form-object}="focusObject.value" (submit)="saveObject" (cancel)="resetPage" {fields}="_fields" />
       {{/if}}
     {{/if}}
   {{/case}}
@@ -18,7 +18,7 @@
     {{#if view.disableEdit}}
       <p>You do not have permission to add this data.</p>
     {{else}}
-      <form-widget {form-object}="getNewObject()" (submit)="saveObject" (cancel)="resetPage" {fields}="view.editFields" />
+      <form-widget {form-object}="getNewObject()" (submit)="saveObject" (cancel)="resetPage" {fields}="_fields" />
     {{/if}}
   {{/case}}
 
@@ -70,7 +70,7 @@
         {{/each}}
 
     {{else}}
-      <list-table {objects}="objects.value" {^_selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" {(current-sort)}="sort" {fields}="view.tableFields" {formatters}="view.tableFormatters" {buttons}="buttons" />
+      <list-table {objects}="objects.value" {^_selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" {(current-sort)}="sort" {fields}="_fields" {formatters}="view.tableFormatters" {buttons}="buttons" />
       {{/is}}
     {{/if}}
 
@@ -104,7 +104,7 @@
 
   {{#case 'details'}}
     {{#if focusObject.isResolved}}
-      <property-table {object}="focusObject.value" {field-properties}="view.detailFields" />
+      <property-table {object}="focusObject.value" {fields}="_fields" />
       <div class="btn btn-group hidden-print" role="group" aria-label="Management Buttons">
         <button class="btn btn-default" ($click)="resetPage">
           <i class="fa fa-arrow-left"></i> Back

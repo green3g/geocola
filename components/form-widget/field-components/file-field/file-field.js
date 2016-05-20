@@ -21,8 +21,8 @@ export let ViewModel = widgetModel.extend({
     currentFiles: {
       get: function initCurrentFiles(val, set) {
         if (!val) {
-          if (this.attr('properties.value')) {
-            val = new List().concat(this.attr('properties.value').split(',').filter(function(file) {
+          if (this.attr('value')) {
+            val = new List().concat(this.attr('value').split(',').filter(function(file) {
               return file !== '';
             }));
           } else {
@@ -85,11 +85,11 @@ export let ViewModel = widgetModel.extend({
   },
   updateValue() {
     if (this.attr('currentFiles').length) {
-      this.attr('properties.value', this.attr('currentFiles').join(','));
+      this.attr('value', this.attr('currentFiles').join(','));
     } else {
-      this.attr('properties.value', '');
+      this.attr('value', '');
     }
-    this.dispatch('change', [this.attr('properties.value')]);
+    this.dispatch('change', [this.attr('value')]);
   },
   uploadError(response, textStatus, errorThrown) {
     // Handle errors here

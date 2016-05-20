@@ -3,6 +3,7 @@ import CanMap from 'can/map/';
 
 import widgetModel from '../../../widget-model';
 import template from './json-field.stache!';
+import { mapToFields, parseFieldArray } from '../../../../util/field';
 
 /**
  * @constructor components/form-widget/field-components/json-field.ViewModel ViewModel
@@ -17,14 +18,20 @@ export let ViewModel = widgetModel.extend({
       Value: CanMap
     },
     jsonFormObject: {
-      get: function() {
-        var props = this.attr('properties');
-        if (props && props.objectTemplate) {
-          return new props.objectTemplate(props.value ? JSON.parse(
-            props.value
-          ) : {});
+      get: function(val) {
+        let template = this.attr('properties.objectTemplate');
+        if (template) {
+          return new template(this.attr('value'));
         }
         return null;
+      }
+    },
+    formFields: {
+      get(){
+        if(this.attr('properties.fields')){
+          return parseFieldArray(this.attr('properties.fields'));
+        }
+        return mapToFields(this.attr('jsonFormObject'));
       }
     }
   },

@@ -17,6 +17,7 @@ import '../panel-container/';
 
 import { ADD_MESSSAGE_TOPIC, CLEAR_MESSAGES_TOPIC } from '../../util/topics';
 import { Message } from '../alert-widget/message';
+import { mapToFields, parseFieldArray } from '../../util/field';
 import PubSub from 'pubsub-js';
 
 const DEFAULT_BUTTONS = [{
@@ -127,6 +128,18 @@ export let viewModel = CanMap.extend({
     filterVisible: {
       type: 'boolean',
       value: false
+    },
+    _fields: {
+      get() {
+
+        //try a fields propety first
+        if (this.attr('view.fields')) {
+          return parseFieldArray(this.attr('view.fields'));
+        }
+
+        //if that doesn't exist, use the objectTemplate to create fields
+        return mapToFields(this.attr('view.objectTemplate'));
+      }
     }
   },
   init: function() {
@@ -174,8 +187,8 @@ export let viewModel = CanMap.extend({
     }).fail(e => {
       console.warn(e);
       PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
-        message:  this.attr('view.saveFailMessage'),
-        detail: e.statusText + ' : <small>'  + e.responseText + '</small>',
+        message: this.attr('view.saveFailMessage'),
+        detail: e.statusText + ' : <small>' + e.responseText + '</small>',
         level: 'danger',
         timeout: 20000
       }));
@@ -210,7 +223,7 @@ export let viewModel = CanMap.extend({
         //add a message
         PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
           message: this.attr('view.deleteFailMessage'),
-          detail: result.statusText +  ' : <small>'  + result.responseText + '</small>',
+          detail: result.statusText + ' : <small>' + result.responseText + '</small>',
           level: 'danger',
           timeout: 20000
         }));
