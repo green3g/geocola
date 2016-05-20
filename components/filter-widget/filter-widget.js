@@ -12,7 +12,7 @@ import '../form-widget/field-components/text-field/';
 import '../form-widget/field-components/select-field/';
 
 
-export let FilterOptions = [{
+export const FilterOptions = [{
   label: 'Equal to',
   operator: 'equals',
   value: 'equals',
@@ -54,7 +54,7 @@ export let FilterOptions = [{
   types: ['date']
 }];
 
-export let Filter = can.Map.extend({
+export const Filter = can.Map.extend({
   define: {
     val: {
       set: function(val) {
@@ -106,7 +106,7 @@ export let ViewModel = CanMap.extend({
    */
   define: {
     /**
-     * A list of filterObjects
+     * A list of filterObjects currently used in this widget
      * @property {Array<geocola.types.filterObject>} components/filter-widget.ViewModel.filters
      * @parent components/filter-widget.ViewModel.props
      */
@@ -123,7 +123,8 @@ export let ViewModel = CanMap.extend({
       Value: Filter
     },
     /**
-     * The buttonObjects to display in the list table
+     * The buttonObjects to display in the list table. This widget only uses
+     * a "Remove Filter" button
      * @property {Array<buttonObject>} components/filter-widget.ViewModel.buttons
      * @parent components/filter-widget.ViewModel.props
      */
@@ -145,7 +146,10 @@ export let ViewModel = CanMap.extend({
       value: null
     },
     /**
-     * The fields to render in the form
+     * The fields to render in the form. These fields are:
+     * * name - the field name, which can be either a text field or select dropdown depending on the configuration
+     * * op - the operator to filter the field by (like, eq, etc)
+     * * val - the value to filter the field by
      * @property {Array.<formFieldObject>} components/filter-widget.ViewModel.fields
      * @parent components/filter-widget.ViewModel.props
      */
@@ -161,7 +165,7 @@ export let ViewModel = CanMap.extend({
         } : {
           name: 'name',
           alias: 'Field Name',
-          placeholder: 'Enter lowercase fieldname'
+          placeholder: 'Enter fieldname'
         };
         return new List([nameField, {
           name: 'op',
@@ -180,7 +184,11 @@ export let ViewModel = CanMap.extend({
     },
     /**
      * A getter for the filter operators that changes based on the selected field and
-     * the selected field's type
+     * the selected field's type. The value may be filtered based on the following:
+     * 1. If there is a type set on the current filter field dropdown
+     * 2. If there is a defined type in the define property for the current filter field dropdown
+     * If a type is found using the rules above, the returned value will be filtered to only include
+     * operators for the given type.
      * @property {Array<geocola.types.SelectOptionProperty>} components/filter-widget.ViewModel.filterOptions
      * @parent components/filter-widget.ViewModel.props
      */
@@ -195,8 +203,9 @@ export let ViewModel = CanMap.extend({
         })[0];
         let type = selectedOption.type ||
           ((this.attr('objectTemplate') &&
-            this.attr('objectTemplate').prototype.define &&
-            this.attr('objectTemplate').prototype.define.hasOwnProperty(selectedField)) ? this.attr('objectTemplate').prototype.define[selectedField].type : null);
+              this.attr('objectTemplate').prototype.define &&
+              this.attr('objectTemplate').prototype.define.hasOwnProperty(selectedField)) ?
+            this.attr('objectTemplate').prototype.define[selectedField].type : null);
 
         if (!type) {
           return FilterOptions;
@@ -209,6 +218,8 @@ export let ViewModel = CanMap.extend({
     },
     /**
      * An array of field options to display for the field selection dropdown. If not provided, the
+     * viewModel will look for the objectTemplate property and display its keys. If this property does
+     * not exist, the fieldOptions will be replaced with a simple text field.
      * @property {Array<geocola.types.SelectOptionProperty>} components/filter-widget.ViewModel.fieldOptions
      * @parent components/filter-widget.ViewModel.props
      */
