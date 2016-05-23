@@ -9,11 +9,11 @@ import can from 'can/util/library';
 
 import { makeSentenceCase } from './string';
 
-export let TEMPLATES = {
+let TEMPLATES = {
   text: '<text-field {properties}="properties" (change)="setField" value="{{getFieldValue(.)}}" />',
   select: '<select-field {properties}="properties" (change)="setField" value="{{getFieldValue(.)}}" />',
   file: '<file-field {properties}="properties" (change)="setField" value="{{getFieldValue(.)}}" />',
-  json: '<json-field {properties}="properties" (change)="setField" value="{{getFieldValue(.)}}" />',
+  json: '<json-field {properties}="properties" (change)="setField" {value}="getFieldValue(.)" />',
   date: '<date-field {properties}="properties" (change)="setField" value="{{getFieldValue(.)}}" />'
 };
 
@@ -23,6 +23,8 @@ for (var type in TEMPLATES) {
     TEMPLATES[type] = stache(TEMPLATES[type]);
   }
 }
+
+export {TEMPLATES};
 
 /**
  * [extend description]

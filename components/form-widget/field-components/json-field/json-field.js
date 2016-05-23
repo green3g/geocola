@@ -20,8 +20,9 @@ export let ViewModel = widgetModel.extend({
     jsonFormObject: {
       get: function(val) {
         let template = this.attr('properties.objectTemplate');
+        let obj = this.attr('value') ? JSON.parse(this.attr('value')) : {};
         if (template) {
-          return new template(this.attr('value'));
+          return new template(obj);
         }
         return null;
       }
@@ -36,7 +37,9 @@ export let ViewModel = widgetModel.extend({
     }
   },
   saveField: function(scope, dom, event, obj) {
-    this.dispatch('change', [JSON.stringify(obj.attr())]);
+    let json = JSON.stringify(obj.attr());
+    this.attr('value', json);
+    this.dispatch('change', [json]);
   }
 });
 

@@ -2,5 +2,5 @@
   <h4>Add Filter</h4>
   <form-widget inline="true" {fields}="fields" {(form-object)}="formObject" (submit)="addFilter" />
   <h4>Current Filters</h4>
-  <list-table {objects}="filters" (delete)="removeFilter" {buttons}="buttons" />
+  <list-table {objects}="filters" {fields}="fields" (delete)="removeFilter" {buttons}="buttons" />
 </div>

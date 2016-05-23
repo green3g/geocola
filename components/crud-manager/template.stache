@@ -66,7 +66,7 @@
 
           </div>
 
-          <property-table {object}="." {connection}="view.connection" {field-properties}="view.detailFields" />
+          <property-table {object}="." {connection}="view.connection" {fields}="_fields" />
         {{/each}}
 
     {{else}}

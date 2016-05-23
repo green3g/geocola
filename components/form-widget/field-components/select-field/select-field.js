@@ -22,7 +22,6 @@ export let ViewModel = widgetModel.extend({
     this.dispatch('change', [value]);
   },
   isSelected(value){
-    console.log(value + ':' +  this.attr('value'));
     return value == this.attr('value');
   }
 });

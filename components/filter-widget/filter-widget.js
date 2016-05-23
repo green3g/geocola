@@ -10,7 +10,7 @@ import '../list-table/';
 import '../form-widget/';
 import '../form-widget/field-components/text-field/';
 import '../form-widget/field-components/select-field/';
-
+import { parseFieldArray } from '../../util/field';
 
 export const FilterOptions = [{
   label: 'Equal to',
@@ -156,6 +156,7 @@ export let ViewModel = CanMap.extend({
     fields: {
       get: function(fields) {
         let nameField = this.attr('fieldOptions') ? {
+          formatter: makeSentenceCase,
           name: 'name',
           alias: 'Field Name',
           type: 'select',
@@ -167,7 +168,7 @@ export let ViewModel = CanMap.extend({
           alias: 'Field Name',
           placeholder: 'Enter fieldname'
         };
-        return new List([nameField, {
+        return parseFieldArray([nameField, {
           name: 'op',
           alias: 'is',
           placeholder: 'Choose a operator',
