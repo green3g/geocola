@@ -90,6 +90,18 @@ export let ViewModel = CanMap.extend({
       }
     },
     /**
+     * A helper to show or hide the paginate-widget. If totalPages is less than
+     * 2, the paginate widget will not be shown.
+     * @property {Boolean} components/crud-manager.ViewModel.props.showPaginate
+     * @parent components/crud-manager.ViewModel.props
+     */
+    showPaginate: {
+      type: 'boolean',
+      get(){
+        return this.attr('totalPages') > 1;
+      }
+    },
+    /**
      * A promise that resolves to the objects retrieved from a can-connect.getList call
      * @property {Promise} components/crud-manager.ViewModel.props.objects
      * @parent components/crud-manager.ViewModel.props
@@ -253,12 +265,9 @@ export let ViewModel = CanMap.extend({
     });
     return deferred;
   },
-  resetPage() {
-    this.attr('page', 'all');
+  setPage(page) {
+    this.attr('page', page);
     this.attr('viewId', 0);
-  },
-  createObject() {
-    this.attr('page', 'add');
   },
   getNewObject() {
     //create a new empty object with the defaults provided
