@@ -30,7 +30,7 @@
 
     {{#if filterVisible}}
       <modal-container title="Search" (hide)="toggleFilter(false)">
-        <filter-widget {(filters)}="queryFilters" {field-options}="view.filterFields" {object-template}="view.objectTemplate" />
+        <filter-widget {(filters)}="queryFilters" {fields}="_fields" {object-template}="view.objectTemplate" />
       </modal-container>
     {{/if}}
 

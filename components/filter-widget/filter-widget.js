@@ -153,7 +153,7 @@ export let ViewModel = CanMap.extend({
      * @property {Array.<formFieldObject>} components/filter-widget.ViewModel.fields
      * @parent components/filter-widget.ViewModel.props
      */
-    fields: {
+    formFields: {
       get: function(fields) {
         let nameField = this.attr('fieldOptions') ? {
           formatter: makeSentenceCase,
@@ -171,10 +171,10 @@ export let ViewModel = CanMap.extend({
         return parseFieldArray([nameField, {
           name: 'op',
           alias: 'is',
-          placeholder: 'Choose a operator',
+          placeholder: 'Choose an operator',
           type: 'select',
           properties: {
-            options: FilterOptions
+            options: this.attr('filterOptions')
           }
         }, {
           name: 'val',
@@ -185,9 +185,9 @@ export let ViewModel = CanMap.extend({
     },
     /**
      * A getter for the filter operators that changes based on the selected field and
-     * the selected field's type. The value may be filtered based on the following:
-     * 1. If there is a type set on the current filter field dropdown
-     * 2. If there is a defined type in the define property for the current filter field dropdown
+     * the selected field's type. The value may be filtered based on
+     * 1. If there is a `dataType` property on the field that matches the name of the dropdown
+     * 2. 2f there is a defined type in the define property for the current filter field dropdown
      * If a type is found using the rules above, the returned value will be filtered to only include
      * operators for the given type.
      * @property {Array<geocola.types.SelectOptionProperty>} components/filter-widget.ViewModel.filterOptions
@@ -195,27 +195,48 @@ export let ViewModel = CanMap.extend({
      */
     filterOptions: {
       get: function() {
-        let selectedField = this.attr('formObject.name');
-        if (!(selectedField && (this.attr('fieldOptions') || this.attr('objectTemplate')))) {
+        //get the name of the selected field
+        let name = this.attr('formObject.name');
+        let fields = this.attr('fields');
+
+        //if we have fields search them for a dataType matching the name
+        //of the selected field name
+        if (fields) {
+          let field = fields.filter(f => {
+            return f.attr('name') === name;
+          })[0];
+          if (field && field.attr('dataType')) {
+            return FilterOptions.filter(f => {
+              return f.types.indexOf(field.attr('dataType')) !== -1;
+            });
+          }
+        }
+
+        //otherwise search the objectTemplate for a field type
+        //if it doesn't exist or the property/type doesn't exist then
+        //return the whole array
+        let map = this.attr('objectTemplate');
+        if (!map ||
+          !map.prototype.define ||
+          !map.prototype.define[name] ||
+          !map.prototype.define[name].type) {
           return FilterOptions;
         }
-        let selectedOption = this.attr('fieldOptions').filter(function(f) {
-          return f.value === selectedField;
-        })[0];
-        let type = selectedOption.type ||
-          ((this.attr('objectTemplate') &&
-              this.attr('objectTemplate').prototype.define &&
-              this.attr('objectTemplate').prototype.define.hasOwnProperty(selectedField)) ?
-            this.attr('objectTemplate').prototype.define[selectedField].type : null);
-
-        if (!type) {
-          return FilterOptions;
-        }
-
-        return FilterOptions.filter(function(f) {
-          return f.types.indexOf(type) > -1;
+        let type = map.prototype.define[name].type;
+        return FilterOptions.filter(f => {
+          return f.types.indexOf(type) !== -1;
         });
       }
+    },
+    /**
+     * A list of fields that will be used to create options in the field name
+     * dropdown. Each field may have a property `filterFactory` which may return
+     * one or more filter objects
+     * @property {List} components/filter-widget.ViewModel.fields
+     * @parent components/filter-widget.ViewModel.props
+     */
+    fields: {
+      value: null
     },
     /**
      * An array of field options to display for the field selection dropdown. If not provided, the
@@ -226,13 +247,21 @@ export let ViewModel = CanMap.extend({
      */
     fieldOptions: {
       value: null,
-      get: function(val) {
-        return val || (this.attr('objectTemplate') ? CanMap.keys(this.attr('objectTemplate')()).map(function(key) {
+      get: function() {
+        if (this.attr('fields')) {
+          return this.attr('fields').map(f => {
+            return {
+              value: f.attr('name'),
+              label: f.attr('alias')
+            };
+          });
+        }
+        return this.attr('objectTemplate') ? CanMap.keys(this.attr('objectTemplate')()).map(key => {
           return {
             value: key,
             label: makeSentenceCase(key)
           };
-        }) : null);
+        }) : null;
       }
     }
   },
@@ -248,15 +277,39 @@ export let ViewModel = CanMap.extend({
     this.attr('filters').splice(index, 1);
   },
   /**
-   * Adds a new filter to the list of filters in this widget
+   * Adds a new filter or set of filters to the list of filters in this widget.
+   * A `filterFactory` may be defined on the field which may return on or several
+   * filters.
    * @param  {can.Map} scope The stache scope
    * @param  {event} dom   The dom event
    * @param  {event} event The can event
    * @param  {filterObject} obj The object to add. This is the only argument used by the function, the rest may be null.
    */
   addFilter: function(scope, dom, event, obj) {
-    this.attr('filters').push(obj);
+    let name = obj.attr('name');
+    let filters;
+    if (!name) {
+      return false;
+    }
+    let fields = this.attr('fields');
+    if (fields) {
+      let field = this.attr('fields').filter(f => {
+        return f.name === name;
+      })[0];
+      if (field.filterFactory) {
+        filters = field.filterFactory(obj);
+      } else {
+        filters = [obj];
+      }
+    } else {
+      filters = [obj];
+    }
+    filters.forEach(f => {
+      this.attr('filters').push(f);
+    });
     this.attr('formObject', new Filter({}));
+
+    return false;
   }
 });
 
