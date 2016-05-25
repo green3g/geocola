@@ -236,7 +236,14 @@ export let ViewModel = CanMap.extend({
      * @parent components/filter-widget.ViewModel.props
      */
     fields: {
-      value: null
+      value: null,
+      get(fields){
+        if(fields){
+          return fields.filter(f => {
+            return !f.excludeFilter;
+          });
+        }
+      }
     },
     /**
      * An array of field options to display for the field selection dropdown. If not provided, the
