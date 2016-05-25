@@ -26,7 +26,11 @@ export const FilterOptions = [{
   label: 'Contains',
   operator: 'like',
   value: 'like',
-  types: ['string']
+  types: ['string'],
+  filterFactory(filter) {
+    filter.attr('val', ['%', filter.attr('val'), '%'].join(''));
+    return [filter];
+  }
 }, {
   label: 'Does not contain',
   operator: 'not_like',
@@ -36,39 +40,68 @@ export const FilterOptions = [{
   label: 'Greater Than',
   operator: '>',
   value: 'greater_than',
-  types: ['number']
+  types: ['number'],
+  filterFactory(filter) {
+    filter.attr('val', parseFloat(filter.attr('val')));
+    return [filter];
+  }
 }, {
   label: 'Less Than',
   operator: '<',
   value: 'less_than',
-  types: ['number']
+  types: ['number'],
+  filterFactory(filter) {
+    filter.attr('val', parseFloat(filter.attr('val')));
+    return [filter];
+  }
 }, {
   label: 'Before',
   operator: '<',
   value: 'before',
-  types: ['date']
+  types: ['date'],
+  valueField: {
+      name: 'val',
+      alias: 'Value',
+    type: 'date',
+    properties: {
+      placeholder: 'Select a date'
+    }
+  }
 }, {
   label: 'After',
   operator: '>',
   value: 'after',
-  types: ['date']
+  types: ['date'],
+  valueField: {
+      name: 'val',
+      alias: 'Value',
+    type: 'date',
+    properties: {
+      placeholder: 'Select a date'
+    }
+  }
 }];
 
 export const Filter = can.Map.extend({
   define: {
-    val: {
-    },
+    val: {},
     name: {
       type: 'string'
     },
     op: {
       value: 'equals',
-      type: 'string',
+      type: 'string'
+    },
+    operator: {
+      value: 'equals',
       set(val) {
-        return FilterOptions.filter(o => {
-          return o.value === val;
+        let op = FilterOptions.filter(f => {
+          return f.value === val;
         })[0].operator;
-      }
+        this.attr('op', op);
+        return val;
+      },
+      serialize: false
     }
   }
 });
@@ -100,8 +133,8 @@ export let ViewModel = CanMap.extend({
      * @parent components/filter-widget.ViewModel.props
      */
     formObject: {
-      get(obj){
-        if(obj){
+      get(obj) {
+        if (obj) {
           return obj;
         }
         return new Filter({
@@ -156,18 +189,34 @@ export let ViewModel = CanMap.extend({
           placeholder: 'Enter fieldname'
         };
         return parseFieldArray([nameField, {
-          name: 'op',
+          name: 'operator',
           alias: 'is',
           placeholder: 'Choose an operator',
           type: 'select',
+          formatter(op) {
+            return FilterOptions.filter(f => {
+              return f.value === op;
+            })[0].label;
+          },
           properties: {
             options: this.attr('filterOptions')
           }
-        }, {
+        }, this.attr('valueField')]);
+      }
+    },
+    valueField: {
+      get(){
+        let defaultField = {
           name: 'val',
           alias: 'Value',
-          placeholder: 'Enter the filter value'
-        }]);
+          type: 'text',
+          properties: {
+            placeholder: 'Enter a filter value'
+          }
+        };
+        return FilterOptions.filter(f => {
+          return f.value === this.attr('formObject.operator');
+        })[0].valueField || defaultField;
       }
     },
     /**
@@ -224,8 +273,8 @@ export let ViewModel = CanMap.extend({
      */
     fields: {
       value: null,
-      get(fields){
-        if(fields){
+      get(fields) {
+        if (fields) {
           return fields.filter(f => {
             return !f.excludeFilter;
           });
@@ -273,7 +322,7 @@ export let ViewModel = CanMap.extend({
   /**
    * Replaces the filter array with an empty array, clearing all existing filters
    */
-  removeFilters(){
+  removeFilters() {
     this.attr('filters').replace([]);
   },
   /**
@@ -288,26 +337,41 @@ export let ViewModel = CanMap.extend({
   addFilter(scope, dom, event, obj) {
     let name = obj.attr('name');
     let filters;
-    if (!name) {
+    if (!name || !obj.attr('val')) {
       return false;
     }
     let fields = this.attr('fields');
-    if (fields) {
-      let field = this.attr('fields').filter(f => {
-        return f.name === name;
-      })[0];
-      if (field.filterFactory) {
-        filters = field.filterFactory(obj);
-      } else {
-        filters = [obj];
-      }
-    } else {
+    let filterOption = FilterOptions.filter(f => {
+      return obj.attr('operator') === f.value;
+    })[0];
+    let field = this.attr('fields') ? this.attr('fields').filter(f => {
+      return f.name === name;
+    })[0] : null;
+
+    //get the filters
+    //try a filterFactory on the field object
+    if (field && typeof field.filterFactory === 'function') {
+      filters = field.filterFactory(obj);
+    }
+
+    //next try a filterFactory on the filter option
+    else if (filterOption.filterFactory) {
+      filters = filterOption.filterFactory(obj);
+    }
+
+    //otherwise just use the filter as is
+    else {
       filters = [obj];
     }
+
+    //start batch process
+    can.batch.start();
     filters.forEach(f => {
       this.attr('filters').push(f);
     });
     this.attr('formObject', new Filter({}));
+    //end batch process
+    can.batch.stop();
 
     return false;
   }
