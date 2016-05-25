@@ -3,4 +3,9 @@
   <form-widget inline="true" {fields}="formFields" {(form-object)}="formObject" (submit)="addFilter" />
   <h4>Current Filters</h4>
   <list-table {objects}="filters" {fields}="formFields" (delete)="removeFilter" {buttons}="buttons" />
+  {{#if filters.length}}
+    <button class="btn btn-default" ($click)="removeFilters">
+      <i class="fa fa-times"></i> Clear Filters
+    </button>
+  {{/if}}
 </div>

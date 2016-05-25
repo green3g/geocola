@@ -57,35 +57,15 @@ export const FilterOptions = [{
 export const Filter = can.Map.extend({
   define: {
     val: {
-      set: function(val) {
-        switch (this.attr('op')) {
-          case 'like':
-            if (val.indexOf('%') === -1) {
-              val = '%' + val + '%';
-            }
-            return val;
-          case '>':
-          case '<':
-            try {
-              return parseFloat(val);
-            } catch (e) {
-              console.warn(e);
-              return val;
-            }
-            break;
-          default:
-            return val;
-        }
-      }
     },
     name: {
       type: 'string'
     },
     op: {
-      value: 'like',
+      value: 'equals',
       type: 'string',
       set(val) {
-        return FilterOptions.filter(function(o) {
+        return FilterOptions.filter(o => {
           return o.value === val;
         })[0].operator;
       }
@@ -120,7 +100,14 @@ export let ViewModel = CanMap.extend({
      * @parent components/filter-widget.ViewModel.props
      */
     formObject: {
-      Value: Filter
+      get(obj){
+        if(obj){
+          return obj;
+        }
+        return new Filter({
+          name: this.attr('fieldOptions') ? this.attr('fieldOptions')[0].attr('value') : ''
+        });
+      }
     },
     /**
      * The buttonObjects to display in the list table. This widget only uses
@@ -154,7 +141,7 @@ export let ViewModel = CanMap.extend({
      * @parent components/filter-widget.ViewModel.props
      */
     formFields: {
-      get: function(fields) {
+      get(fields) {
         let nameField = this.attr('fieldOptions') ? {
           formatter: makeSentenceCase,
           name: 'name',
@@ -194,7 +181,7 @@ export let ViewModel = CanMap.extend({
      * @parent components/filter-widget.ViewModel.props
      */
     filterOptions: {
-      get: function() {
+      get() {
         //get the name of the selected field
         let name = this.attr('formObject.name');
         let fields = this.attr('fields');
@@ -254,7 +241,7 @@ export let ViewModel = CanMap.extend({
      */
     fieldOptions: {
       value: null,
-      get: function() {
+      get() {
         if (this.attr('fields')) {
           return this.attr('fields').map(f => {
             return {
@@ -279,9 +266,15 @@ export let ViewModel = CanMap.extend({
    * @param  {event} event The can event
    * @param  {geocola.types.filterObject} obj   The object to remove. This is the only argument used by the function, the rest may be null.
    */
-  removeFilter: function(scope, dom, event, obj) {
+  removeFilter(scope, dom, event, obj) {
     let index = this.attr('filters').indexOf(obj);
     this.attr('filters').splice(index, 1);
+  },
+  /**
+   * Replaces the filter array with an empty array, clearing all existing filters
+   */
+  removeFilters(){
+    this.attr('filters').replace([]);
   },
   /**
    * Adds a new filter or set of filters to the list of filters in this widget.
@@ -292,7 +285,7 @@ export let ViewModel = CanMap.extend({
    * @param  {event} event The can event
    * @param  {filterObject} obj The object to add. This is the only argument used by the function, the rest may be null.
    */
-  addFilter: function(scope, dom, event, obj) {
+  addFilter(scope, dom, event, obj) {
     let name = obj.attr('name');
     let filters;
     if (!name) {
