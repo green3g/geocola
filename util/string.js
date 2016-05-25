@@ -12,5 +12,6 @@ export let makeSentenceCase = text => {
     text.split('_')
     .join(' ')
     .toLowerCase()
+    .replace(/ +/g, " ")
   ));
 };

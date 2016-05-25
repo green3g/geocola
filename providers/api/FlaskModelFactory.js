@@ -110,6 +110,15 @@ export function FlaskConnectFactory(options) {
         return def;
       },
       createData: function(attrs) {
+
+        var data = {};
+        //exclude relationship properties
+        for (var a in attrs) {
+          if (attrs.hasOwnProperty(a) && !properties.attr('relationships.' + a)) {
+            data[a] = attrs[a];
+          }
+        }
+
         //post attributes to the create url
         return can.ajax({
           url: this.resource,
@@ -119,7 +128,7 @@ export function FlaskConnectFactory(options) {
           },
           data: JSON.stringify({
             data: {
-              attributes: attrs,
+              attributes: data,
               type: options.name
             }
           }),
@@ -180,14 +189,14 @@ export function FlaskConnectFactory(options) {
       can.batch.start();
       for (var rel in props.relationships) {
         if (props.relationships.hasOwnProperty(rel) &&
-          props.relationships[rel].data) {
+          props.relationships[rel].hasOwnProperty('data')) {
           //if its an array, extract an array of the ids
           obj[rel] = Array.isArray(props.relationships[rel].data) ?
             props.relationships[rel].data.map(item => {
               return item.id;
             }) :
-            //otherwise return the id of the item
-            props.relationships[rel].data.id || null;
+            //otherwise return the id of the item or null if the proprty is not set
+            props.relationships[rel].data ? props.relationships[rel].data.id : null;
           properties.attr('relationships.' + rel, true);
         }
       }

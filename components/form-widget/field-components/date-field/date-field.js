@@ -3,9 +3,11 @@ import Component from 'can/component/';
 import CanMap from 'can/map/';
 
 import widgetModel from '../../../widget-model';
-import template from './date-field.stache!';
 import 'date-selector/less/datepicker.less!';
 import dateSelector from 'date-selector';
+
+import template from './date-field.stache!';
+import './date-field.less!';
 
 /**
  * @constructor components/form-widget/field-components/date-field.ViewModel ViewModel

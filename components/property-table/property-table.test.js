@@ -3,6 +3,7 @@ import can from 'can';
 import { Connection } from 'test/data/connection';
 import { ViewModel } from './property-table';
 import CanMap from 'can/map/';
+import {Field} from '../../util/field';
 
 let vm;
 
@@ -39,51 +40,10 @@ test('objectId set(id)', assert => {
   });
 });
 
-test('attributes get() no fieldProperties', assert => {
-  let map = new CanMap({
-    prop1: 'test1'
-  });
-  let expected = {
-    prop1: {
-      field: 'prop1',
-      alias: 'Prop1',
-      value: 'test1',
-      rawValue: 'test1'
-    }
-  };
-  assert.deepEqual(vm.attr('attributes'), {}, 'if there is no object, attributes should be empty');
+test('getValue(field)', assert => {
+  let field = new Field({name: 'test'});
+  let obj = new CanMap({test: 'value'});
 
-  vm.attr('object', map);
-  assert.deepEqual(vm.attr('attributes').attr(), expected, 'attributes should be created with the expected properties');
-});
-
-test('attributes get() with fieldProperties', assert => {
-  let map = new CanMap({
-    prop1: 'test1',
-    prop2: 'test2'
-  });
-  let fieldProps = {
-    prop1: {
-      alias: 'Alias',
-      formatter: val => {
-        return 'formatted';
-      }
-    },
-    prop2: {
-      exclude: true
-    }
-  };
-  let expected = {
-    prop1: {
-      field: 'prop1',
-      alias: 'Alias',
-      value: 'formatted',
-      rawValue: 'test1'
-    }
-    //prop2 should be excluded 
-  };
-
-  vm.attr('object', map);
-  vm.attr('fieldProperties', fieldProps);
-  assert.deepEqual(vm.attr('attributes').attr(), expected, 'attributes should be created with the expected properties');
+  vm.attr('object', obj);
+  assert.equal(vm.getValue(field), 'value', 'result should match the value of the object');
 });

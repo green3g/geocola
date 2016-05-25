@@ -79,65 +79,22 @@ export const ViewModel = viewModel.extend({
     fieldProperties: {
       value: null
     },
-    /**
-     * A virtual property that returns an object consisting of the formatted fields, values, and layer properties.
-     * @parent property-table.props
-     * @property {property-table.types.tableValuesObject} property-table.props.attributes
-     */
-    attributes: {
-      get() {
-        var obj = this.attr('object');
-        if (!obj) {
-          return {};
-        }
-
-        var props = obj.attr();
-        var attributes = {};
-        var fieldProperties = this.attr('fieldProperties');
-        var prop;
-        if (fieldProperties) {
-          //build a new attribute list
-          for (prop in props) {
-            if (props.hasOwnProperty(prop) &&
-              //if we don't have field properties for this layer or we do
-              //and the exclude property is false or undefined, show this field
-              !fieldProperties.attr([prop, 'exclude'].join('.'))) {
-
-              //add a new property
-              attributes[prop] = {
-
-                //the field name
-                field: prop,
-
-                //alias defaults to the formatted property name if not provided
-                alias: fieldProperties.attr([prop, 'alias'].join('.')) || makeSentenceCase(prop),
-
-                //value gets formatted if there's a formatter function
-                value: typeof fieldProperties.attr([prop, 'formatter'].join('.')) === 'function' ?
-                  fieldProperties.attr([prop, 'formatter'].join('.'))(props[prop], props) : can.esc(props[prop]),
-
-                //rawValue in case you need access to it
-                rawValue: props[prop]
-              };
-            }
-          }
-        } else {
-          //if we don't have a fieldProperties, build a generic list
-          for (prop in props) {
-            if (props.hasOwnProperty(prop)) {
-              attributes[prop] = {
-                field: prop,
-                alias: makeSentenceCase(prop),
-                value: props[prop],
-                rawValue: props[prop]
-              };
-            }
-          }
-        }
-        return new CanMap(attributes);
+    fields: {
+      Value: List,
+      get(fields) {
+        return fields.filter(f => {
+          return !f.attr('excludePropertyTable');
+        });
       }
     }
   },
+  /**
+   * Asynchronously fetches an object using a can-connect model and an id
+   * @param  {can-connect.model} con The connection object to an api resource
+   * @param  {Number} id  The id number of the object to retrieve
+   * @return {can.Deferred}     A deferred object that is resolved once the object is retreived
+   * @link https://connect.canjs.com/ can-connect
+   */
   fetchObject(con, id) {
     if (!con || !id) {
       return;
@@ -152,6 +109,14 @@ export const ViewModel = viewModel.extend({
 
     this.attr('objectPromise', def);
     return def;
+  },
+  /**
+   * A helper for the template that gets an object's property using the field
+   * @param  {field} field The field object
+   * @return {string}       The formatted string 
+   */
+  getValue(field) {
+    return field.getFormattedValue(this.attr('object'));
   }
 });
 

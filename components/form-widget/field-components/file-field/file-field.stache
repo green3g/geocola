@@ -1,7 +1,7 @@
 <div class="form-group">
   <div class="input-group">
-    <label for="{{properties.name}}">{{properties.alias}}</label>
-    <input ($change)="onChange(%element)" type="file" class="form-control" id="{{properties.name}}" name="{{properties.name}}" {{#if properties.multiple}} multiple {{/if}} />
+    <label for="{{name}}">{{alias}}</label>
+    <input ($change)="onChange(%element)" type="file" class="form-control" id="{{name}}" name="{{name}}" {{#if properties.multiple}} multiple {{/if}} />
   </div>
 
   {{#if state.isPending}}
