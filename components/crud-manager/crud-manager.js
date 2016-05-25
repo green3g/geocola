@@ -157,12 +157,12 @@ export let ViewModel = CanMap.extend({
     queryPage: {
       type: 'number',
       value: 0,
-      set(page) {
+      set(page, set) {
         var params = this.attr('parameters');
         if (!params) {
           return page;
         }
-        params.attr('page[number]', this.attr('queryPageNumber'));
+        params.attr('page[number]', page + 1);
         return page;
       }
     },
