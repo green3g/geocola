@@ -130,7 +130,7 @@
         <tab-container>
           {{#each view.relatedViews}}
             <panel-container title="{{./view.title}}" collapsible="false">
-              <crud-manager {view}="../view" {parameters}="../view.parameters" related-field="{{../referenceKey}}" related-value="{{getRelatedValue(../foreignKey, ../../focusObject.value)}}" />
+              <crud-manager {view}="../view" {parameters}="../view.parameters" related-field="{{../referenceKey}}" related-value="{{getRelatedValue(../foreignKey, ../../focusObject.value)}}" {query-filters}="../view.queryFilters" />
             </panel-container>
           {{/each}}
         </tab-container>
