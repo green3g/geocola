@@ -86,7 +86,8 @@ export const Filter = can.Map.extend({
   define: {
     val: {},
     name: {
-      type: 'string'
+      type: 'string',
+      value: ''
     },
     op: {
       value: 'equals',

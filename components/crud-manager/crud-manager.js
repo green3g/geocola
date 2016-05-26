@@ -15,6 +15,7 @@ import '../modal-container/';
 import '../tab-container/';
 import '../panel-container/';
 
+import { Filter } from '../filter-widget/';
 import { ADD_MESSSAGE_TOPIC, CLEAR_MESSAGES_TOPIC } from '../../util/topics';
 import { Message } from '../alert-widget/message';
 import { mapToFields, parseFieldArray } from '../../util/field';
@@ -97,7 +98,7 @@ export let ViewModel = CanMap.extend({
      */
     showPaginate: {
       type: 'boolean',
-      get(){
+      get() {
         return this.attr('totalPages') > 1;
       }
     },
@@ -108,7 +109,7 @@ export let ViewModel = CanMap.extend({
      */
     objects: {
       get(prev, setAttr) {
-        var promise = this.attr('view.connection').getList(this.attr('parameters').attr());
+        var promise = this.attr('view.connection').getList(this.attr('parameters').serialize());
         promise.catch(function(err) {
           console.error('unable to complete objects request', err);
         });
@@ -212,19 +213,26 @@ export let ViewModel = CanMap.extend({
     }
   },
   init() {
-    var params = this.attr('parameters');
     can.batch.start();
-    params.attr({
-      'page[size]': this.attr('queryPerPage'),
-      'page[number]': this.attr('queryPage')
-    });
-    if (this.attr('relatedField') && this.attr('relatedValue')) {
-      this.attr('queryFilters').push({
-        name: this.attr('relatedField'),
-        op: '==',
-        val: this.attr('relatedValue')
+
+    //set up view's filters
+    if (this.attr('view.queryFilters')) {
+      this.attr('view.queryFilters').forEach(f => {
+        this.attr('queryFilters').push(new Filter(f));
       });
     }
+
+    //set up related filters
+    if (this.attr('relatedField') && this.attr('relatedValue')) {
+      let f = new Filter({
+        name: this.attr('relatedField'),
+        operator: 'equals',
+        val: this.attr('relatedValue')
+      });
+      this.attr('queryFilters').push(f);
+    }
+
+    //set the parameters correctly
     this.setFilterParameter(this.attr('queryFilters'));
     can.batch.stop();
   },
@@ -311,7 +319,7 @@ export let ViewModel = CanMap.extend({
     this.attr('queryPage', 0);
     if (filters && filters.length) {
       //if there are filters in the list, set the filter parameter
-      params.attr('filter[objects]', JSON.stringify(filters.attr()));
+      params.attr('filter[objects]', JSON.stringify(filters.serialize()));
     } else {
       //remove the filter parameter
       params.removeAttr('filter[objects]');
@@ -347,11 +355,11 @@ Component.extend({
   leakScope: false,
   events: {
     //bind to the change event of the entire list
-    '{viewModel.queryFilters} change'(filters) {
+    '{viewModel.queryFilters} change' (filters) {
       this.viewModel.setFilterParameter(filters);
     },
     //bind to the change event of the entire map
-    '{viewModel.sort} change'(sort) {
+    '{viewModel.sort} change' (sort) {
       this.viewModel.setSortParameter(sort);
     }
   }
