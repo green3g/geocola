@@ -7,5 +7,8 @@ export const ViewMap = CanMap.extend({
   saveSuccessMessage: 'Object saved.',
   saveFailMessage: 'Object could not be saved.',
   deleteSuccessMessage: 'Object removed.',
-  deleteFailMessage: 'Object could not be removed.'
+  deleteFailMessage: 'Object could not be removed.',
+  disableEdit: false,
+  disableDelete: false,
+  disableAdd: false
 });

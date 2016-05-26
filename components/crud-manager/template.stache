@@ -15,7 +15,7 @@
 
 
   {{#case 'add'}}
-    {{#if view.disableEdit}}
+    {{#if view.disableAdd}}
       <p>You do not have permission to add this data.</p>
     {{else}}
       <form-widget {form-object}="getNewObject()" (submit)="saveObject" (cancel)="setPage('all')" {fields}="_fields" />
@@ -53,6 +53,8 @@
               <button class="btn btn-default" ($click)="editObject(null, null null, .)">
                 <i class="fa fa-wrench"></i> Edit
               </button>
+            {{/unless}}
+            {{#unless view.disableDelete}}
               <button class="btn btn-default" ($click)="deleteObject(null, null, null, .)">
                 <i class="fa fa-trash"></i> Remove
               </button>
@@ -74,10 +76,12 @@
       <button class="btn btn-default" ($click)="toggleFilter">
         <i class="fa fa-search"></i> Search ({{queryFilters.length}})
       </button>
-      {{#unless view.disableEdit}}
+      {{#unless view.disableAdd}}
         <button class="btn btn-default" ($click)="setPage('add')">
           <i class="fa fa-plus"></i> Add New
         </button>
+      {{/unless}}
+      {{#unless view.disableDelete}}
         {{#if selectedObjects.length}}
           <button class="btn btn-default" ($click)="deleteMultiple">
             <i class="fa fa-trash"></i> Remove Selected
