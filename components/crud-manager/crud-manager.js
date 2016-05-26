@@ -15,6 +15,7 @@ import '../modal-container/';
 import '../tab-container/';
 import '../panel-container/';
 
+import {Filter} from '../filter-widget/';
 import { ADD_MESSSAGE_TOPIC, CLEAR_MESSAGES_TOPIC } from '../../util/topics';
 import { Message } from '../alert-widget/message';
 import { mapToFields, parseFieldArray } from '../../util/field';
@@ -108,7 +109,7 @@ export let ViewModel = CanMap.extend({
      */
     objects: {
       get(prev, setAttr) {
-        var promise = this.attr('view.connection').getList(this.attr('parameters').attr());
+        var promise = this.attr('view.connection').getList(this.attr('parameters').serialize());
         promise.catch(function(err) {
           console.error('unable to complete objects request', err);
         });
@@ -219,11 +220,12 @@ export let ViewModel = CanMap.extend({
       'page[number]': this.attr('queryPage')
     });
     if (this.attr('relatedField') && this.attr('relatedValue')) {
-      this.attr('queryFilters').push({
+      this.attr('queryFilters').push(new Filter({
         name: this.attr('relatedField'),
-        op: '==',
+        operator: 'equals',
         val: this.attr('relatedValue')
-      });
+      }));
+      console.log(this.attr());
     }
     this.setFilterParameter(this.attr('queryFilters'));
     can.batch.stop();
@@ -311,7 +313,7 @@ export let ViewModel = CanMap.extend({
     this.attr('queryPage', 0);
     if (filters && filters.length) {
       //if there are filters in the list, set the filter parameter
-      params.attr('filter[objects]', JSON.stringify(filters.attr()));
+      params.attr('filter[objects]', JSON.stringify(filters.serialize()));
     } else {
       //remove the filter parameter
       params.removeAttr('filter[objects]');
