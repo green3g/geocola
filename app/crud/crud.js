@@ -10,10 +10,9 @@ import 'bootstrap/dist/css/bootstrap-theme.min.css!';
 import 'font-awesome/css/font-awesome.min.css';
 import './crud.less!';
 import template from './crud.stache!';
-import 'components/crud-manager/';
+import { TOPICS } from 'components/crud-manager/';
 import 'components/alert-widget/';
 import PubSub from 'pubsub-js';
-import { ADD_MESSSAGE_TOPIC, CLEAR_MESSAGES_TOPIC } from '../../util/topics';
 
 
 export let AppViewModel = can.Map.extend({
@@ -62,7 +61,7 @@ export let AppViewModel = can.Map.extend({
     route.bind('change', this.routeChanged.bind(this));
   },
   initPubSub: function() {
-    PubSub.subscribe(ADD_MESSSAGE_TOPIC, (topic, message) => {
+    PubSub.subscribe(TOPICS.ADD_MESSAGE, (topic, message) => {
       this.attr('messages').push(message);
       if (message.autoHide) {
         setTimeout(() => {
@@ -71,7 +70,7 @@ export let AppViewModel = can.Map.extend({
       }
     });
 
-    PubSub.subscribe(CLEAR_MESSAGES_TOPIC, (topic, data) => {
+    PubSub.subscribe(TOPICS.CLEAR_MESSAGES, (topic, data) => {
       this.attr('messages').replace([]);
     });
   },
