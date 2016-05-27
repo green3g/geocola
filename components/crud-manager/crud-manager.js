@@ -16,10 +16,14 @@ import '../tab-container/';
 import '../panel-container/';
 
 import { Filter } from '../filter-widget/';
-import { ADD_MESSSAGE_TOPIC, CLEAR_MESSAGES_TOPIC } from '../../util/topics';
 import { Message } from '../alert-widget/message';
 import { mapToFields, parseFieldArray } from '../../util/field';
 import PubSub from 'pubsub-js';
+
+export const TOPICS = {
+  ADD_MESSAGE: 'addMessage',
+  CLEAR_MESSAGES: 'clearMessages'
+};
 
 const DEFAULT_BUTTONS = [{
   iconClass: 'fa fa-list-ul',
@@ -47,6 +51,9 @@ const EDIT_BUTTONS = DEFAULT_BUTTONS.concat([{
  * @description A `<crud-manager />` component's ViewModel
  */
 export let ViewModel = CanMap.extend({
+  /**
+   * @prototype
+   */
   define: {
     /**
      * The view object for this crud-manager
@@ -149,12 +156,18 @@ export let ViewModel = CanMap.extend({
       }
     },
     /**
-     *
-     * @type {Object}
+     * A list of current query filters
+     * @property {can.List<Filter>}  components/crud-manager.ViewModel.props.queryFilters
+     * @parent components/crud-manager.ViewModel.props
      */
     queryFilters: {
       Value: List
     },
+    /**
+     * The current page index number. The number 0 here represents page 1.
+     * @property {Number}  components/crud-manager.ViewModel.props.queryPage
+     * @parent components/crud-manager.ViewModel.props
+     */
     queryPage: {
       type: 'number',
       value: 0,
@@ -167,11 +180,21 @@ export let ViewModel = CanMap.extend({
         return page;
       }
     },
+    /**
+     * The page number, this is calculated by incrementing the queryPage by one.
+     * @property {Number}  components/crud-manager.ViewModel.props.queryPageNumber
+     * @parent components/crud-manager.ViewModel.props
+     */
     queryPageNumber: {
       get() {
         return this.attr('queryPage') + 1;
       }
     },
+    /**
+     * The number of records to show per page.
+     * @property {Number}  components/crud-manager.ViewModel.props.buttons
+     * @parent components/crud-manager.ViewModel.props
+     */
     queryPerPage: {
       type: 'number',
       value: 10,
@@ -184,21 +207,49 @@ export let ViewModel = CanMap.extend({
         return perPage;
       }
     },
+    /**
+     * The current sort parameters.
+     * @property {can.Map}  components/crud-manager.ViewModel.props.sort
+     * @parent components/crud-manager.ViewModel.props
+     */
     sort: {
       Value: CanMap
     },
+    /**
+     * The current id number of the object that is being viewed in the property
+     * table or edited in the form widget.
+     * @property {Number}  components/crud-manager.ViewModel.props.buttons
+     * @parent components/crud-manager.ViewModel.props
+     */
     viewId: {
       type: 'number',
       value: 0
     },
+    /**
+     * Current loading progress. NOT IMPLEMENTED
+     * TODO: implement loading progress on lengthy processes like multi delete
+     * @property {Number}  components/crud-manager.ViewModel.props.progress
+     * @parent components/crud-manager.ViewModel.props
+     */
     progress: {
       type: 'number',
       value: 100
     },
+    /**
+     * Whether or not the filter popup is visible
+     * @property {Boolean} components/crud-manager.ViewModel.props.buttons
+     * @parent components/crud-manager.ViewModel.props
+     */
     filterVisible: {
       type: 'boolean',
       value: false
     },
+    /**
+     * The internal field array that define the display of data and field types
+     * for editing and filtering
+     * @property {Array<Field>} components/crud-manager.ViewModel.props._fields
+     * @parent components/crud-manager.ViewModel.props
+     */
     _fields: {
       get() {
 
@@ -210,8 +261,19 @@ export let ViewModel = CanMap.extend({
         //if that doesn't exist, use the objectTemplate to create fields
         return mapToFields(this.attr('view.objectTemplate'));
       }
+    },
+    /**
+     * An array of currently selected objects in the list-table
+     * @property {Array<can.Map>} components/crud-manager.ViewModel.props.selectedObjects
+     * @parent components/crud-manager.ViewModel.props
+     */
+    selectedObjects: {
+      Value: List
     }
   },
+  /**
+   * Initializes queryFilters
+   */
   init() {
     can.batch.start();
 
@@ -236,21 +298,49 @@ export let ViewModel = CanMap.extend({
     this.setFilterParameter(this.attr('queryFilters'));
     can.batch.stop();
   },
+  /**
+   * Sets the current viewId to the object's id and sets the page to edit
+   * to start editing the object provided.
+   * @param  {can.Map} scope The stache scope (not used)
+   * @param  {domNode} dom   The domNode that triggered the event (not used)
+   * @param  {Event} event The event that was triggered (not used)
+   * @param  {can.Map} obj   The object to start editing
+   */
   editObject(scope, dom, event, obj) {
     this.attr('viewId', this.attr('view.connection').id(obj));
     this.attr('page', 'edit');
   },
+  /**
+   * Sets the current viewId to the object's id and sets the page to details
+   * to display a detailed view of the object provided.
+   * @param  {can.Map} scope The stache scope (not used)
+   * @param  {domNode} dom   The domNode that triggered the event (not used)
+   * @param  {Event} event The event that was triggered (not used)
+   * @param  {can.Map} obj   The object to view
+   */
   viewObject(scope, dom, event, obj) {
     this.attr('viewId', this.attr('view.connection').id(obj));
     this.attr('page', 'details');
   },
+  /**
+   * Saves the provided object and sets the current viewId to the object's
+   * id once it is returned. We then switch the page to the detail view to
+   * display the created or updated object.
+   *
+   * This method also adds notifications once the object is saved using PubSub.
+   *
+   * @param  {can.Map} scope The stache scope (not used)
+   * @param  {domNode} dom   The domNode that triggered the event (not used)
+   * @param  {Event} event The event that was triggered (not used)
+   * @param  {can.Map} obj   The object to save
+   */
   saveObject(scope, dom, event, obj) {
     this.attr('progress', 100);
     this.attr('page', 'loading');
     var deferred = this.attr('view.connection').save(obj);
     deferred.then(result => {
       //add a message
-      PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
+      PubSub.publish(TOPICS.ADD_MESSAGE, new Message({
         message: this.attr('view.saveSuccessMessage'),
         detail: 'ID: ' + this.attr('view.connection').id(result)
       }));
@@ -263,7 +353,7 @@ export let ViewModel = CanMap.extend({
 
     }).fail(e => {
       console.warn(e);
-      PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
+      PubSub.publish(TOPICS.ADD_MESSAGE, new Message({
         message: this.attr('view.saveFailMessage'),
         detail: e.statusText + ' : <small>' + e.responseText + '</small>',
         level: 'danger',
@@ -273,21 +363,39 @@ export let ViewModel = CanMap.extend({
     });
     return deferred;
   },
+  /**
+   * Changes the page and resets the viewId to 0
+   * @param {String} page The name of the page to switch to
+   */
   setPage(page) {
     this.attr('page', page);
     this.attr('viewId', 0);
   },
+  /**
+   * Creates and returns a new object from the view's objectTemplate
+   * @return {can.map} A new object created from the `view.objectTemplate`
+   */
   getNewObject() {
     //create a new empty object with the defaults provided
     //from the objectTemplate property which is a map
     return this.attr('view.objectTemplate')();
   },
+  /**
+   * Displays a confirm dialog box and if confirmed, deletes the object provided.
+   * Once the object is deleted, a message is published using PubSub.
+   * @param  {can.Map} scope The stache scope (not used)
+   * @param  {domNode} dom   The domNode that triggered the event (not used)
+   * @param  {Event} event The event that was triggered (not used)
+   * @param  {can.Map} obj   The object to delete
+   * @param {Boolean} skipConfirm If true, the method will not display a confirm dialog
+   * and will immediately attempt to remove the object
+   */
   deleteObject(scope, dom, event, obj, skipConfirm) {
     if (obj && (skipConfirm || confirm('Are you sure you want to delete this record?'))) {
       let deferred = this.attr('view.connection').destroy(obj);
       deferred.then(result => {
         //add a message
-        PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
+        PubSub.publish(TOPICS.ADD_MESSAGE, new Message({
           message: this.attr('view.deleteSuccessMessage'),
           detail: 'ID: ' + this.attr('view.connection').id(result)
         }));
@@ -295,7 +403,7 @@ export let ViewModel = CanMap.extend({
 
       deferred.fail(result => {
         //add a message
-        PubSub.publish(ADD_MESSSAGE_TOPIC, new Message({
+        PubSub.publish(TOPICS.ADD_MESSAGE, new Message({
           message: this.attr('view.deleteFailMessage'),
           detail: result.statusText + ' : <small>' + result.responseText + '</small>',
           level: 'danger',
@@ -305,14 +413,31 @@ export let ViewModel = CanMap.extend({
       return deferred;
     }
   },
-  deleteMultiple() {
-    if (confirm('Are you sure you want to delete the selected records?')) {
+  /**
+   * Iterates through the objects in the `selectedObjects` array
+   * and deletes each one individually.
+   * //TODO implement batch deleting to avoid many ajax calls
+   * @param {Boolean} skipConfirm If true, the method will not display a confirm dialog
+   * and will immediately attempt to remove the selected objects
+   */
+  deleteMultiple(skipConfirm) {
+    if (skipConfirm || confirm('Are you sure you want to delete the selected records?')) {
+      let defs = [];
       this.attr('selectedObjects').forEach((obj) => {
-        this.deleteObject(null, null, null, obj, true);
+        defs.push(this.deleteObject(null, null, null, obj, true));
       });
       this.attr('selectedObjects').replace([]);
+      return defs;
     }
+    return null;
   },
+  /**
+   * Sets the filter parameter `filter[objects]`. This method should be called
+   * whenever the queryFilters are changed.
+   * The filters are serialized and converted into a JSON string.
+   * //TODO make the filter object more generic for different types rest apis
+   * @param {can.List<Filter>} filters The new set of filters to apply
+   */
   setFilterParameter(filters) {
     var params = this.attr('parameters');
     //reset the page filter
@@ -325,6 +450,13 @@ export let ViewModel = CanMap.extend({
       params.removeAttr('filter[objects]');
     }
   },
+  /**
+   * sets the sort parameter `sort`. This method should be called any time the
+   * sorting of the data is changed
+   * //TODO make the sort parameter type more generic to allow for different rest apis
+   * @param {can.Map} sort A special sort object that contains a field to sort on
+   * and a type of sort, like `asc` or `desc`
+   */
   setSortParameter(sort) {
     var params = this.attr('parameters');
     if (!sort.attr('fieldName')) {
@@ -333,6 +465,10 @@ export let ViewModel = CanMap.extend({
     }
     this.attr('parameters.sort', sort.type === 'asc' ? sort.fieldName : '-' + sort.fieldName);
   },
+  /**
+   * Toggles the display of the filter dialog
+   * @param  {Boolean} val (Optional) whether or not to display the dialog
+   */
   toggleFilter(val) {
     if (typeof val !== 'undefined') {
       this.attr('filterVisible', val);
@@ -340,9 +476,12 @@ export let ViewModel = CanMap.extend({
       this.attr('filterVisible', !this.attr('filterVisible'));
     }
   },
-  isListTable() {
-    return this.attr('view.listType') !== 'property-table';
-  },
+  /**
+   * Retrieves a value from an object based on the key provided
+   * @param  {String} foreignKey  The name of the field to retrieve from the object
+   * @param  {can.Map} focusObject The object to retrieve the property from
+   * @return {*} The object's property
+   */
   getRelatedValue(foreignKey, focusObject) {
     return focusObject.attr(foreignKey);
   }

@@ -116,7 +116,7 @@ export const Field = CanMap.extend({
 /**
  * Converts a can.Map to an array of Field objects using the define
  * property or the keys
- * @param  {can.Map} map The map to parse
+ * @param  {can.Map.extend} map The map constructor to parse
  * @return {Array<Field>} The array of fields
  */
 export function mapToFields(map) {
@@ -137,7 +137,8 @@ export function mapToFields(map) {
       }
     }
   } else {
-    fields = CanMap.keys(map);
+    //we have a constructor so make a new map and get its keys
+    fields = CanMap.keys(new map());
   }
   return parseFieldArray(fields);
 }
