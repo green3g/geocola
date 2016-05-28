@@ -7,3 +7,5 @@ import 'components/tab-container/tab-container.test';
 import 'components/property-table/property-table.test';
 import 'components/crud-manager/crud-manager.test';
 import 'util/string.test';
+import 'components/panel-container/panel-container.test';
+import 'components/paginate-widget/paginate-widget.test';
