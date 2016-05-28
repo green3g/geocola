@@ -1,0 +1,8 @@
+<div class="error-alerts">
+  {{#each messages}}
+    <div class="alert alert-{{level}}  alert-dismissible" role="alert">
+      <button type="button" ($click)="removeMessage(.)" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <strong>{{message}}</strong>{{#if detail}} {{{detail}}}{{/if}}
+    </div>
+  {{/each}}
+</div>

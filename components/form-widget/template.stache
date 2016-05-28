@@ -1,6 +1,6 @@
 <form class="form{{#inline}}-inline{{/inline}}" ($submit)="submitForm">
-  {{#each _fieldObjects}}
-    {{>template}}
+  {{#each fields}}
+    {{>formTemplate}}
   {{/each}}
 
   {{#if showButtons}}

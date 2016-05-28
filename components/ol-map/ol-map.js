@@ -1,9 +1,9 @@
-import can from 'can/util/';
+import can from 'can/util/library';
 import CanMap from 'can/map/';
 import 'can/map/define/';
 import Component from 'can/component/';
 import ol from 'openlayers';
-import widgetModel from 'components/widget-model';
+import widgetModel from '../widget-model';
 import template from './olMap.stache!';
 import './olMap.css!';
 

@@ -1,17 +1,4 @@
-<div class="error-alerts">
-  {{#each errors}}
-    <div ($click)="removeError(.)" class="alert alert-{{level}}  alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      {{message}}: {{error}}
-    </div>
-  {{/each}}
-</div>
-
-
-
 {{#switch page}}
-
-
 
 
   {{#case 'edit'}}
@@ -19,7 +6,7 @@
       <p>You do not have permission to edit this data.</p>
     {{else}}
       {{#if focusObject.isResolved}}
-        <form-widget {form-object}="focusObject.value" (submit)="saveObject" (cancel)="resetPage" {fields}="view.editFields" />
+        <form-widget {form-object}="focusObject.value" (submit)="saveObject" (cancel)="setPage('all')" {fields}="_fields" />
       {{/if}}
     {{/if}}
   {{/case}}
@@ -27,13 +14,11 @@
 
 
 
-
-
   {{#case 'add'}}
-    {{#if view.disableEdit}}
+    {{#if view.disableAdd}}
       <p>You do not have permission to add this data.</p>
     {{else}}
-      <form-widget {form-object}="getNewObject()" (submit)="saveObject" (cancel)="resetPage" {fields}="view.editFields" />
+      <form-widget {form-object}="getNewObject()" (submit)="saveObject" (cancel)="setPage('all')" {fields}="_fields" />
     {{/if}}
   {{/case}}
 
@@ -42,12 +27,6 @@
 
 
   {{#case 'all'}}
-
-    {{#if filterVisible}}
-      <modal-container title="Search" (hide)="toggleFilter(false)">
-        <filter-widget {(filters)}="queryFilters" {field-options}="view.filterFields" {object-template}="view.objectTemplate" />
-      </modal-container>
-    {{/if}}
 
     {{#if objects.isPending}}
       <div class="progress">
@@ -74,6 +53,8 @@
               <button class="btn btn-default" ($click)="editObject(null, null null, .)">
                 <i class="fa fa-wrench"></i> Edit
               </button>
+            {{/unless}}
+            {{#unless view.disableDelete}}
               <button class="btn btn-default" ($click)="deleteObject(null, null, null, .)">
                 <i class="fa fa-trash"></i> Remove
               </button>
@@ -81,11 +62,11 @@
 
           </div>
 
-          <property-table {object}="." {connection}="view.connection" {field-properties}="view.detailFields" />
+          <property-table {object}="." {connection}="view.connection" {fields}="_fields" />
         {{/each}}
 
     {{else}}
-      <list-table {objects}="objects.value" {^_selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" {(current-sort)}="sort" {fields}="view.tableFields" {formatters}="view.tableFormatters" {buttons}="buttons" />
+      <list-table {objects}="objects.value" {^_selected-objects}="selectedObjects" (edit)="editObject" (delete)="deleteObject" (view)="viewObject" {(current-sort)}="sort" {fields}="_fields" {buttons}="buttons" />
       {{/is}}
     {{/if}}
 
@@ -95,20 +76,36 @@
       <button class="btn btn-default" ($click)="toggleFilter">
         <i class="fa fa-search"></i> Search ({{queryFilters.length}})
       </button>
-      {{#unless view.disableEdit}}
-        <button class="btn btn-default" ($click)="createObject">
+      {{#unless view.disableAdd}}
+        <button class="btn btn-default" ($click)="setPage('add')">
           <i class="fa fa-plus"></i> Add New
         </button>
+      {{/unless}}
+      {{#unless view.disableDelete}}
         {{#if selectedObjects.length}}
           <button class="btn btn-default" ($click)="deleteMultiple">
             <i class="fa fa-trash"></i> Remove Selected
           </button>
         {{/if}}
       {{/unless}}
+      {{#if selectedObjects.length}}
+        <button class="btn btn-default" ($click)="setPage('selection')">
+          <i class="fa fa-list"></i> View Selected
+        </button>
+      {{/if}}
     </div>
-    <div class="hidden-print">
-      <paginate-widget {(active-page-index)}="queryPage" {pages}="totalPages" />
-    </div>
+    {{#if showPaginate}}
+      <div class="hidden-print">
+        <paginate-widget {(active-page-index)}="queryPage" {pages}="totalPages" />
+      </div>
+    {{/if}}
+
+    {{#if filterVisible}}
+      <modal-container title="Search: {{view.connection.metadata.totalItems}} row(s) found." (hide)="toggleFilter(false)">
+        <filter-widget {(filters)}="queryFilters" {fields}="_fields" {object-template}="view.objectTemplate" />
+        <p></p>
+      </modal-container>
+    {{/if}}
   {{/case}}
 
 
@@ -119,9 +116,9 @@
 
   {{#case 'details'}}
     {{#if focusObject.isResolved}}
-      <property-table {object}="focusObject.value" {field-properties}="view.detailFields" />
+      <property-table {object}="focusObject.value" {fields}="_fields" />
       <div class="btn btn-group hidden-print" role="group" aria-label="Management Buttons">
-        <button class="btn btn-default" ($click)="resetPage">
+        <button class="btn btn-default" ($click)="setPage('all')">
           <i class="fa fa-arrow-left"></i> Back
         </button>
         {{#unless view.disableEdit}}
@@ -134,10 +131,9 @@
       {{#if view.relatedViews}}
         <hr />
         <h2>Related Data</h2>
-        <!--TODO find out why tab-container isn't working here -->
         <tab-container>
           {{#each view.relatedViews}}
-            <panel-container title="{{./view.title}}" heading="{{./view.title}}" collapsible="false">
+            <panel-container title="{{./view.title}}" collapsible="false">
               <crud-manager {view}="../view" {parameters}="../view.parameters" related-field="{{../referenceKey}}" related-value="{{getRelatedValue(../foreignKey, ../../focusObject.value)}}" />
             </panel-container>
           {{/each}}
@@ -148,9 +144,21 @@
   {{/case}}
 
 
-
-
-
+  {{#case 'selection'}}
+    <button class="btn btn-default" ($click)="setPage('all')">
+      <i class="fa fa-arrow-left"></i> Back
+    </button>
+    {{#each selectedObjects}}
+      <property-table {object}="." {fields}="_fields" />
+      <div class="btn btn-group hidden-print" role="group" aria-label="Management Buttons">
+        {{#unless view.disableEdit}}
+          <button class="btn btn-default" ($click)="editObject(null, null null, .)">
+            <i class="fa fa-wrench"></i> Edit
+          </button>
+        {{/unless}}
+      </div>
+    {{/each}}
+  {{/case}}
 
   {{#case 'loading'}}
     <div class="progress">

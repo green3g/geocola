@@ -7,10 +7,10 @@
       </tr>
     </thead>
     <tbody>
-      {{#each attributes}}
+      {{#each fields}}
         <tr>
           <td>{{alias}}</td>
-          <td>{{{value}}}</td>
+          <td>{{{getValue(.)}}}</td>
         </tr>
       {{/each}}
     </tbody>

@@ -1,6 +1,6 @@
 import Component from 'can/component/';
-import widgetModel from 'components/widget-model';
-
+import widgetModel from '../../../widget-model';
+import CanMap from 'can/map/';
 import template from './select-field.stache!';
 
 /**
@@ -13,16 +13,16 @@ import template from './select-field.stache!';
 export let ViewModel = widgetModel.extend({
   define: {
     properties: {
-      Value: Map
+      Value: CanMap
     }
   },
   onChange(value) {
     //we could perform some other logic here
-    this.attr('properties.value', value);
+    this.attr('value', value);
     this.dispatch('change', [value]);
   },
   isSelected(value){
-    return value == this.attr('properties.value');
+    return value == this.attr('value');
   }
 });
 

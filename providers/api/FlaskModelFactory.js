@@ -2,7 +2,7 @@
 import List from 'can/list/';
 import CanMap from 'can/map/';
 import superMap from 'can-connect/can/super-map/';
-import can from 'can/util/';
+import can from 'can/util/library';
 import set from 'can-set';
 
 var uniqueId = 0;
@@ -13,11 +13,11 @@ function getNextId() {
 
 /**
  * @typedef {connectInfoObject} apiProvider.types.connectInfoObject ConnectInfoObject
-  * @parent apiProvider.types
-  * @option {can.Model | superMap} connection The data model used to create, update and delete objects.
-  * @option {can.Map | object} map The object used to create new objects. This object can be used to specify default values and properties when creating new empty objects.
+ * @parent apiProvider.types
+ * @option {can.Model | superMap} connection The data model used to create, update and delete objects.
+ * @option {can.Map | object} map The object used to create new objects. This object can be used to specify default values and properties when creating new empty objects.
  *  @option {can.List | Array} list The list used internally by can-connect
-  * @option {Object} properties Additional metadata about the api and data
+ * @option {Object} properties Additional metadata about the api and data
  */
 const PropertiesObject = CanMap.extend({
   define: {
@@ -45,10 +45,10 @@ const PropertiesObject = CanMap.extend({
 /**
  *
  * A factory function that creates a new Flask-Restless API connection.
-  * @parent apiProvider.providers
-  * @param {apiProvider.types.FlaskConnectOptions} options The factory options
-  * @return {can-connect/can/super-map}
-  */
+ * @parent apiProvider.providers
+ * @param {apiProvider.types.FlaskConnectOptions} options The factory options
+ * @return {can-connect/can/super-map}
+ */
 export function FlaskConnectFactory(options) {
   //a new list which should hold the objects
   let Objectist = List.extend({
@@ -110,6 +110,15 @@ export function FlaskConnectFactory(options) {
         return def;
       },
       createData: function(attrs) {
+
+        var data = {};
+        //exclude relationship properties
+        for (var a in attrs) {
+          if (attrs.hasOwnProperty(a) && !properties.attr('relationships.' + a)) {
+            data[a] = attrs[a];
+          }
+        }
+
         //post attributes to the create url
         return can.ajax({
           url: this.resource,
@@ -119,7 +128,7 @@ export function FlaskConnectFactory(options) {
           },
           data: JSON.stringify({
             data: {
-              attributes: attrs,
+              attributes: data,
               type: options.name
             }
           }),
@@ -177,12 +186,21 @@ export function FlaskConnectFactory(options) {
       var obj = props.attributes;
       obj.id = props[this.idProp];
       //include the relationship id's
+      can.batch.start();
       for (var rel in props.relationships) {
-        if (props.relationships.hasOwnProperty(rel)) {
-          obj[rel] = props.relationships[rel].data || null;
+        if (props.relationships.hasOwnProperty(rel) &&
+          props.relationships[rel].hasOwnProperty('data')) {
+          //if its an array, extract an array of the ids
+          obj[rel] = Array.isArray(props.relationships[rel].data) ?
+            props.relationships[rel].data.map(item => {
+              return item.id;
+            }) :
+            //otherwise return the id of the item or null if the proprty is not set
+            props.relationships[rel].data ? props.relationships[rel].data.id : null;
           properties.attr('relationships.' + rel, true);
         }
       }
+      can.batch.stop();
       return obj;
     }
   });

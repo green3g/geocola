@@ -1,4 +1,4 @@
-import can from 'can/util/';
+import can from 'can/util/library';
 import List from 'can/list/';
 import CanMap from 'can/map/';
 import 'can/map/define/';
@@ -6,7 +6,7 @@ import Component from 'can/component/';
 
 import template from './locator.stache!';
 import './locator.css!';
-import widgetModel from 'components/widget-model';
+import widgetModel from '../widget-model';
 import icon from './icon';
 
 /**

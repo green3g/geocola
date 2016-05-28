@@ -1,4 +1,4 @@
-import widgetModel from 'components/widget-model';
+import widgetModel from '../widget-model';
 import Component from 'can/component/';
 /**
  * @module panel-container
@@ -73,7 +73,7 @@ export const ViewModel = widgetModel.extend({
     return this;
   },
   /**
-   * Hides this panel
+   * Hides this panel in a tab-container.
    * @signature
    * @return {can.Map} this view model
    */
@@ -83,7 +83,7 @@ export const ViewModel = widgetModel.extend({
     return this;
   },
   /**
-   * Shows this panel
+   * Shows this panel in a tab-container
    * @signature
    * @return {can.Map} this view model
    */

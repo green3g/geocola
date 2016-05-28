@@ -1,11 +1,11 @@
-import can from 'can/util/';
+import can from 'can/util/library';
 import Route from 'can/route/';
 import CanMap from 'can/map/';
 import ol from 'openlayers';
-import 'components/locator-widget/';
-import 'components/modal-container/';
-import 'components/ol-map/';
-import 'components/tab-container/';
+import '../../locator-widget/';
+import '../../modal-container/';
+import '../../ol-map/';
+import '../../tab-container/';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css!';
 import 'bootstrap/dist/css/bootstrap-theme.min.css!';

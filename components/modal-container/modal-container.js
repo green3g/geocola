@@ -1,7 +1,7 @@
 /* jshint esnext:true */
 
-import widgetModel from 'components/widget-model';
-import can from 'can/util/';
+import widgetModel from '../widget-model';
+import can from 'can/util/library';
 import Component from 'can/component/';
 import template from './template.stache!';
 /**
@@ -30,7 +30,11 @@ export let ViewModel = widgetModel.extend({
      */
     visible: {
       type: 'boolean',
-      value: true
+      value: true,
+      set: function(visible){
+        let dummy = visible ? this.show() : this.hide();
+        return visible;
+      }
     },
     /**
      * Backdrop option.

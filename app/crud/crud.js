@@ -1,5 +1,4 @@
-/*jshint esnext:true */
-import can from 'can/util/';
+import can from 'can/util/library';
 import CanMap from 'can/map/';
 import List from 'can/list/';
 import route from 'can/route/';
@@ -9,9 +8,11 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css!';
 import 'bootstrap/dist/css/bootstrap-theme.min.css!';
 import 'font-awesome/css/font-awesome.min.css';
-import './crud.css!';
+import './crud.less!';
 import template from './crud.stache!';
-import 'components/crud-manager/';
+import { TOPICS } from 'components/crud-manager/';
+import 'components/alert-widget/';
+import PubSub from 'pubsub-js';
 
 
 export let AppViewModel = can.Map.extend({
@@ -33,12 +34,21 @@ export let AppViewModel = can.Map.extend({
     sidebarHidden: {
       type: 'boolean',
       value: false
+    },
+    messages: {
+      Value: List
+    },
+    deferreds: {
+      Value: List
     }
   },
   startup: function(domNode) {
     this.initRoute();
-    this.activateViewById(route.attr('view') || this.attr('views')[0].attr('id'));
-    can.$(domNode).html(can.view(template, this));
+    this.initPubSub();
+    Promise.all(this.attr('deferreds')).then(() => {
+      this.activateViewById(route.attr('view') || this.attr('views')[0].attr('id'));
+      can.$(domNode).html(can.view(template, this));
+    });
   },
   initRoute: function() {
     route(':view/:page/:objectId/');
@@ -49,6 +59,20 @@ export let AppViewModel = can.Map.extend({
     this.bind('objectId', this.updateRoute.bind(this, 'objectId'));
     this.bind('page', this.updateRoute.bind(this, 'page'));
     route.bind('change', this.routeChanged.bind(this));
+  },
+  initPubSub: function() {
+    PubSub.subscribe(TOPICS.ADD_MESSAGE, (topic, message) => {
+      this.attr('messages').push(message);
+      if (message.autoHide) {
+        setTimeout(() => {
+          this.removeMessage(message);
+        }, message.timeout);
+      }
+    });
+
+    PubSub.subscribe(TOPICS.CLEAR_MESSAGES, (topic, data) => {
+      this.attr('messages').replace([]);
+    });
   },
   routeChanged: function() {
     this.attr(route.attr());
@@ -92,11 +116,15 @@ export let AppViewModel = can.Map.extend({
     }
     route.attr(name, value);
   },
-  getViewUrl(view){
+  getViewUrl(view) {
     return route.url({
       page: 'all',
       view: view.attr('id'),
       objectId: 0
     });
+  },
+  removeMessage: function(e) {
+    var index = this.attr('messages').indexOf(e);
+    var dummy = index !== -1 && this.attr('messages').splice(index, 1);
   }
 });

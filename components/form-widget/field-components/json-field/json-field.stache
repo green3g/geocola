@@ -3,5 +3,4 @@
     <legend>{{alias}}</legend>
     <form-widget {form-object}="jsonFormObject" (fieldChange)="saveField" {fields}="formFields" show-buttons="false" />
   </fieldset>
-
 </div>

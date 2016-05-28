@@ -2,14 +2,14 @@
 import CanMap from 'can/map/';
 import Component from 'can/component/';
 import List from 'can/list/';
-import can from 'can/util/';
+import can from 'can/util/library';
 import 'can/map/define/';
 import ol from 'openlayers';
 import featureTemplate from './featureTemplate.stache!';
 import template from './template.stache!';
 import './styles.css!';
 
-import 'components/property-table/';
+import '../property-table/';
 
  /**
   * @constructor components/identify-widget.ViewModel ViewModel

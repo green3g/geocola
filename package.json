@@ -1,6 +1,6 @@
 {
   "name": "GeoCola",
-  "version": "0.5.0",
+  "version": "0.7.0",
   "description": "A configureable openlayers mapping and data management app",
   "repository": "https://github.com/roemhildtg/geocola",
   "watch": {
@@ -36,14 +36,17 @@
     "jquery": "^2.2.3",
     "openlayers": "^3.15.1",
     "proj4": "^2.3.14",
+    "pubsub-js": "^1.5.3",
     "steal": "^0.16.4",
     "underscore": "^1.8.3"
   },
   "main": "loader",
   "system": {
     "bundle": [
-      "app/viewer/",
-      "app/viewer/config/default/"
+      "app/viewer/viewer",
+      "app/viewer/config/default/default",
+      "app/crud/crud",
+      "app/crud/config/default/default"
     ],
     "npmIgnore": [
       "openlayers"

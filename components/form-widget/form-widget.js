@@ -1,29 +1,10 @@
-import CanMap from 'can/map/';
-import 'can/map/define/';
-import stache from 'can/view/stache/';
-import Component from 'can/component/';
-
 //provides can.extend
-import can from 'can/util/';
-import { makeSentenceCase } from 'util/string';
-
+import can from 'can/util/library';
+import CanMap from 'can/map/';
+import List from 'can/list/';
+import 'can/map/define/';
+import Component from 'can/component/';
 import template from './template.stache!';
-
-let FIELD_TYPES = {
-  text: '<text-field {properties}="." (change)="setField" />',
-  select: '<select-field {properties}="." (change)="setField" />',
-  file: '<file-field {properties}="." (change)="setField" />',
-  json: '<json-field {properties}="." (change)="setField" />',
-  date: '<date-field {properties}="." (change)="setField" />'
-};
-
-//precompile templates
-for (var type in FIELD_TYPES) {
-  if (FIELD_TYPES.hasOwnProperty(type)) {
-    FIELD_TYPES[type] = stache(FIELD_TYPES[type]);
-  }
-}
-
 /**
  * @constructor components/form-widget.ViewModel ViewModel
  * @parent components/form-widget
@@ -100,56 +81,11 @@ export let ViewModel = CanMap.extend({
      * @parent components/form-widget.ViewModel.props
      */
     fields: {
-      get: function(val) {
-        if (!val || !val.length) {
-          val = CanMap.keys(this.attr('formObject'));
-        }
-        return val.map(function(field) {
-          if (typeof field === 'string') {
-            return {
-              name: field
-            };
-          }
-          return field;
+      Value: List,
+      get(fields){
+        return fields.filter(f => {
+          return !f.excludeForm;
         });
-      }
-    },
-    /**
-     * A virtual object consisting of field names mapped to their properties. This is used by the template to format the field, and by the ViewModel to format the data when the form is submitted.
-     * @property {Object} components/form-widget.ViewModel.props._fieldObjects
-     * @parent components/form-widget.ViewModel.props
-     * @link geocola.types.FormFieldObject FormFieldObject
-     */
-    _fieldObjects: {
-      get: function(oldValue, setValue) {
-        if (!this.attr('formObject')) {
-          return {};
-        }
-        var fields = this.attr('fields');
-
-        var self = this;
-        if (oldValue) {
-          fields.forEach(function(field) {
-            var newVal = self.attr(['formObject', field.name].join('.'));
-            if (newVal) {
-              oldValue.attr([field.name, 'value'].join('.'), newVal);
-            }
-          });
-          this.attr('_fieldObjects', oldValue);
-          return oldValue;
-        }
-        var objs = new CanMap();
-        fields.forEach(function(field) {
-          objs.attr(field.name, can.extend(
-            field.properties ? field.properties.attr() : {}, {
-              name: field.name,
-              alias: field.alias || makeSentenceCase(field.name),
-              template: field.template || FIELD_TYPES[field.type || 'text'],
-              value: self.attr(['formObject', field.name].join('.'))
-            }));
-        });
-        this.attr('_fieldObjects', objs);
-        return objs;
       }
     }
   },
@@ -204,6 +140,14 @@ export let ViewModel = CanMap.extend({
    */
   cancelForm() {
     this.dispatch('cancel');
+  },
+  /**
+   * Fetches a value from the formObject
+   * @param  {String} fieldName The name of the field to return
+   * @return {*} The value of the object's property
+   */
+  getFieldValue(field){
+    return this.attr('formObject.' +  field.attr('name'));
   }
 });
 
