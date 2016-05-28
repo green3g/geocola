@@ -1,18 +1,18 @@
 import q from 'steal-qunit';
 import can from 'can';
 
-import {ViewModel} from './';
+import { ViewModel } from './';
 
 let vm;
 
 q.module('components/.ViewModel', {
-  beforeEach: () => {
+  beforeEach() {
     vm = new ViewModel();
   },
-  afterEach: () => {
+  afterEach() {
     vm = null;
   }
 });
 test('buttonClick', assert => {
-  assert.equal(1,1,'one should equal one');
+  assert.equal(1, 1, 'one should equal one');
 });
