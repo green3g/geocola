@@ -1,7 +1,7 @@
 /*jshint esnext: true*/
 
-import EsriProvider from 'providers/location/EsriGeocoder';
-import MapfishProvider from 'providers/print/MapfishPrint';
+import EsriProvider from 'geocola-map/providers/location/EsriGeocoder';
+import MapfishProvider from 'geocola-map/providers/print/MapfishPrint';
 
 export let printProvider = new MapfishProvider({
   url: '/proxy/geoserver/pdf',

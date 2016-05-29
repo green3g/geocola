@@ -1,3 +1,0 @@
-<div class="identify-table">
-  <property-table {field-properties}="fieldProperties" {object}="properties" />
-</div>
