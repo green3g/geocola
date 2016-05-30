@@ -1,4 +1,0 @@
-
-<div class="ol-map-container map" id="{{instanceId}}">
-</div>
-<content />

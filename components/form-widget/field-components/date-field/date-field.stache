@@ -1,9 +1,0 @@
-<div class="form-group">
-    <label for="{{name}}">{{alias}}</label>
-    <div class="input-group">
-    <input type="text" class="form-control" name="{{name}}" id="{{name}}" ($blur)="onChange(%element)" placeholder="{{properties.placeholder}}" value="{{value}}">
-    <span class="input-group-addon" data-toggle="date-selector">
-        <span class="fa fa-calendar"></span>
-    </span>
-</div>
-</div>

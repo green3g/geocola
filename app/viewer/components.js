@@ -10,16 +10,16 @@ import 'bootstrap/dist/js/bootstrap.min';
 
 //import components used by this app
 //TODO: these may be converted into <can-import> tags eventually
-import '../../measure-widget/measure-widget';
-import '../../ol-map/ol-map';
-import '../../panel-container/panel-container';
-import '../../tab-container/tab-container';
-import '../../identify-widget/identify-widget';
-import '../../ol-popup/ol-popup';
-import '../../locator-widget/locator-widget';
-import '../../print-widget/print-widget';
-import '../../layer-control/layer-control';
-import '../../crud-manager/crud-manager';
-import '../../layer-control/layer-components/Default';
-import '../../layer-control/layer-components/Group';
-import '../../layer--control/layer-components/TileWMS';
+import 'geocola-map/measure-widget/measure-widget';
+import 'geocola-map/ol-map/ol-map';
+import 'geocola-map/identify-widget/identify-widget';
+import 'geocola-map/ol-popup/ol-popup';
+import 'geocola-map/locator-widget/locator-widget';
+import 'geocola-map/print-widget/print-widget';
+import 'geocola-map/layer-control/layer-control';
+import 'geocola-map/layer-control/layer-Default';
+import 'geocola-map/layer-control/layer-Group';
+import 'geocola-map/layer-control/layer-TileWMS';
+import 'geocola-ui/panel-container/panel-container';
+import 'geocola-ui/tab-container/tab-container';
+import 'geocola-crud/crud-manager/crud-manager';

@@ -1,5 +1,15 @@
-import { Task } from './models/Task';
+import { TaskInfo, TaskFields } from './models/Task';
+import { ViewMap } from 'geocola-crud/crud-manager/ViewMap';
+
+import 'geocola-crud/form-widget/field-components/date-field/';
 
 export let config = {
-  models: [Task]
+  views: [new ViewMap({
+    connection: TaskInfo,
+    objectTemplate: TaskInfo.Map,
+    iconClass: 'fa fa-tasks',
+    id: 'task',
+    title: 'Tasks',
+    fields: TaskFields
+  })]
 };

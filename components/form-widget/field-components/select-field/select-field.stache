@@ -1,8 +1,0 @@
-<div class="form-group">
-    <label for="{{name}}">{{alias}}</label>
-    <select ($change)="onChange(%element.value)" {($value)}="value" id="{{name}}" class="form-control" name="{{name}}">
-      {{#each properties.options}}
-        <option value="{{value}}" {{#isSelected(value)}} selected {{/isSelected}}>{{label}}</option>
-      {{/each}}
-    </select>
-</div>

@@ -10,16 +10,29 @@
 </head>
 
 <body>
-    <div id="app"></div>
-    <!--[if lt IE 9]>
+  <div id="app"></div>
+  <!--[if lt IE 9]>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.13/es5-shim.min.js"></script>
     <![endif]-->
-    <script src="./node_modules/steal/steal.js">
-      import {load} from 'loader';
+  <script src="./node_modules/steal/steal.js">
+    import { load } from 'loader';
 
-      //place app loading logic here
-      load('app/viewer/', 'default/default');
-    </script>
+    function getParameterByName(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    //place app loading logic here
+    let app = getParameterByName('app');
+    let config = getParameterByName('config');
+
+    load(app || 'app/viewer/', config || 'default/default');
+  </script>
 
 </body>
 
