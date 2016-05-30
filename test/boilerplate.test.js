@@ -5,7 +5,7 @@ import { ViewModel } from './';
 
 let vm;
 
-q.module('components/.ViewModel', {
+q.module('.ViewModel', {
   beforeEach() {
     vm = new ViewModel();
   },
