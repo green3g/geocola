@@ -4,17 +4,18 @@ import 'can/map/define/';
 //import components and css to include
 import './components';
 //import the app template
-import template from './template.stache!';
-import PubSub from 'pubsub-js';
+import template from './viewer.stache!';
 
-
-export let AppViewModel = can.Map.extend({
+/**
+ * @constructor app/viewer.ViewModel ViewModel
+ * @parent start.configure.viewer
+ * @group app/viewer.ViewModel.props Properties
+ *
+ * @description The viewer app App View Model
+ */
+export let AppViewModel = CanMap.extend({
   /**
-   * @constructor app/viewer.ViewModel ViewModel
-   * @parent start.configure.viewer
-   * @group app/viewer.ViewModel.props Properties
-   *
-   * @description The viewer app App View Model
+   * @prototype
    */
   define: {
     /**
@@ -44,7 +45,7 @@ export let AppViewModel = can.Map.extend({
      */
     printProvider: {}
   },
-  onDrag: function() {
+  onDrag: function(){
     console.log(arguments);
   },
   /**
@@ -68,27 +69,5 @@ export let AppViewModel = can.Map.extend({
     can.viewModel(document.getElementById('main-map')).on('resize', function(event, width) {
       can.viewModel(document.getElementById('identify-popup'), 'modal', width < 500);
     });
-  },
-  // initPubSub: function() {
-  //   PubSub.subscribe(TOPICS.ADD_MESSAGE, (topic, message) => {
-  //     this.attr('messages').push(message);
-  //     if (message.autoHide) {
-  //       setTimeout(() => {
-  //         this.removeMessage(message);
-  //       }, message.timeout);
-  //     }
-  //   });
-  //
-  //   PubSub.subscribe(TOPICS.CLEAR_MESSAGES, (topic, data) => {
-  //     this.attr('messages').replace([]);
-  //   });
-  // },
-  toggleMenu: function(e) {
-    this.attr('sidebarHidden', !this.attr('sidebarHidden'));
-    return false;
-  },
-  removeMessage: function(e) {
-    var index = this.attr('messages').indexOf(e);
-    var dummy = index !== -1 && this.attr('messages').splice(index, 1);
   }
 });

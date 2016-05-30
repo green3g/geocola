@@ -4,7 +4,7 @@ import 'node_modules/openlayers/dist/ol.css!';
 import 'bootstrap/dist/css/bootstrap.min.css!';
 import 'bootstrap/dist/css/bootstrap-theme.min.css!';
 import 'font-awesome/css/font-awesome.min.css';
-import './styles.less!';
+import './css/viewer.css!';
 
 import 'bootstrap/dist/js/bootstrap.min';
 
