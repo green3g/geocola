@@ -2,20 +2,23 @@ import can from 'can/util/library';
 import Route from 'can/route/';
 import CanMap from 'can/map/';
 import ol from 'openlayers';
-import '../../locator-widget/';
-import '../../modal-container/';
-import '../../ol-map/';
-import '../../tab-container/';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css!';
 import 'bootstrap/dist/css/bootstrap-theme.min.css!';
 import 'font-awesome/css/font-awesome.min.css!';
-import 'openlayers/dist/ol.css!';
+// import 'openlayers/dist/ol.css!';
 import './locator_app.css!';
 
 import template from './locator_app.stache!';
 
-import esriProvider from 'providers/location/EsriGeocoder';
+
+import 'geocola-map/locator-widget/';
+import 'geocola-ui/modal-container/';
+import 'geocola-map/ol-map/';
+import 'geocola-ui/tab-container/';
+import 'geocola-ui/panel-container/';
+
+import esriProvider from 'geocola-map/providers/location/EsriGeocoder';
 var locationProvider = new esriProvider({
   url: 'http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/',
   searchPoint: [-93.29083588456768,

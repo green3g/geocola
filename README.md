@@ -9,14 +9,18 @@
 
 A configureable set of client side web applications built on modular and reuseable web components.
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/roemhildtg/geocola?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)   [![Build Status](https://travis-ci.org/roemhildtg/geocola.svg?branch=master)](https://travis-ci.org/roemhildtg/geocola)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/geocola/geocola?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)   [![Build Status](https://travis-ci.org/geocola/geocola.svg?branch=master)](https://travis-ci.org/geocola/geocola)
 
-![Overall Image](http://roemhildtg.github.io/geocola/docs/static/img/overall-screenshot.png)
+![Overall Image](/geocola/docs/static/img/overall-screenshot.png)
+
+## Examples
+
+ * [Data Manager App](http://geocola.github.io/geocola/index.htmlapp=app/crud/&config=default/default)
+ * [Complete Mapping App](http://geocola.github.io/geocola/index.html)
 
 ## Getting started
-[See a working demo](http://roemhildtg.github.io/geocola/index.html)
 
-[Read the full documentation for details](http://roemhildtg.github.io/geocola/docs)
+[Read the full documentation for details](http://geocola.github.io/geocola/docs)
 
 ### Requirements
 * NodeJS

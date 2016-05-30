@@ -10,8 +10,8 @@ import 'bootstrap/dist/css/bootstrap-theme.min.css!';
 import 'font-awesome/css/font-awesome.min.css';
 import './crud.less!';
 import template from './crud.stache!';
-import { TOPICS } from 'components/crud-manager/';
-import 'components/alert-widget/';
+import { TOPICS } from 'geocola-crud/crud-manager/';
+import 'geocola-ui/alert-widget/';
 import PubSub from 'pubsub-js';
 
 
