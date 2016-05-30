@@ -13,6 +13,14 @@ A configureable set of client side web applications built on modular and reuseab
 
 ![Overall Image](/geocola/docs/static/img/overall-screenshot.png)
 
+## Components
+
+Geocola consists of the following components all of which can be used individually:
+
+ * geocola-ui - User interface bootstrap style components [![Build Status](https://travis-ci.org/geocola/geocola-ui.svg?branch=master)](https://travis-ci.org/geocola/geocola-ui)
+ * geocola-map - Mapping components [![Build Status](https://travis-ci.org/geocola/geocola-map.svg?branch=master)](https://travis-ci.org/geocola/geocola-map)
+ * geocola-crud - Data management and display tools [![Build Status](https://travis-ci.org/geocola/geocola-crud.svg?branch=master)](https://travis-ci.org/geocola/geocola-crud)
+
 ## Examples
 
  * [Data Manager App](http://geocola.github.io/geocola/index.htmlapp=app/crud/&config=default/default)
