@@ -1,4 +1,4 @@
-import { FlaskConnectFactory } from 'geocola-crud/providers/api/FlaskModelFactory';
+import { FlaskConnectFactory } from 'geocola-crud/models/FlaskModelFactory';
 import CanMap from 'can/map/';
 //define plugin
 //https://canjs.com/docs/can.Map.prototype.define.html
