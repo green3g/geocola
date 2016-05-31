@@ -46,7 +46,11 @@ git clone http://path-to-this-repository
 npm install
 ```
 
-The application should run in a web browser now. To build it for production:
+The application should run in a web browser now. To try it out, check out the following urls:
+ * `http://your-server/index-dev.html`
+ * `http://your-server/index-dev.html?app=app/crud/&config=default/default`
+
+To build it for production:
 ```bash
 npm run build
 ```
