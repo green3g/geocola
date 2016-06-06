@@ -99,12 +99,13 @@ export let AppViewModel = can.Map.extend({
     }
   },
   navigateToView: function(view) {
+    can.batch.start();
     this.attr({
       page: 'all',
       objectId: 0
     });
-    this.attr('parameters', {});
     this.activateView(view);
+    can.batch.stop();
     return false;
   },
   routeChange: function() {

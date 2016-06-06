@@ -24,12 +24,11 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12">
+          <alert-widget {(messages)}="messages" />
+
           {{#activeView}}
             <h1>{{title}}</h1>
-
-            <alert-widget {(messages)}="messages" />
-
-            <crud-manager {(page)}="page" {(view-id)}="objectId" {view}="." {parameters}="parameters" />
+            <crud-manager {(page)}="page" {(view-id)}="objectId" {view}="." />
           {{/if}}
         </div>
       </div>
