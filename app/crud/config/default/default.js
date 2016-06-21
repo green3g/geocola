@@ -1,7 +1,7 @@
 import { TaskInfo, TaskFields } from './models/Task';
-import { ViewMap } from 'geocola-crud/crud-manager/ViewMap';
+import { ViewMap } from 'can-crud/crud-manager/ViewMap';
 
-import 'geocola-crud/form-widget/field-components/date-field/';
+import 'can-crud/form-widget/field-components/date-field/';
 
 export let config = {
   views: [new ViewMap({

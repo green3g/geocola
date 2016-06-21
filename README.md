@@ -9,7 +9,7 @@
 
 A configureable set of client side web applications built on modular and reuseable web components.
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/geocola/geocola?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)   [![Build Status](https://travis-ci.org/geocola/geocola.svg?branch=master)](https://travis-ci.org/geocola/geocola)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/roemhildtg/geocola?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)   [![Build Status](https://travis-ci.org/roemhildtg/geocola.svg?branch=master)](https://travis-ci.org/roemhildtg/geocola)
 
 ![Overall Image](/geocola/docs/static/img/overall-screenshot.png)
 
@@ -17,9 +17,9 @@ A configureable set of client side web applications built on modular and reuseab
 
 Geocola consists of the following components all of which can be used individually:
 
- * geocola-ui - User interface bootstrap style components [![Build Status](https://travis-ci.org/geocola/geocola-ui.svg?branch=master)](https://travis-ci.org/geocola/geocola-ui)
- * geocola-map - Mapping components [![Build Status](https://travis-ci.org/geocola/geocola-map.svg?branch=master)](https://travis-ci.org/geocola/geocola-map)
- * geocola-crud - Data management and display tools [![Build Status](https://travis-ci.org/geocola/geocola-crud.svg?branch=master)](https://travis-ci.org/geocola/geocola-crud)
+ * can-ui - User interface bootstrap style components [![Build Status](https://travis-ci.org/roemhildtg/can-ui.svg?branch=master)](https://travis-ci.org/roemhildtg/can-ui)
+ * can-geo - Mapping components [![Build Status](https://travis-ci.org/roemhildtg/can-geo.svg?branch=master)](https://travis-ci.org/roemhildtg/can-geo)
+ * can-crud - Data management and display tools [![Build Status](https://travis-ci.org/roemhildtg/can-crud.svg?branch=master)](https://travis-ci.org/roemhildtg/can-crud)
 
 ## Examples
 
@@ -46,19 +46,12 @@ git clone http://path-to-this-repository
 npm install
 ```
 
-The application should run in a web browser now. To try it out, check out the following urls:
- * `http://your-server/index-dev.html`
- * `http://your-server/index-dev.html?app=app/crud/&config=default/default`
-
-To build it for production:
+The application should run in a web browser now using `index-dev.html`. To build it for production:
 ```bash
 npm run build
 ```
 
-Change index.html script to production:
-```html
-<script src="./node_modules/steal/steal.production.js" data-main="main"></script>
-```
+Use `index.html` to use the production build
 
 ## Open source projects used
 

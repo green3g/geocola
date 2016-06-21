@@ -1,11 +1,11 @@
-import { FlaskConnectFactory } from 'geocola-crud/models/FlaskModelFactory';
+import { FlaskConnectFactory } from 'can-crud/providers/api/FlaskModelFactory';
 import CanMap from 'can/map/';
 //define plugin
 //https://canjs.com/docs/can.Map.prototype.define.html
 import 'can/map/define/';
 
 //import fake ajax services
-import 'geocola-crud/test/data/fixtures';
+import 'can-crud/test/data/fixtures';
 
 //instance of supermap
 export let TaskInfo = FlaskConnectFactory({

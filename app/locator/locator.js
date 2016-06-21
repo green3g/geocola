@@ -12,13 +12,13 @@ import './locator_app.css!';
 import template from './locator_app.stache!';
 
 
-import 'geocola-map/locator-widget/';
-import 'geocola-ui/modal-container/';
-import 'geocola-map/ol-map/';
-import 'geocola-ui/tab-container/';
-import 'geocola-ui/panel-container/';
+import 'can-geo/locator-widget/';
+import 'can-ui/modal-container/';
+import 'can-geo/ol-map/';
+import 'can-ui/tab-container/';
+import 'can-ui/panel-container/';
 
-import esriProvider from 'geocola-map/providers/location/EsriGeocoder';
+import esriProvider from 'can-geo/providers/location/EsriGeocoder';
 var locationProvider = new esriProvider({
   url: 'http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/',
   searchPoint: [-93.29083588456768,
