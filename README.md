@@ -7,11 +7,14 @@
 
 ## GeoCola - Configureable Openlayers App
 
-A configureable set of client side web applications built on modular and reuseable web components.
+Currently under development. A configureable, modular, map viewing application. 
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/roemhildtg/geocola?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)   [![Build Status](https://travis-ci.org/roemhildtg/geocola.svg?branch=master)](https://travis-ci.org/roemhildtg/geocola)
-
-![Overall Image](/geocola/docs/static/img/overall-screenshot.png)
+## Features 
+ - View nearly any type of geographic data. Any layer type supported by Openlayers 3 is supported by Geocola 
+ - Identify WMS and Tiled WMS layers in a popup 
+ - Measure point locations, line distances, and polygon areas 
+ - Print Openlayer 3 maps using a supported print service (currently supports Mapfish)
+ - Toggle layers and sublayers on and off, including grouped WMS layers using a layer tree 
 
 ## Components
 
@@ -20,11 +23,6 @@ Geocola consists of the following components all of which can be used individual
  * can-ui - User interface bootstrap style components [![Build Status](https://travis-ci.org/roemhildtg/can-ui.svg?branch=master)](https://travis-ci.org/roemhildtg/can-ui)
  * can-geo - Mapping components [![Build Status](https://travis-ci.org/roemhildtg/can-geo.svg?branch=master)](https://travis-ci.org/roemhildtg/can-geo)
  * can-crud - Data management and display tools [![Build Status](https://travis-ci.org/roemhildtg/can-crud.svg?branch=master)](https://travis-ci.org/roemhildtg/can-crud)
-
-## Examples
-
- * [Data Manager App](http://geocola.github.io/geocola/index.htmlapp=app/crud/&config=default/default)
- * [Complete Mapping App](http://geocola.github.io/geocola/index.html)
 
 ## Getting started
 
