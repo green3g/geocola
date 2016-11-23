@@ -19,64 +19,44 @@
   "author": "roemhildtg",
   "license": "MIT",
   "devDependencies": {
-    "documentjs": "^0.4.2",
-    "jshint": "latest",
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.10.2",
     "npm-watch": "^0.1.4",
-    "steal-qunit": "^0.1.1",
-    "steal-tools": "^0.16.2",
+    "steal-tools": "^0.16.8",
     "testee": "^0.2.5"
   },
   "dependencies": {
-    "bootstrap": "^3.3.6",
-    "can": "^2.3.23",
-    "can-connect": "^0.5.4",
-    "can-set": "^0.6.0-pre.3",
-    "date-selector": "^2.0.0",
-    "font-awesome": "^4.5.0",
-    "can-crud": "git+https://github.com/roemhildtg/can-crud.git",
-    "can-geo": "git+https://github.com/roemhildtg/can-geo.git",
-    "can-ui": "git+https://github.com/roemhildtg/can-ui.git",
-    "jquery": "^2.2.3",
-    "openlayers": "^3.15.1",
-    "proj4": "^2.3.14",
-    "pubsub-js": "^1.5.3",
-    "steal": "^0.16.4",
-    "underscore": "^1.8.3"
+    "can-define": "^1.0.4",
+    "can-geo": "github:roemhildtg/can-geo",
+    "can-route": "^3.0.4",
+    "can-stache": "^3.0.8",
+    "font-awesome": "^4.7.0",
+    "openlayers": "^3.19.1",
+    "proj4": "^2.3.15",
+    "sidebar-v2": "github:turbo87/sidebar-v2#0cd125b4eae37f87d753c5d6f99e613a7d88ea4f",
+    "spectre.css": "^0.1.27",
+    "steal": "^0.16.42",
+    "steal-stache": "^3.0.1"
   },
-  "main": "loader",
+  "main": "app",
   "system": {
-    "bundleAssets": true,
-    "bundle": [
-      "app/viewer/viewer",
-      "app/viewer/config/default/default",
-      "app/crud/crud",
-      "app/crud/config/default/default"
-    ],
+    "npmAlgorithm": "flat",
     "npmIgnore": [
-      "openlayers",
-      "documentjs",
-      "jshint",
+      "babel-eslint",
+      "eslint",
+      "npm-watch",
       "steal-tools",
       "testee"
     ],
+    "bundleAssets": true,
+    "bundle": [],
     "paths": {
-      "bootstrap": "node_modules/bootstrap/dist/js/bootstrap.min.js",
       "openlayers": "node_modules/openlayers/dist/ol-debug.js"
     },
     "meta": {
       "openlayers": {
         "format": "global",
         "exports": "ol"
-      }
-    },
-    "shim": {
-      "jquery": {
-        "exports": "jQuery"
-      },
-      "bootstrap": {
-        "deps": [
-          "jquery"
-        ]
       }
     }
   }

@@ -11,15 +11,21 @@
 </head>
 
 <body>
-  <div id="app"></div>
-  <!--[if lt IE 9]>
+    <!--[if lt IE 9]>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.13/es5-shim.min.js"></script>
     <![endif]-->
-  <script src="./node_modules/steal/steal.production.js" main="loader">
-    import {load} from 'loader';
 
-    //place app loading logic here
-    load('app/viewer/', 'default/default');
+
+  <script src="./node_modules/steal/steal.js" main="@loader">
+    let config = 'default';
+    Promise.all([
+      System.import('config/' + config),
+      System.import('app/app')
+    ]).then(function(modules){
+      var app = new modules[1].AppViewModel(modules[0].config);
+      app.startup('body');
+    });
+
   </script>
 
 </body>
