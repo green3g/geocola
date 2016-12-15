@@ -27,17 +27,25 @@ Geocola consists of the following components all of which can be used individual
 
 ### Requirements
 * NodeJS (npm install)
-* A web server (apache, nginx)
+* A production web server (apache, nginx), a development server through nodejs is provided
 * A wms compatible mapserver, like Geoserver
 
 ### Setup the project
 ```bash
+# get the code
 git clone http://path-to-this-repository
+
+# change to this directory
 cd geocola
+
+# setup requirements
 npm install
+
+# run a development server on localhost:8080
+npm serve
 ```
 
-The application should run in a web browser now using `index.html`. To build it for production:
+The application should run in a web browser now using `http://localhost:8080/index-dev.html`. To build it for production:
 ```bash
 npm run build
 ```

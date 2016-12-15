@@ -13,8 +13,9 @@
     "watch": "npm-watch",
     "docs": "documentjs --watch -d",
     "export": "node build.js",
-    "lint": "jshint .",
-    "pretest": "npm run lint"
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "serve": "http-server"
   },
   "author": "roemhildtg",
   "license": "MIT",
@@ -22,8 +23,12 @@
     "babel-eslint": "^7.1.1",
     "eslint": "^3.10.2",
     "npm-watch": "^0.1.4",
-    "steal-tools": "^0.16.8",
-    "testee": "^0.2.5"
+    "steal-css": "^1.0.0",
+    "steal-less": "^1.0.1",
+    "steal-stache": "^3.0.4",
+    "steal-tools": "^1.0.0",
+    "testee": "^0.2.5",
+    "http-server": "^0.9.0"
   },
   "dependencies": {
     "can-define": "^1.0.4",
@@ -35,21 +40,20 @@
     "proj4": "^2.3.15",
     "sidebar-v2": "github:turbo87/sidebar-v2#0cd125b4eae37f87d753c5d6f99e613a7d88ea4f",
     "spectre.css": "^0.1.27",
-    "steal": "^0.16.42",
-    "steal-stache": "^3.0.1"
+    "steal": "^0.16.42"
   },
-  "main": "app",
-  "system": {
-    "npmAlgorithm": "flat",
-    "npmIgnore": [
-      "babel-eslint",
-      "eslint",
-      "npm-watch",
-      "steal-tools",
-      "testee"
+  "main": "app/app.js",
+  "steal": {
+    "plugins": [
+      "steal-less",
+      "steal-css",
+      "steal-stache"
     ],
     "bundleAssets": true,
-    "bundle": [],
+    "COMMENT": "Configure additional config bundles using the bundle array...",
+    "bundle": [
+      "config/default"
+    ],
     "paths": {
       "openlayers": "node_modules/openlayers/dist/ol-debug.js"
     },

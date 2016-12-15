@@ -46,7 +46,7 @@ export const config = {
                         title: 'Open Street Map'
                     }
                 },
-            //we can include layer objects too,
+                  //we can include layer objects too,
                     new ol.layer.Tile({
                         id: 'esri',
                         title: 'Esri Basemap',
