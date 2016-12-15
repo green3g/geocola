@@ -1,9 +1,10 @@
 import 'can-geo/ol-map/ol-map';
 import ol from 'openlayers';
 import 'sidebar-v2/js/ol3-sidebar';
-import 'sidebar-v2/css/ol3-sidebar.css!';
-import 'font-awesome/css/font-awesome.css!';
-import 'spectre.css/dist/spectre.css!';
+import 'sidebar-v2/css/ol3-sidebar.css';
+import 'font-awesome/css/font-awesome.css';
+import 'spectre.css/dist/spectre.css';
+import './app.less';
 
 import 'can-geo/layer-control/layer-control';
 import 'can-geo/layer-control/layer-components/Default';
