@@ -13,7 +13,8 @@ export const config = {
         layers: [{
             type: 'TileWMS',
             options: {
-                title: 'OSM'
+                title: 'OSM WMS Layers',
+                visible: false
             },
             sourceOptions: {
                 url: 'http://demo.opengeo.org/geoserver/osm/wms',
