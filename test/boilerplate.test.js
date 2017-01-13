@@ -1,15 +1,18 @@
-/*jshint esnext: true */
-import testrunner from 'steal-qunit';
+import q from 'steal-qunit';
 import can from 'can';
 
-var vm;
+import { ViewModel } from './';
 
-testrunner.module('components/ol-map/model', {
-  beforeEach: function() {
+let vm;
+
+q.module('.ViewModel', {
+  beforeEach() {
+    vm = new ViewModel();
   },
-  afterEach: function(assert) {
+  afterEach() {
+    vm = null;
   }
 });
-test('test', function(assert) {
-  assert.equal(1,1,'one should equal one');
+test('buttonClick', assert => {
+  assert.equal(1, 1, 'one should equal one');
 });

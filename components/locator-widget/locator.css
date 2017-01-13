@@ -1,9 +1,0 @@
-form.locator-widget {
-  position:relative;
-}
-
-.locator-widget .locator-suggestions {
-  position:absolute;
-  top: 45px;
-  left:0;
-}

@@ -1,0 +1,39 @@
+<div id="sidebar" class="sidebar collapsed">
+  <!-- Nav tabs -->
+  <div class="sidebar-tabs">
+      <ul role="tablist">
+          <li class="tooltip tooltip-right" data-tooltip="Turn Layers On and Off"><a href="#layers" role="tab"><i class="fa fa-bars"></i></a></li>
+          <li><a href="#search" role="tab"><i class="fa fa-search"></i></a></li>
+          <li><a href="#print" role="tab"><i class="fa fa-print"></i></a></li>
+          <li><a href="#measure" role="tab"><i class="fa fa-arrows-h"></i></a></li>
+      </ul>
+
+      <ul role="tablist">
+          <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+      </ul>
+  </div>
+
+  <!-- Tab panes -->
+  <div class="sidebar-content">
+      <div class="sidebar-pane" id="layers">
+        <layer-control {map}="map" />
+      </div>
+      <div class="sidebar-pane" id="search">
+        <locator-widget {provider}="search" {map}="map" disable-multiple />
+      </div>
+      <div class="sidebar-pane" id="print">
+        <print-widget {provider}="print" {map}="map" />
+      </div>
+      <div class="sidebar-pane" id="measure">
+        <measure-widget {map}="map" (activate)="set('click', 'measure')" (deactivate)="set('click', 'identify')" />
+      </div>
+      <div class="sidebar-pane" id="settings">
+        <layer-control {map}="map" />
+      </div>
+  </div>
+</div>
+<ol-map class="fill-window" {^map-object}="map" {map-options}="mapOptions">
+  <ol-popup id="identify" active>
+    <identify-widget {map}="map" popup-selector="#identify" {{#is click 'identify'}}active{{/is}} />
+  </ol-popup>
+</ol-map>

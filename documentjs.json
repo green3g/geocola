@@ -1,9 +1,17 @@
 {
+  "siteDefaults": {
+    "static": "guides/site/static",
+    "templates": "guides/site/templates"
+  },
   "sites": {
     "docs": {
-      "glob": "{guides,components,providers}/**/*.{js,md}",
-      "parent": "Home",
-      "dest": "../cola-docs"
+      "glob": {
+        "ignore": "{docs,dist,node_modules}/**/*"
+      },
+      "parent": "geocola",
+      "dest": "./docs",
+      "templates": "guides/site/templates",
+      "static": "guides/site/static"
     }
   }
 }

@@ -1,7 +1,0 @@
-<ul class="list-group layer-control">
-  {{#each layers}}
-  <li class="list-group-item">
-    {{{template}}}
-  </li>
-  {{/each}}
-</ul>

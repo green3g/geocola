@@ -1,8 +1,0 @@
-<nav>
-  <ul class="nav nav-tabs">
-    {{#each panels}}
-      <li can-click="activate" class="{{#visible}}active{{/visible}}"><a>{{title}}</a></li>
-    {{/each}}
-  </ul>
-</nav>
-<content />
