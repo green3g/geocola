@@ -1,3 +1,4 @@
+
 <!--
 @page geocola Home
 @group geocola.components Components
@@ -8,6 +9,8 @@
 ## GeoCola - Configureable Openlayers App
 
 Currently under development. A configureable, modular, map viewing application.
+
+[![Gitter](https://badges.gitter.im/roemhildtg-geocola/Lobby.svg)](https://gitter.im/roemhildtg-geocola/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Features
  - View nearly any type of geographic data. Any layer type supported by Openlayers 3 is supported by Geocola
@@ -68,3 +71,4 @@ Use `index.html` to use the production build
 ## Related projects
  - [CMV](https://github.com/cmv/cmv-app)
  - [OCMV](https://github.com/vojvod/ocmv)
+
