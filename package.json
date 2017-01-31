@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "testee test/index.html --reporter Spec --browsers firefox",
-    "build": "steal-tools -d",
+    "build": "steal-tools",
     "watch": "npm-watch",
     "docs": "documentjs --watch -d",
     "export": "node build.js",
@@ -21,28 +21,21 @@
   "license": "MIT",
   "devDependencies": {
     "babel-eslint": "^7.1.1",
-    "eslint": "^3.10.2",
-    "npm-watch": "^0.1.4",
-    "steal-css": "^1.0.0",
-    "steal-less": "^1.0.1",
-    "steal-stache": "^3.0.4",
-    "steal-tools": "^1.0.0",
-    "testee": "^0.2.5",
-    "http-server": "^0.9.0"
+    "eslint": "^3.12.2",
+    "http-server": "^0.9.0",
+    "steal-css": "^1.2.0",
+    "steal-less": "^1.1.0",
+    "steal-stache": "^3.0.5",
+    "steal-tools": "^1.1.1"
   },
   "dependencies": {
-    "can-define": "^1.0.4",
-    "can-geo": "^0.3.3",
-    "can-route": "^3.0.4",
-    "can-stache": "^3.0.8",
+    "can-define": "^1.0.15",
+    "can-geo": "^0.3.6",
     "font-awesome": "^4.7.0",
-    "openlayers": "^3.19.1",
-    "proj4": "^2.3.15",
-    "sidebar-v2": "github:turbo87/sidebar-v2#0cd125b4eae37f87d753c5d6f99e613a7d88ea4f",
-    "spectre-canjs": "^0.15.7",
-    "spectre.css": "^0.1.27",
-    "steal": "^1.0.4",
-    "steal-tools": "^1.0.1"
+    "openlayers": "^3.20.1",
+    "sidebar-v2": "github:turbo87/sidebar-v2",
+    "spectre.css": "^0.1.32",
+    "steal": "^1.1.0"
   },
   "main": "app/app.js",
   "steal": {
