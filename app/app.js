@@ -21,6 +21,8 @@ import DefineMap from 'can-define/map/map';
 import renderer from './app.stache';
 
 export const AppViewModel = DefineMap.extend('App', {
+    seal: false
+}, {
     mapOptions: '*',
     click: {
         type: 'string',

@@ -32,7 +32,7 @@
       </div>
   </div>
 </div>
-<ol-map class="fill-window" {^map-object}="map" {map-options}="mapOptions">
+<ol-map class="fill-window" {^map-object}="map" {map-options}="mapOptions" x="{{x}}" y="{{y}}" zoom="{{zoom}}">
   <ol-popup id="identify" active>
     <identify-widget {map}="map" popup-selector="#identify" {{#is click 'identify'}}active{{/is}} />
   </ol-popup>

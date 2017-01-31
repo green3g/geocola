@@ -3,13 +3,32 @@ import Mapfish from 'can-geo/providers/print/MapfishPrint';
 import ol from 'openlayers';
 
 export const config = {
+
+    // a address search provider, the default uses esri's world geocoder
+    // for suggestsions and results
     search: new Esri({
         url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer'
     }),
+
+    // a print provider
+    // this is currently set up to use a geoserver hosted locally, so it won't
+    // work without setting that up
     print: new Mapfish({
         url: 'http://localhost/geoserver/pdf'
     }),
+
+    // map coordinates
+    // the default coordinate system is latitude/longitude
+    x: -84,
+    y: 49,
+    zoom: 6,
+
+    // map options like layers and view options
     mapOptions: {
+
+        // The main property in mapOptions is probably layers.
+        // each layer is a simplified object that will be used
+        // to create openlayers layers.
         layers: [{
             type: 'TileWMS',
             options: {
@@ -65,10 +84,10 @@ export const config = {
                         visible: false,
                         preload: Infinity,
                         source: new ol.source.BingMaps({
-                            key: 'AkGbxXx6tDWf1swIhPJyoAVp06H0s0gDTYslNWWHZ6RoPqMpB9ld5FY1WutX8UoF',
+                            key: 'AmdC5WlU6y4LauEDIekM6IIgfGL5zTgBLhhTdwVMFw5vCv1Z13qzRWaeV4arnBGd',
                             imagerySet: 'AerialWithLabels',
-                      // use maxZoom 19 to see stretched tiles instead of the BingMaps
-                      // "no photos at this zoom level" tiles
+                            // use maxZoom 19 to see stretched tiles instead of the BingMaps
+                            // "no photos at this zoom level" tiles
                             maxZoom: 19
                         })
                     })]
