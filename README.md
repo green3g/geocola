@@ -8,6 +8,8 @@
 
 ## GeoCola - Configureable Openlayers App
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/roemhildtg/geocola.svg)](https://greenkeeper.io/)
+
 Currently under development. A configureable, modular, map viewing application.
 
 [![Gitter](https://badges.gitter.im/roemhildtg-geocola/Lobby.svg)](https://gitter.im/roemhildtg-geocola/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
