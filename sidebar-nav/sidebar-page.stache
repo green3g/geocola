@@ -1,0 +1,3 @@
+{{#if parent.isActive(this)}}
+      <content />
+{{/if}}

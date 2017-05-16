@@ -1,0 +1,37 @@
+<div class="sidebar {{#if collapsed}}collapsed{{/if}}">
+  <!-- Nav tabs -->
+    <ul class="tab-list">
+      {{#each pages}}
+        <li class="tab-item {{#is . ../activePage}}active{{/is}}{{#if loading}} loading{{/if}}" title="{{label}}" ($click)="makeActive(.)">
+          <a {{#if href}} href="{{href}}" {{/if}}>
+                <i class="{{iconClass}}"></i>
+            </a>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
+
+
+<content />
+{{#if collapsed}}
+<style type="text/css">
+sidebar-nav {
+  width: 40px;
+}
+
+
+.ol-zoom.ol-unselectable.ol-control,
+.ol-overviewmap.ol-unselectable.ol-control.ol-collapsed {
+    left: 4em;
+}
+</style>
+{{else}}
+<style type="text/css">
+.ol-zoom.ol-unselectable.ol-control,
+.ol-overviewmap.ol-unselectable.ol-control.ol-collapsed {
+    left: 26em;
+}
+
+</style>
+{{/if}}

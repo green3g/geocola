@@ -4,31 +4,31 @@ import ol from 'openlayers';
 
 export const config = {
 
-    // a address search provider, the default uses esri's world geocoder
-    // for suggestsions and results
+  // a address search provider, the default uses esri's world geocoder
+  // for suggestsions and results
     search: new Esri({
         url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer'
     }),
 
-    // a print provider
-    // this is currently set up to use a geoserver hosted locally, so it won't
-    // work without setting that up
+  // a print provider
+  // this is currently set up to use a geoserver hosted locally, so it won't
+  // work without setting that up
     print: new Mapfish({
         url: 'http://localhost/geoserver/pdf'
     }),
 
-    // map coordinates
-    // the default coordinate system is latitude/longitude
+  // map coordinates
+  // the default coordinate system is latitude/longitude
     x: -84,
     y: 49,
     zoom: 6,
 
-    // map options like layers and view options
+  // map options like layers and view options
     mapOptions: {
 
-        // The main property in mapOptions is probably layers.
-        // each layer is a simplified object that will be used
-        // to create openlayers layers.
+    // The main property in mapOptions is probably layers.
+    // each layer is a simplified object that will be used
+    // to create openlayers layers.
         layers: [{
             type: 'TileWMS',
             options: {
@@ -50,11 +50,25 @@ export const config = {
             },
             sourceOptions: {
                 url: 'http://demo.opengeo.org/geoserver/wms',
-                params: {'LAYERS': 'topp:states', 'TILED': true},
+                params: {
+                    'LAYERS': 'topp:states',
+                    'TILED': true
+                },
                 serverType: 'geoserver'
             }
         }, {
-        // make a basemap style group
+            type: 'TileWMS',
+            extent: [-13884991, 2870341, -7455066, 6338219],
+            sourceOptions: {
+                url: 'http://localhost:8080/geoserver/wms',
+                params: {
+                    'LAYERS': 'tiger:poly_landmarks,tiger:tiger_roads,tiger:poi',
+                    'TILED': true
+                },
+                serverType: 'geoserver'
+            }
+        }, {
+      // make a basemap style group
             type: 'Group',
             radioGroup: true,
             options: {
@@ -66,16 +80,17 @@ export const config = {
                         title: 'Open Street Map'
                     }
                 },
-                  //we can include layer objects too,
+          //we can include layer objects too,
                     new ol.layer.Tile({
                         id: 'esri',
                         title: 'Esri Basemap',
                         source: new ol.source.XYZ({
                             attributions: [
-                                'Tiles &copy; <a href="http://services.arcgisonline.com/ArcGIS/' +
-                    'rest/services/World_Topo_Map/MapServer">ArcGIS</a>'],
+                              'Tiles &copy; <a href="http://services.arcgisonline.com/ArcGIS/' +
+                'rest/services/World_Topo_Map/MapServer">ArcGIS</a>'
+                          ],
                             url: 'http://server.arcgisonline.com/ArcGIS/rest/services/' +
-                      'World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
+                'World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
                         })
                     }),
                     new ol.layer.Tile({
@@ -86,11 +101,12 @@ export const config = {
                         source: new ol.source.BingMaps({
                             key: 'AmdC5WlU6y4LauEDIekM6IIgfGL5zTgBLhhTdwVMFw5vCv1Z13qzRWaeV4arnBGd',
                             imagerySet: 'AerialWithLabels',
-                            // use maxZoom 19 to see stretched tiles instead of the BingMaps
-                            // "no photos at this zoom level" tiles
+              // use maxZoom 19 to see stretched tiles instead of the BingMaps
+              // "no photos at this zoom level" tiles
                             maxZoom: 19
                         })
-                    })]
+                    })
+                ]
             }
         }]
     }
