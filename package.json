@@ -1,5 +1,5 @@
 {
-  "name": "GeoCola",
+  "name": "geocola",
   "version": "0.8.0",
   "description": "A configureable openlayers mapping and data management app",
   "repository": "https://github.com/roemhildtg/geocola",
@@ -47,7 +47,7 @@
     ],
     "bundleAssets": true,
     "bundle": [
-      "config/default"
+      "geocola/config/default"
     ],
     "paths": {
       "openlayers": "node_modules/openlayers/dist/ol-debug.js"
