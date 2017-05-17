@@ -86,9 +86,9 @@ export const config = {
                         title: 'Esri Basemap',
                         source: new ol.source.XYZ({
                             attributions: [
-                              'Tiles &copy; <a href="http://services.arcgisonline.com/ArcGIS/' +
+                                'Tiles &copy; <a href="http://services.arcgisonline.com/ArcGIS/' +
                 'rest/services/World_Topo_Map/MapServer">ArcGIS</a>'
-                          ],
+                            ],
                             url: 'http://server.arcgisonline.com/ArcGIS/rest/services/' +
                 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
                         })
