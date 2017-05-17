@@ -31,7 +31,7 @@
   "dependencies": {
     "can-define": "^1.0.24",
     "can-event": "^3.4.0",
-    "can-geo": "^0.3.14",
+    "can-geo": "^0.3.15",
     "font-awesome": "^4.7.0",
     "openlayers": "^4.1.1",
     "sidebar-v2": "github:turbo87/sidebar-v2",
