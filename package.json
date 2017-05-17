@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "testee test/index.html --reporter Spec --browsers firefox",
-    "build": "steal-tools",
+    "build": "node build",
     "watch": "npm-watch",
     "docs": "documentjs --watch -d",
     "export": "node build.js",
